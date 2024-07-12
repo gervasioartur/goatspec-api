@@ -45,7 +45,7 @@ class CreateUserServiceTests {
     }
 
     @Test
-    @DisplayName("Should throw business expcetion if email is already taken")
+    @DisplayName("Should throw business exception if email is already taken")
     void shouldThrowExceptionIfEmailIsAlreadyTaken() {
         User toCreateUser = new User("any_cpf", "any_create_email", "any_registration", "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue());
         User createdUser = new User("any_create_cpf", "any_create_email", "any_create_registration", "any_create_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue());
@@ -58,5 +58,23 @@ class CreateUserServiceTests {
         assertThat(exception.getMessage()).isEqualTo("The email is already in use. Please try another email.");
         verify(this.userGateway, times(1)).findUserByCpf(toCreateUser.cpf());
         verify(this.userGateway, times(1)).findUserByEmail(toCreateUser.email());
+    }
+
+    @Test
+    @DisplayName("Should throw business exception if registration is already taken")
+    void shouldThrowExceptionIfRegistrationIsAlreadyTaken() {
+        User toCreateUser = new User("any_cpf", "any_email", "any_create_registration", "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue());
+        User createdUser = new User("any_create_cpf", "any_create_email", "any_create_registration", "any_create_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue());
+
+        when(this.userGateway.findUserByCpf(toCreateUser.cpf())).thenReturn(null);
+        when(this.userGateway.findUserByEmail(toCreateUser.email())).thenReturn(null);
+        when(this.userGateway.findUserByRegistration(toCreateUser.registration())).thenReturn(createdUser);
+        Throwable exception = catchThrowable(() -> this.createUserService.create(toCreateUser));
+
+        assertThat(exception).isInstanceOf(BusinessException.class);
+        assertThat(exception.getMessage()).isEqualTo("The registration is already in use. Please try another registration.");
+        verify(this.userGateway, times(1)).findUserByCpf(toCreateUser.cpf());
+        verify(this.userGateway, times(1)).findUserByEmail(toCreateUser.email());
+        verify(this.userGateway, times(1)).findUserByRegistration(toCreateUser.registration());
     }
 }
