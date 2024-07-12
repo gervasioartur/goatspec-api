@@ -17,8 +17,10 @@ public class CreateUserService implements ICreateUserService {
     public UserAccount create(User userDomainObject) {
 
         User userResult = this.userGateway.findUserByCpf(userDomainObject.cpf());
-        if (userResult != null)
-            throw new BusinessException("The CPF is already in use. Please try to sing in with credentials.");
+        if (userResult != null) throw new BusinessException("The CPF is already in use. Please try to sing in with credentials.");
+
+        userResult =  this.userGateway.findUserByEmail(userDomainObject.email());
+        if (userResult != null) throw new BusinessException("The email is already in use. Please try another email.");
         return null;
     }
 }
