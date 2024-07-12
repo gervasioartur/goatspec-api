@@ -50,7 +50,7 @@ class CreateUserUseCaseTests {
     @Test
     @DisplayName("Should throw business exception if CPF is already in use")
     void shouldThrowExceptionIfCPFIsAlreadyInUse() {
-        User toCreateUser = new User("any_create_cpf", "any_email", "any_registration", "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(),"any_password");
+        User toCreateUser = new User("any_create_cpf", "any_email", "any_registration", "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(), "any_password");
         User createdUser = new User("any_create_cpf", "any_create_email", "any_create_registration", "any_create_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(), "any_created_password");
 
         when(this.userGateway.findUserByCpf(toCreateUser.cpf())).thenReturn(createdUser);
@@ -65,8 +65,8 @@ class CreateUserUseCaseTests {
     @Test
     @DisplayName("Should throw business exception if email is already taken")
     void shouldThrowExceptionIfEmailIsAlreadyTaken() {
-        User toCreateUser = new User("any_cpf", "any_create_email", "any_registration", "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(),"any_password");
-        User createdUser = new User("any_create_cpf", "any_create_email", "any_create_registration", "any_create_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(),"any_created_password");
+        User toCreateUser = new User("any_cpf", "any_create_email", "any_registration", "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(), "any_password");
+        User createdUser = new User("any_create_cpf", "any_create_email", "any_create_registration", "any_create_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(), "any_created_password");
 
         when(this.userGateway.findUserByCpf(toCreateUser.cpf())).thenReturn(null);
         when(this.userGateway.findUserByEmail(toCreateUser.email())).thenReturn(createdUser);
@@ -82,8 +82,8 @@ class CreateUserUseCaseTests {
     @Test
     @DisplayName("Should throw business exception if registration is already taken")
     void shouldThrowExceptionIfRegistrationIsAlreadyTaken() {
-        User toCreateUser = new User("any_cpf", "any_email", "any_create_registration", "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(),"any_password");
-        User createdUser = new User("any_create_cpf", "any_create_email", "any_create_registration", "any_create_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(),"any_created_password");
+        User toCreateUser = new User("any_cpf", "any_email", "any_create_registration", "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(), "any_password");
+        User createdUser = new User("any_create_cpf", "any_create_email", "any_create_registration", "any_create_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(), "any_created_password");
 
         when(this.userGateway.findUserByCpf(toCreateUser.cpf())).thenReturn(null);
         when(this.userGateway.findUserByEmail(toCreateUser.email())).thenReturn(null);
@@ -100,8 +100,8 @@ class CreateUserUseCaseTests {
 
     @Test
     @DisplayName("Should throw unexpected expcetion if user role does not existis")
-    void shouldThrowUnexpectedExceptionIfUserRoleDoesNotExists(){
-        User toCreateUser = new User("any_cpf", "any_email", "any_registration", "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(),"any_password");
+    void shouldThrowUnexpectedExceptionIfUserRoleDoesNotExists() {
+        User toCreateUser = new User("any_cpf", "any_email", "any_registration", "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(), "any_password");
 
         when(this.userGateway.findUserByCpf(toCreateUser.cpf())).thenReturn(null);
         when(this.userGateway.findUserByEmail(toCreateUser.email())).thenReturn(null);
@@ -120,13 +120,13 @@ class CreateUserUseCaseTests {
 
     @Test
     @DisplayName("Shlould return user account on success")
-    void shouldReturnUserAccountOnSuccess(){
-        User toCreateUser = new User("any_cpf", "any_email", "any_registration", "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(),"any_password");
-        Role createdRole = new Role(UUID.randomUUID(),"any_role");
+    void shouldReturnUserAccountOnSuccess() {
+        User toCreateUser = new User("any_cpf", "any_email", "any_registration", "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(), "any_password");
+        Role createdRole = new Role(UUID.randomUUID(), "any_role");
 
         String encodedPassword = UUID.randomUUID().toString();
         String accessToken = UUID.randomUUID().toString();
-        User createdUser = new User("any_cpf", "any_email", "any_registration", "any_name", toCreateUser.dateOfBirth(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(),encodedPassword);
+        User createdUser = new User("any_cpf", "any_email", "any_registration", "any_name", toCreateUser.dateOfBirth(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(), encodedPassword);
 
 
         when(this.userGateway.findUserByCpf(toCreateUser.cpf())).thenReturn(null);
@@ -136,7 +136,7 @@ class CreateUserUseCaseTests {
         when(this.userGateway.create(createdUser)).thenReturn(createdUser);
         when(this.passwordEncoderGateway.encode(toCreateUser.password())).thenReturn(encodedPassword);
         when(this.userGateway.create(createdUser)).thenReturn(createdUser);
-        when(this.authentication.authenticate(createdUser.cpf(),toCreateUser.password())).thenReturn(accessToken);
+        when(this.authentication.authenticate(createdUser.cpf(), toCreateUser.password())).thenReturn(accessToken);
 
         UserAccount userAccount = this.createUserService.create(toCreateUser);
 
@@ -148,6 +148,6 @@ class CreateUserUseCaseTests {
         verify(this.userGateway, times(1)).create(createdUser);
         verify(this.passwordEncoderGateway, times(1)).encode(toCreateUser.password());
         verify(this.userGateway, times(1)).create(createdUser);
-        verify(this.authentication, times(1)).authenticate(createdUser.cpf(),toCreateUser.password());
+        verify(this.authentication, times(1)).authenticate(createdUser.cpf(), toCreateUser.password());
     }
 }
