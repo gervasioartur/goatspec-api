@@ -9,6 +9,7 @@ public enum GenderEnum {
     GenderEnum(String value) {
         this.value = value;
     }
+
     public String getValue() {
         return this.value;
     }

@@ -16,8 +16,9 @@ public class CreateUserService implements ICreateUserService {
     @Override
     public UserAccount create(User userDomainObject) {
 
-        User userResult =  this.userGateway.findUserByCpf(userDomainObject.cpf());
-        if(userResult != null)  throw new BusinessException("The CPF is already in use. Please try to sing in with credentials.");
+        User userResult = this.userGateway.findUserByCpf(userDomainObject.cpf());
+        if (userResult != null)
+            throw new BusinessException("The CPF is already in use. Please try to sing in with credentials.");
         return null;
     }
 }
