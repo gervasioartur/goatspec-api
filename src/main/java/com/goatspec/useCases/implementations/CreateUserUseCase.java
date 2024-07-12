@@ -5,17 +5,23 @@ import com.goatspec.domain.entities.User;
 import com.goatspec.domain.entities.UserAccount;
 import com.goatspec.domain.exceptions.BusinessException;
 import com.goatspec.domain.exceptions.UnexpectedException;
+import com.goatspec.gateways.IAuthentication;
 import com.goatspec.gateways.IRoleGateway;
 import com.goatspec.gateways.IUserGateway;
+import com.goatspec.gateways.IPasswordEncoderGateway;
 import com.goatspec.useCases.contracts.ICreateUserService;
 
-public class CreateUserService implements ICreateUserService {
+public class CreateUserUseCase implements ICreateUserService {
     private final IUserGateway userGateway;
     private final IRoleGateway roleGateway;
+    private final IPasswordEncoderGateway passwordEncoderGateway;
+    private final IAuthentication authentication;
 
-    public CreateUserService(IUserGateway userGateway, IRoleGateway roleGateway) {
+    public CreateUserUseCase(IUserGateway userGateway, IRoleGateway roleGateway, IPasswordEncoderGateway passwordEncoderGateway, IAuthentication authentication) {
         this.userGateway = userGateway;
         this.roleGateway =  roleGateway;
+        this.passwordEncoderGateway = passwordEncoderGateway;
+        this.authentication = authentication;
     }
 
     @Override
@@ -32,6 +38,14 @@ public class CreateUserService implements ICreateUserService {
 
         Role roleResult = this.roleGateway.findRoleByName(userDomainObject.role());
         if(roleResult == null) throw new UnexpectedException("Something went wrong while saving the information. Please concat the administrator.");
-        return null;
+
+        String encodedPassword =  this.passwordEncoderGateway.encode(userDomainObject.password());
+        userResult =  new User(userDomainObject.cpf(),userDomainObject.email(), userDomainObject.registration(),
+                userDomainObject.name(),userDomainObject.dateOfBirth(),userDomainObject.gender(),userDomainObject.role(), encodedPassword);
+
+        userResult =  this.userGateway.create(userResult);
+
+        String accessToken = this.authentication.authenticate(userResult.cpf(), userDomainObject.password());
+        return  new UserAccount(accessToken);
     }
 }
