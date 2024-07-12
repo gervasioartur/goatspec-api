@@ -2,9 +2,13 @@ package com.goatspec.useCases.implementations;
 
 import com.goatspec.domain.Enums.GenderEnum;
 import com.goatspec.domain.Enums.RoleEnum;
+import com.goatspec.domain.entities.Role;
 import com.goatspec.domain.entities.User;
+import com.goatspec.domain.entities.UserAccount;
 import com.goatspec.domain.exceptions.BusinessException;
 import com.goatspec.domain.exceptions.UnexpectedException;
+import com.goatspec.gateways.IAuthentication;
+import com.goatspec.gateways.IPasswordEncoderGateway;
 import com.goatspec.gateways.IRoleGateway;
 import com.goatspec.gateways.IUserGateway;
 import com.goatspec.useCases.contracts.ICreateUserService;
@@ -15,23 +19,32 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Date;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-class CreateUserServiceTests {
+class CreateUserUseCaseTests {
     private ICreateUserService createUserService;
 
     @MockBean
     private IUserGateway userGateway;
     @MockBean
     private IRoleGateway roleGateway;
+    @MockBean
+    private IPasswordEncoderGateway passwordEncoderGateway;
+    @MockBean
+    private IAuthentication authentication;
 
     @BeforeEach
     void setUp() {
-        this.createUserService = new CreateUserService(userGateway, roleGateway);
+        this.createUserService = new CreateUserUseCase(
+                userGateway,
+                roleGateway,
+                passwordEncoderGateway,
+                authentication);
     }
 
     @Test
@@ -103,6 +116,38 @@ class CreateUserServiceTests {
         verify(this.userGateway, times(1)).findUserByEmail(toCreateUser.email());
         verify(this.userGateway, times(1)).findUserByRegistration(toCreateUser.registration());
         verify(this.roleGateway, times(1)).findRoleByName(toCreateUser.role());
+    }
 
+    @Test
+    @DisplayName("Shlould return user account on success")
+    void shouldReturnUserAccountOnSuccess(){
+        User toCreateUser = new User("any_cpf", "any_email", "any_registration", "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(),"any_password");
+        Role createdRole = new Role(UUID.randomUUID(),"any_role");
+
+        String encodedPassword = UUID.randomUUID().toString();
+        String accessToken = UUID.randomUUID().toString();
+        User createdUser = new User("any_cpf", "any_email", "any_registration", "any_name", toCreateUser.dateOfBirth(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(),encodedPassword);
+
+
+        when(this.userGateway.findUserByCpf(toCreateUser.cpf())).thenReturn(null);
+        when(this.userGateway.findUserByEmail(toCreateUser.email())).thenReturn(null);
+        when(this.userGateway.findUserByRegistration(toCreateUser.registration())).thenReturn(null);
+        when(this.roleGateway.findRoleByName(toCreateUser.role())).thenReturn(createdRole);
+        when(this.userGateway.create(createdUser)).thenReturn(createdUser);
+        when(this.passwordEncoderGateway.encode(toCreateUser.password())).thenReturn(encodedPassword);
+        when(this.userGateway.create(createdUser)).thenReturn(createdUser);
+        when(this.authentication.authenticate(createdUser.cpf(),toCreateUser.password())).thenReturn(accessToken);
+
+        UserAccount userAccount = this.createUserService.create(toCreateUser);
+
+        assertThat(userAccount.accessToken()).isEqualTo(accessToken);
+        verify(this.userGateway, times(1)).findUserByCpf(toCreateUser.cpf());
+        verify(this.userGateway, times(1)).findUserByEmail(toCreateUser.email());
+        verify(this.userGateway, times(1)).findUserByRegistration(toCreateUser.registration());
+        verify(this.roleGateway, times(1)).findRoleByName(toCreateUser.role());
+        verify(this.userGateway, times(1)).create(createdUser);
+        verify(this.passwordEncoderGateway, times(1)).encode(toCreateUser.password());
+        verify(this.userGateway, times(1)).create(createdUser);
+        verify(this.authentication, times(1)).authenticate(createdUser.cpf(),toCreateUser.password());
     }
 }
