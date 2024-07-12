@@ -33,8 +33,8 @@ class CreateUserServiceTests {
     @Test
     @DisplayName("Should throw business exception if CPF is already in use")
     void shouldThrowExceptionIfCPFIsAlreadyInUse() {
-        User toCreateUser = new User("any_create_cpf", "any_email", "any_registration", "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue());
-        User createdUser = new User("any_create_cpf", "any_create_email", "any_create_registration", "any_create_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue());
+        User toCreateUser = new User("any_create_cpf", "any_email", "any_registration", "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(),"any_password");
+        User createdUser = new User("any_create_cpf", "any_create_email", "any_create_registration", "any_create_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(), "any_created_password");
 
         when(this.userGateway.findUserByCpf(toCreateUser.cpf())).thenReturn(createdUser);
         Throwable exception = catchThrowable(() -> this.createUserService.create(toCreateUser));
@@ -47,8 +47,8 @@ class CreateUserServiceTests {
     @Test
     @DisplayName("Should throw business exception if email is already taken")
     void shouldThrowExceptionIfEmailIsAlreadyTaken() {
-        User toCreateUser = new User("any_cpf", "any_create_email", "any_registration", "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue());
-        User createdUser = new User("any_create_cpf", "any_create_email", "any_create_registration", "any_create_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue());
+        User toCreateUser = new User("any_cpf", "any_create_email", "any_registration", "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(),"any_password");
+        User createdUser = new User("any_create_cpf", "any_create_email", "any_create_registration", "any_create_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(),"any_created_password");
 
         when(this.userGateway.findUserByCpf(toCreateUser.cpf())).thenReturn(null);
         when(this.userGateway.findUserByEmail(toCreateUser.email())).thenReturn(createdUser);
@@ -63,8 +63,8 @@ class CreateUserServiceTests {
     @Test
     @DisplayName("Should throw business exception if registration is already taken")
     void shouldThrowExceptionIfRegistrationIsAlreadyTaken() {
-        User toCreateUser = new User("any_cpf", "any_email", "any_create_registration", "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue());
-        User createdUser = new User("any_create_cpf", "any_create_email", "any_create_registration", "any_create_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue());
+        User toCreateUser = new User("any_cpf", "any_email", "any_create_registration", "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(),"any_password");
+        User createdUser = new User("any_create_cpf", "any_create_email", "any_create_registration", "any_create_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(),"any_created_password");
 
         when(this.userGateway.findUserByCpf(toCreateUser.cpf())).thenReturn(null);
         when(this.userGateway.findUserByEmail(toCreateUser.email())).thenReturn(null);
