@@ -4,6 +4,8 @@ import com.goatspec.domain.Enums.GenderEnum;
 import com.goatspec.domain.Enums.RoleEnum;
 import com.goatspec.domain.entities.User;
 import com.goatspec.domain.exceptions.BusinessException;
+import com.goatspec.domain.exceptions.UnexpectedException;
+import com.goatspec.gateways.IRoleGateway;
 import com.goatspec.gateways.IUserGateway;
 import com.goatspec.useCases.contracts.ICreateUserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,10 +26,12 @@ class CreateUserServiceTests {
 
     @MockBean
     private IUserGateway userGateway;
+    @MockBean
+    private IRoleGateway roleGateway;
 
     @BeforeEach
     void setUp() {
-        this.createUserService = new CreateUserService(userGateway);
+        this.createUserService = new CreateUserService(userGateway, roleGateway);
     }
 
     @Test
@@ -37,6 +41,7 @@ class CreateUserServiceTests {
         User createdUser = new User("any_create_cpf", "any_create_email", "any_create_registration", "any_create_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(), "any_created_password");
 
         when(this.userGateway.findUserByCpf(toCreateUser.cpf())).thenReturn(createdUser);
+
         Throwable exception = catchThrowable(() -> this.createUserService.create(toCreateUser));
 
         assertThat(exception).isInstanceOf(BusinessException.class);
@@ -52,6 +57,7 @@ class CreateUserServiceTests {
 
         when(this.userGateway.findUserByCpf(toCreateUser.cpf())).thenReturn(null);
         when(this.userGateway.findUserByEmail(toCreateUser.email())).thenReturn(createdUser);
+
         Throwable exception = catchThrowable(() -> this.createUserService.create(toCreateUser));
 
         assertThat(exception).isInstanceOf(BusinessException.class);
@@ -69,6 +75,7 @@ class CreateUserServiceTests {
         when(this.userGateway.findUserByCpf(toCreateUser.cpf())).thenReturn(null);
         when(this.userGateway.findUserByEmail(toCreateUser.email())).thenReturn(null);
         when(this.userGateway.findUserByRegistration(toCreateUser.registration())).thenReturn(createdUser);
+
         Throwable exception = catchThrowable(() -> this.createUserService.create(toCreateUser));
 
         assertThat(exception).isInstanceOf(BusinessException.class);
@@ -76,5 +83,26 @@ class CreateUserServiceTests {
         verify(this.userGateway, times(1)).findUserByCpf(toCreateUser.cpf());
         verify(this.userGateway, times(1)).findUserByEmail(toCreateUser.email());
         verify(this.userGateway, times(1)).findUserByRegistration(toCreateUser.registration());
+    }
+
+    @Test
+    @DisplayName("Should throw unexpected expcetion if user role does not existis")
+    void shouldThrowUnexpectedExceptionIfUserRoleDoesNotExists(){
+        User toCreateUser = new User("any_cpf", "any_email", "any_registration", "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(),"any_password");
+
+        when(this.userGateway.findUserByCpf(toCreateUser.cpf())).thenReturn(null);
+        when(this.userGateway.findUserByEmail(toCreateUser.email())).thenReturn(null);
+        when(this.userGateway.findUserByRegistration(toCreateUser.registration())).thenReturn(null);
+        when(this.roleGateway.findRoleByName(toCreateUser.role())).thenReturn(null);
+
+        Throwable exception = catchThrowable(() -> this.createUserService.create(toCreateUser));
+
+        assertThat(exception).isInstanceOf(UnexpectedException.class);
+        assertThat(exception.getMessage()).isEqualTo("Something went wrong while saving the information. Please concat the administrator.");
+        verify(this.userGateway, times(1)).findUserByCpf(toCreateUser.cpf());
+        verify(this.userGateway, times(1)).findUserByEmail(toCreateUser.email());
+        verify(this.userGateway, times(1)).findUserByRegistration(toCreateUser.registration());
+        verify(this.roleGateway, times(1)).findRoleByName(toCreateUser.role());
+
     }
 }
