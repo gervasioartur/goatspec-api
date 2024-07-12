@@ -39,5 +39,6 @@ class CreateUserServiceTests {
 
         Assertions.assertThat(exception).isInstanceOf(BusinessException.class);
         Assertions.assertThat(exception.getMessage()).isEqualTo("The CPF is already in use. Please try to sing in with credentials.");
+        Mockito.verify(this.userGateway, Mockito.times(1)).findUserByCpf(toCreateUser.cpf());
     }
 }
