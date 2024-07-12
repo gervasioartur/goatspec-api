@@ -34,7 +34,7 @@ class CreateUserServiceTests {
     @DisplayName("Should throw business exception if CPF is already in use")
     void shouldThrowExceptionIfCPFIsAlreadyInUse() {
         User toCreateUser = new User("any_create_cpf", "any_email", "any_registration", "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue());
-        User createdUser = new User("any_create_cpf", "any_create_email", "any_create_registration", "aany_create_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue());
+        User createdUser = new User("any_create_cpf", "any_create_email", "any_create_registration", "any_create_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue());
 
         when(this.userGateway.findUserByCpf(toCreateUser.cpf())).thenReturn(createdUser);
         Throwable exception = catchThrowable(() -> this.createUserService.create(toCreateUser));
@@ -42,5 +42,21 @@ class CreateUserServiceTests {
         assertThat(exception).isInstanceOf(BusinessException.class);
         assertThat(exception.getMessage()).isEqualTo("The CPF is already in use. Please try to sing in with credentials.");
         verify(this.userGateway, times(1)).findUserByCpf(toCreateUser.cpf());
+    }
+
+    @Test
+    @DisplayName("Should throw business expcetion if email is already taken")
+    void shouldThrowExceptionIfEmailIsAlreadyTaken() {
+        User toCreateUser = new User("any_cpf", "any_create_email", "any_registration", "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue());
+        User createdUser = new User("any_create_cpf", "any_create_email", "any_create_registration", "any_create_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue());
+
+        when(this.userGateway.findUserByCpf(toCreateUser.cpf())).thenReturn(null);
+        when(this.userGateway.findUserByEmail(toCreateUser.email())).thenReturn(createdUser);
+        Throwable exception = catchThrowable(() -> this.createUserService.create(toCreateUser));
+
+        assertThat(exception).isInstanceOf(BusinessException.class);
+        assertThat(exception.getMessage()).isEqualTo("The email is already in use. Please try another email.");
+        verify(this.userGateway, times(1)).findUserByCpf(toCreateUser.cpf());
+        verify(this.userGateway, times(1)).findUserByEmail(toCreateUser.email());
     }
 }
