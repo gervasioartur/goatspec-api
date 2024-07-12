@@ -21,6 +21,9 @@ public class CreateUserService implements ICreateUserService {
 
         userResult =  this.userGateway.findUserByEmail(userDomainObject.email());
         if (userResult != null) throw new BusinessException("The email is already in use. Please try another email.");
+
+        userResult = this.userGateway.findUserByRegistration(userDomainObject.registration());
+        if (userResult != null) throw new BusinessException("The registration is already in use. Please try another registration.");
         return null;
     }
 }
