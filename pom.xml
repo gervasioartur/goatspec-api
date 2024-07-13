@@ -117,6 +117,11 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <excludes>
+                        <exclude>**/*Entity*</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
         </plugins>
     </build>
