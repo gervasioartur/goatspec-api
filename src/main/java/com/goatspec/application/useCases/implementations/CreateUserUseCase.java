@@ -1,6 +1,6 @@
 package com.goatspec.application.useCases.implementations;
 
-import com.goatspec.application.gateways.IAuthentication;
+import com.goatspec.application.gateways.IAuthenticationGateway;
 import com.goatspec.application.gateways.IPasswordEncoderGateway;
 import com.goatspec.application.gateways.IRoleGateway;
 import com.goatspec.application.gateways.IUserGateway;
@@ -15,9 +15,9 @@ public class CreateUserUseCase implements ICreateUserService {
     private final IUserGateway userGateway;
     private final IRoleGateway roleGateway;
     private final IPasswordEncoderGateway passwordEncoderGateway;
-    private final IAuthentication authentication;
+    private final IAuthenticationGateway authentication;
 
-    public CreateUserUseCase(IUserGateway userGateway, IRoleGateway roleGateway, IPasswordEncoderGateway passwordEncoderGateway, IAuthentication authentication) {
+    public CreateUserUseCase(IUserGateway userGateway, IRoleGateway roleGateway, IPasswordEncoderGateway passwordEncoderGateway, IAuthenticationGateway authentication) {
         this.userGateway = userGateway;
         this.roleGateway = roleGateway;
         this.passwordEncoderGateway = passwordEncoderGateway;

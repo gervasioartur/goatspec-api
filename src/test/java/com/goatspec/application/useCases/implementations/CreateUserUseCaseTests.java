@@ -1,6 +1,6 @@
 package com.goatspec.application.useCases.implementations;
 
-import com.goatspec.application.gateways.IAuthentication;
+import com.goatspec.application.gateways.IAuthenticationGateway;
 import com.goatspec.application.gateways.IPasswordEncoderGateway;
 import com.goatspec.application.gateways.IRoleGateway;
 import com.goatspec.application.gateways.IUserGateway;
@@ -36,7 +36,7 @@ class CreateUserUseCaseTests {
     @MockBean
     private IPasswordEncoderGateway passwordEncoderGateway;
     @MockBean
-    private IAuthentication authentication;
+    private IAuthenticationGateway authentication;
 
     @BeforeEach
     void setUp() {
