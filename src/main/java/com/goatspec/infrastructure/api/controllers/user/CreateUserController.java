@@ -1,10 +1,11 @@
-package com.goatspec.infrastructure.api.controllers;
+package com.goatspec.infrastructure.api.controllers.user;
 
 import com.goatspec.application.useCases.contracts.user.ICreateUserUseCase;
 import com.goatspec.domain.entities.user.User;
 import com.goatspec.domain.entities.user.UserAccount;
 import com.goatspec.domain.exceptions.BusinessException;
 import com.goatspec.domain.exceptions.UnexpectedException;
+import com.goatspec.infrastructure.api.controllers.AbstractController;
 import com.goatspec.infrastructure.api.dto.CreateUserRequest;
 import com.goatspec.infrastructure.api.dto.Response;
 import com.goatspec.infrastructure.api.validation.ValidationBuilder;

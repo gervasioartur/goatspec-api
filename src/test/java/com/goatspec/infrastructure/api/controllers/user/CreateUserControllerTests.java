@@ -1,4 +1,4 @@
-package com.goatspec.infrastructure.api.controllers;
+package com.goatspec.infrastructure.api.controllers.user;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.goatspec.application.useCases.contracts.user.ICreateUserUseCase;
