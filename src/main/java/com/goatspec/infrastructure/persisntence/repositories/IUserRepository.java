@@ -1,6 +1,6 @@
 package com.goatspec.infrastructure.persisntence.repositories;
 
-import com.goatspec.infrastructure.persisntence.entoties.UserEntity;
+import com.goatspec.infrastructure.persisntence.entities.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

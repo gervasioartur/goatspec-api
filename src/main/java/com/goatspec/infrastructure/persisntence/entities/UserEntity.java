@@ -1,4 +1,4 @@
-package com.goatspec.infrastructure.persisntence.entoties;
+package com.goatspec.infrastructure.persisntence.entities;
 
 import jakarta.persistence.*;
 import lombok.*;

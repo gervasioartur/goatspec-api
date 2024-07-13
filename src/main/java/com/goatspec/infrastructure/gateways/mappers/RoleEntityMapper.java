@@ -1,7 +1,7 @@
 package com.goatspec.infrastructure.gateways.mappers;
 
 import com.goatspec.domain.entities.Role;
-import com.goatspec.infrastructure.persisntence.entoties.RoleEntity;
+import com.goatspec.infrastructure.persisntence.entities.RoleEntity;
 
 public class RoleEntityMapper {
     public RoleEntity toRoleEntity(Role roleDomainObject) {

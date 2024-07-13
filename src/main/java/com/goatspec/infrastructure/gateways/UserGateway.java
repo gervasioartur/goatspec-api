@@ -3,8 +3,8 @@ package com.goatspec.infrastructure.gateways;
 import com.goatspec.application.gateways.IUserGateway;
 import com.goatspec.domain.entities.User;
 import com.goatspec.infrastructure.gateways.mappers.UserEntityMapper;
-import com.goatspec.infrastructure.persisntence.entoties.RoleEntity;
-import com.goatspec.infrastructure.persisntence.entoties.UserEntity;
+import com.goatspec.infrastructure.persisntence.entities.RoleEntity;
+import com.goatspec.infrastructure.persisntence.entities.UserEntity;
 import com.goatspec.infrastructure.persisntence.repositories.IRoleRepository;
 import com.goatspec.infrastructure.persisntence.repositories.IUserRepository;
 

@@ -1,8 +1,8 @@
 package com.goatspec.infrastructure.gateways.mappers;
 
 import com.goatspec.domain.entities.User;
-import com.goatspec.infrastructure.persisntence.entoties.RoleEntity;
-import com.goatspec.infrastructure.persisntence.entoties.UserEntity;
+import com.goatspec.infrastructure.persisntence.entities.RoleEntity;
+import com.goatspec.infrastructure.persisntence.entities.UserEntity;
 
 public class UserEntityMapper {
     public UserEntity toUserEntity(User userDomainObject) {

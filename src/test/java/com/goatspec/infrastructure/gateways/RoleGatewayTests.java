@@ -3,7 +3,7 @@ package com.goatspec.infrastructure.gateways;
 import com.goatspec.application.gateways.IRoleGateway;
 import com.goatspec.domain.entities.Role;
 import com.goatspec.infrastructure.gateways.mappers.RoleEntityMapper;
-import com.goatspec.infrastructure.persisntence.entoties.RoleEntity;
+import com.goatspec.infrastructure.persisntence.entities.RoleEntity;
 import com.goatspec.infrastructure.persisntence.repositories.IRoleRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,6 +1,6 @@
 package com.goatspec.infrastructure.persisntence.repositories;
 
-import com.goatspec.infrastructure.persisntence.entoties.RoleEntity;
+import com.goatspec.infrastructure.persisntence.entities.RoleEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;

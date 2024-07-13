@@ -119,7 +119,7 @@
                 </executions>
                 <configuration>
                     <excludes>
-                        <exclude>**/*Entity*</exclude>
+                        <exclude>**/entities/*Entity*</exclude>
                     </excludes>
                 </configuration>
             </plugin>
