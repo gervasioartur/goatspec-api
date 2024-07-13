@@ -261,7 +261,7 @@ class CreateUserControllerTests {
     @DisplayName("Should return bad request if gender is empty")
     void shouldReturnBadRequestIfGenderIsEmpty() throws Exception {
         CreateUserRequest request = new CreateUserRequest("32635892024", "gervasio@gmail.com", "any_registration",
-                "any_name", new Date(), null, RoleEnum.TEACHER.getValue(), "any_password");
+                "any_name", new Date(), "", RoleEnum.TEACHER.getValue(), "any_password");
 
         String json = new ObjectMapper().writeValueAsString(request);
 
@@ -295,5 +295,65 @@ class CreateUserControllerTests {
                 .perform(requestBuilder)
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("body", Matchers.is("The field 'gender' is required!")));
+    }
+
+    @Test
+    @DisplayName("Should return bad request if role is empty")
+    void shouldReturnBadRequestIfRoleIsEmpty() throws Exception {
+        CreateUserRequest request = new CreateUserRequest("32635892024", "gervasio@gmail.com", "any_registration",
+                "any_name", new Date(), GenderEnum.MALE.getValue(), "", "any_password");
+
+        String json = new ObjectMapper().writeValueAsString(request);
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post(USER_API)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mvc
+                .perform(requestBuilder)
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("body", Matchers.is("The field 'role' is required!")));
+    }
+
+    @Test
+    @DisplayName("Should return bad request if role is null")
+    void shouldReturnBadRequestIfRoleIsNull() throws Exception {
+        CreateUserRequest request = new CreateUserRequest("32635892024", "gervasio@gmail.com", "any_registration",
+                "any_name", new Date(), GenderEnum.MALE.getValue(), null, "any_password");
+
+        String json = new ObjectMapper().writeValueAsString(request);
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post(USER_API)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mvc
+                .perform(requestBuilder)
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("body", Matchers.is("The field 'role' is required!")));
+    }
+
+    @Test
+    @DisplayName("Should return bad request if role is invalid")
+    void shouldReturnBadRequestIfRoleIsInvalid() throws Exception {
+        CreateUserRequest request = new CreateUserRequest("32635892024", "gervasio@gmail.com", "any_registration",
+                "any_name", new Date(), GenderEnum.MALE.getValue(), "any_role", "any_password");
+
+        String json = new ObjectMapper().writeValueAsString(request);
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post(USER_API)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mvc
+                .perform(requestBuilder)
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("body", Matchers.is("The option you entered is invalid! you must choose or TECHNICIAN account role and TEACHER account role.")));
     }
 }

@@ -45,6 +45,7 @@ public class CreateUserController extends AbstractController<CreateUserRequest> 
         validators.addAll(ValidationBuilder.of("name", request.name()).required().build());
         validators.addAll(ValidationBuilder.of("date of birth", request.dateOfBirth()).required().build());
         validators.addAll(ValidationBuilder.of("gender", request.gender()).required().build());
+        validators.addAll(ValidationBuilder.of("role", request.role()).required().role().build());
 
         return validators;
     }

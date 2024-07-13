@@ -3,6 +3,7 @@ package com.goatspec.infrastructure.api.validation;
 import com.goatspec.infrastructure.api.validation.validators.CPFFieldValidator;
 import com.goatspec.infrastructure.api.validation.validators.EmailFieldValidator;
 import com.goatspec.infrastructure.api.validation.validators.RequiredFieldValidator;
+import com.goatspec.infrastructure.api.validation.validators.UserAccountRoleFieldValidator;
 import com.goatspec.infrastructure.api.validation.validators.contract.IValidator;
 
 import java.util.ArrayList;
@@ -34,6 +35,11 @@ public class ValidationBuilder {
 
     public ValidationBuilder email() {
         this.validators.add(new EmailFieldValidator(this.fieldName, this.fieldValue));
+        return this;
+    }
+
+    public ValidationBuilder role() {
+        this.validators.add(new UserAccountRoleFieldValidator(this.fieldName, this.fieldValue));
         return this;
     }
 
