@@ -9,6 +9,7 @@ import com.goatspec.infrastructure.api.dto.Response;
 import com.goatspec.infrastructure.api.validation.ValidationBuilder;
 import com.goatspec.infrastructure.api.validation.validators.contract.IValidator;
 import com.goatspec.infrastructure.gateways.mappers.UserDTOMapper;
+import org.aspectj.weaver.patterns.ExactTypePattern;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,6 +47,9 @@ public class CreateUserController extends AbstractController<CreateUserRequest> 
         }catch (BusinessException | UnexpectedException ex ){
             response = new Response(ex.getMessage());
             responseEntity = new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }catch (Exception ex){
+            response = new Response(ex.getMessage());
+            responseEntity = new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return responseEntity;
