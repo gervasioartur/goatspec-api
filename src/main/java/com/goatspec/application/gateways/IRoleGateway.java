@@ -1,4 +1,4 @@
-package com.goatspec.gateways;
+package com.goatspec.application.gateways;
 
 
 import com.goatspec.domain.entities.Role;

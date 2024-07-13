@@ -1,5 +1,6 @@
-package com.goatspec.useCases.implementations;
+package com.goatspec.application.useCases.implementations;
 
+import com.goatspec.application.useCases.implementations.CreateUserUseCase;
 import com.goatspec.domain.Enums.GenderEnum;
 import com.goatspec.domain.Enums.RoleEnum;
 import com.goatspec.domain.entities.Role;
@@ -7,11 +8,11 @@ import com.goatspec.domain.entities.User;
 import com.goatspec.domain.entities.UserAccount;
 import com.goatspec.domain.exceptions.BusinessException;
 import com.goatspec.domain.exceptions.UnexpectedException;
-import com.goatspec.gateways.IAuthentication;
-import com.goatspec.gateways.IPasswordEncoderGateway;
-import com.goatspec.gateways.IRoleGateway;
-import com.goatspec.gateways.IUserGateway;
-import com.goatspec.useCases.contracts.ICreateUserService;
+import com.goatspec.application.gateways.IAuthentication;
+import com.goatspec.application.gateways.IPasswordEncoderGateway;
+import com.goatspec.application.gateways.IRoleGateway;
+import com.goatspec.application.gateways.IUserGateway;
+import com.goatspec.application.useCases.contracts.ICreateUserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
