@@ -176,6 +176,15 @@ class UserGatewayTests {
 
         Assertions.assertThat(userDomainObject).isEqualTo(toCreateUserDomainObject);
         Mockito.verify(this.userRepository, Mockito.times(1)).findByEmailAndActive(email, true);
+    }
 
+    @Test
+    @DisplayName("Should return null if user does not exist by registration")
+    void shouldReturnNullIfUserDoesNotExistByRegistration(){
+        String registration = "any_registration";
+        Mockito.when(this.userRepository.findByRegistrationAndActive(registration, true)).thenReturn(Optional.empty());
+        User userDomainObject = this.userGateway.findUserByRegistration(registration);
+        Assertions.assertThat(userDomainObject).isNull();
+        Mockito.verify(this.userRepository, Mockito.times(1)).findByRegistrationAndActive(registration, true);
     }
 }
