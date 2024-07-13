@@ -1,10 +1,12 @@
 package com.goatspec.infrastructure.api.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.goatspec.application.useCases.contracts.ICreateUserUseCase;
 import com.goatspec.domain.Enums.GenderEnum;
 import com.goatspec.domain.Enums.RoleEnum;
 import com.goatspec.domain.entities.user.User;
+import com.goatspec.domain.entities.user.UserAccount;
 import com.goatspec.domain.exceptions.BusinessException;
 import com.goatspec.infrastructure.api.dto.CreateUserRequest;
 import com.goatspec.infrastructure.gateways.mappers.UserDTOMapper;
@@ -25,6 +27,7 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Date;
+import java.util.UUID;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -556,5 +559,33 @@ class CreateUserControllerTests {
         mvc
                 .perform(requestBuilder)
                 .andExpect(status().isInternalServerError());
+    }
+
+    @Test
+    @DisplayName("Should return user account on create success")
+    void shouldReturnUserAccountOnCreateSuccess() throws Exception {
+        CreateUserRequest request = new CreateUserRequest("32635892024", "gervasio@gmail.com", "any_registration",
+                "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(), "Gervasio@0199");
+
+        User userDomainObject = new User("32635892024", "gervasio@gmail.com", "any_registration",
+                "any_name", request.dateOfBirth(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(), "Gervasio@0199");
+
+        String json = new ObjectMapper().writeValueAsString(request);
+
+        String accessToken = UUID.randomUUID().toString();
+
+        BDDMockito.given(this.userDTOMapper.toUserDomainObject(request)).willReturn(userDomainObject);
+        BDDMockito.given(this.createUserUseCase.create(userDomainObject)).willReturn(new UserAccount(accessToken));
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post(USER_API)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mvc
+                .perform(requestBuilder)
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("body.accessToken", Matchers.is(accessToken)));
     }
 }
