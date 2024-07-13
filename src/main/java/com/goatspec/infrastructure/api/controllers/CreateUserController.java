@@ -1,6 +1,8 @@
 package com.goatspec.infrastructure.api.controllers;
 
 import com.goatspec.application.useCases.contracts.ICreateUserUseCase;
+import com.goatspec.domain.entities.user.User;
+import com.goatspec.domain.exceptions.BusinessException;
 import com.goatspec.infrastructure.api.dto.CreateUserRequest;
 import com.goatspec.infrastructure.api.dto.Response;
 import com.goatspec.infrastructure.api.validation.ValidationBuilder;
@@ -29,6 +31,7 @@ public class CreateUserController extends AbstractController<CreateUserRequest> 
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Response> perform(@RequestBody CreateUserRequest request) {
         Response response = null;
+        ResponseEntity<Response> responseEntity = null;
 
         String error = this.validate(request);
         if (error != null) {
@@ -36,7 +39,15 @@ public class CreateUserController extends AbstractController<CreateUserRequest> 
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
 
-        return null;
+        try {
+            User userDomainObject = this.userDTOMapper.toUserDomainObject(request);
+            this.createUserUseCase.create(userDomainObject);
+        }catch (BusinessException ex){
+            response = new Response(ex.getMessage());
+            responseEntity = new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        return responseEntity;
     }
 
     @Override
