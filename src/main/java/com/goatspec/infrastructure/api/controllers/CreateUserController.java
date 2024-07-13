@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users")
-public class CreateUserController extends  AbstractController<CreateUserRequest>{
+public class CreateUserController extends AbstractController<CreateUserRequest> {
     private final ICreateUserUseCase createUserUseCase;
 
     public CreateUserController(ICreateUserUseCase createUserUseCase) {
@@ -28,12 +28,12 @@ public class CreateUserController extends  AbstractController<CreateUserRequest>
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Response> perform(CreateUserRequest request) {
-        Response response =  null;
+        Response response = null;
 
         String error = this.validate(request);
-        if(error != null) {
+        if (error != null) {
             response = new Response(error);
-            return  new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
 
         return null;
@@ -42,7 +42,7 @@ public class CreateUserController extends  AbstractController<CreateUserRequest>
     @Override
     public List<IValidator> buildValidators(CreateUserRequest request) {
         List<IValidator> validators = new ArrayList<>();
-        validators.addAll(ValidationBuilder.of("CPF",request.cpf()).required().build());
+        validators.addAll(ValidationBuilder.of("CPF", request.cpf()).required().build());
         return validators;
     }
 }

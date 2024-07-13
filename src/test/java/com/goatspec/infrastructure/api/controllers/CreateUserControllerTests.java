@@ -3,7 +3,6 @@ package com.goatspec.infrastructure.api.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.goatspec.domain.Enums.GenderEnum;
 import com.goatspec.domain.Enums.RoleEnum;
-import com.goatspec.domain.entities.user.User;
 import com.goatspec.infrastructure.api.dto.CreateUserRequest;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,21 +17,21 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-
 import java.util.Date;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 class CreateUserControllerTests {
-    private final String USER_API= "/users";
+    private final String USER_API = "/users";
 
     @Autowired
     private WebApplicationContext context;
     private MockMvc mvc;
 
     @BeforeEach
-    void setup()  {
+    void setup() {
         mvc = MockMvcBuilders
                 .webAppContextSetup(context)
                 .build();

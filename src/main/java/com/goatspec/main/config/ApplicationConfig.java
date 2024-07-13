@@ -72,7 +72,7 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public IPasswordEncoderGateway passwordEncoderGateway (PasswordEncoder passwordEncoder){
+    public IPasswordEncoderGateway passwordEncoderGateway(PasswordEncoder passwordEncoder) {
         return new PasswordEncoderGateway(passwordEncoder);
     }
 
@@ -85,14 +85,14 @@ public class ApplicationConfig {
     public AuthenticationGateway authenticationGateway(AuthenticationManager authenticationManager, GenerateToken generateToken) {
         return new AuthenticationGateway(authenticationManager, generateToken);
     }
-    
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 
     @Bean
-    AuthenticationProvider authenticationProvider(IUserRepository  userRepository) {
+    AuthenticationProvider authenticationProvider(IUserRepository userRepository) {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(this.userDetailsService(userRepository));
         authenticationProvider.setPasswordEncoder(this.passwordEncoder());

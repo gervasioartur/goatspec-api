@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 public class RoleConfig {
 
     @Bean
-    public IRoleGateway roleGateway(IRoleRepository roleRepository, RoleEntityMapper roleEntityMapper){
+    public IRoleGateway roleGateway(IRoleRepository roleRepository, RoleEntityMapper roleEntityMapper) {
         return new RoleGateway(roleRepository, roleEntityMapper);
     }
 }
