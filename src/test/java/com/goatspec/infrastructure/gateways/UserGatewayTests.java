@@ -89,7 +89,7 @@ class UserGatewayTests {
     }
 
     @Test
-    @DisplayName("Sould return user domain object if exists by CPF")
+    @DisplayName("Should return user domain object if exists by CPF")
     void shouldReturnUserDomainObjectIfExists(){
         String cpf = "any_cpf";
 
@@ -128,4 +128,13 @@ class UserGatewayTests {
         Mockito.verify(this.userRepository, Mockito.times(1)).findByCpfAndActive(cpf, true);
     }
 
+    @Test
+    @DisplayName("Should return null if user does not exist by email")
+    void shouldReturnNullIfUserDoesNotExistByEmail(){
+        String email = "any_email";
+        Mockito.when(this.userRepository.findByEmailAndActive(email, true)).thenReturn(Optional.empty());
+        User userDomainObject = this.userGateway.findUserByEmail(email);
+        Assertions.assertThat(userDomainObject).isNull();
+        Mockito.verify(this.userRepository, Mockito.times(1)).findByEmailAndActive(email, true);
+    }
 }
