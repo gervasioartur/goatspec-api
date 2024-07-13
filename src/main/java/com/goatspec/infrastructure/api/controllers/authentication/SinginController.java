@@ -50,7 +50,7 @@ public class SinginController extends AbstractController<SinginRequest> {
         try {
             UserAccount userAccount = this.singinUseCase.singin(request.cpf(), request.password());
             response = new Response(userAccount);
-            responseEntity = new ResponseEntity<>(response, HttpStatus.CREATED);
+            responseEntity = new ResponseEntity<>(response, HttpStatus.OK);
         } catch (UnauthorizedException ex) {
             response = new Response(ex.getMessage());
             responseEntity = new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
