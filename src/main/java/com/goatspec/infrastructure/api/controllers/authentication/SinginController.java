@@ -1,11 +1,8 @@
 package com.goatspec.infrastructure.api.controllers.authentication;
 
 import com.goatspec.application.useCases.contracts.authentication.ISinginUseCase;
-import com.goatspec.domain.entities.user.User;
 import com.goatspec.domain.entities.user.UserAccount;
-import com.goatspec.domain.exceptions.BusinessException;
 import com.goatspec.domain.exceptions.UnauthorizedException;
-import com.goatspec.domain.exceptions.UnexpectedException;
 import com.goatspec.infrastructure.api.controllers.AbstractController;
 import com.goatspec.infrastructure.api.dto.Response;
 import com.goatspec.infrastructure.api.dto.SinginRequest;
@@ -51,7 +48,7 @@ public class SinginController extends AbstractController<SinginRequest> {
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
         try {
-            UserAccount userAccount = this.singinUseCase.singin(request.cpf(),request.password());
+            UserAccount userAccount = this.singinUseCase.singin(request.cpf(), request.password());
             response = new Response(userAccount);
             responseEntity = new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (UnauthorizedException ex) {

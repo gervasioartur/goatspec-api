@@ -109,7 +109,7 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public ISinginUseCase singinUseCase(IUserGateway userGateway, IAuthenticationGateway authenticationGateway){
-        return  new SinginUseCase(userGateway,authenticationGateway);
+    public ISinginUseCase singinUseCase(IUserGateway userGateway, IAuthenticationGateway authenticationGateway) {
+        return new SinginUseCase(userGateway, authenticationGateway);
     }
 }
