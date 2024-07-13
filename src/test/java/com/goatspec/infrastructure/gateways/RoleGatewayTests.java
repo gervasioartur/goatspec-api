@@ -1,13 +1,9 @@
 package com.goatspec.infrastructure.gateways;
 
 import com.goatspec.application.gateways.IRoleGateway;
-import com.goatspec.domain.Enums.GenderEnum;
-import com.goatspec.domain.Enums.RoleEnum;
 import com.goatspec.domain.entities.Role;
-import com.goatspec.domain.entities.User;
 import com.goatspec.infrastructure.gateways.mappers.RoleEntityMapper;
 import com.goatspec.infrastructure.persisntence.entoties.RoleEntity;
-import com.goatspec.infrastructure.persisntence.entoties.UserEntity;
 import com.goatspec.infrastructure.persisntence.repositories.IRoleRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,9 +13,6 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.Optional;
 import java.util.UUID;
 
 @SpringBootTest

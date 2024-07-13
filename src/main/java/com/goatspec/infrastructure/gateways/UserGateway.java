@@ -30,7 +30,7 @@ public class UserGateway implements IUserGateway {
         userEntity.setActive(true);
         userEntity.setRoles(Collections.singletonList(roleEntity));
         userEntity = this.userRepository.save(userEntity);
-        return this.userEntityMapper.toUserDomainObject(userEntity, roleEntity);
+        return this.userEntityMapper.toDomainObject(userEntity, roleEntity);
     }
 
     @Override
@@ -38,7 +38,7 @@ public class UserGateway implements IUserGateway {
         Optional<UserEntity> userEntityResult = this.userRepository.findByCpfAndActive(cpf, true);
         if (userEntityResult.isPresent()) {
             List<RoleEntity> roles = userEntityResult.get().getRoles().stream().toList();
-            return this.userEntityMapper.toUserDomainObject(userEntityResult.get(), roles.getLast());
+            return this.userEntityMapper.toDomainObject(userEntityResult.get(), roles.getLast());
         }
         return null;
     }
@@ -48,7 +48,7 @@ public class UserGateway implements IUserGateway {
         Optional<UserEntity> userEntityResult = this.userRepository.findByEmailAndActive(email, true);
         if (userEntityResult.isPresent()) {
             List<RoleEntity> roles = userEntityResult.get().getRoles().stream().toList();
-            return this.userEntityMapper.toUserDomainObject(userEntityResult.get(), roles.getLast());
+            return this.userEntityMapper.toDomainObject(userEntityResult.get(), roles.getLast());
         }
         return null;
     }
@@ -58,7 +58,7 @@ public class UserGateway implements IUserGateway {
         Optional<UserEntity> userEntityResult = this.userRepository.findByRegistrationAndActive(registration, true);
         if (userEntityResult.isPresent()) {
             List<RoleEntity> roles = userEntityResult.get().getRoles().stream().toList();
-            return this.userEntityMapper.toUserDomainObject(userEntityResult.get(), roles.getLast());
+            return this.userEntityMapper.toDomainObject(userEntityResult.get(), roles.getLast());
         }
         return null;
     }

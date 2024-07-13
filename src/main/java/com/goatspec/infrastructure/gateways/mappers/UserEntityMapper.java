@@ -18,7 +18,7 @@ public class UserEntityMapper {
                 .build();
     }
 
-    public User toUserDomainObject(UserEntity userEntity, RoleEntity roleEntity) {
+    public User toDomainObject(UserEntity userEntity, RoleEntity roleEntity) {
         return new User(userEntity.getCpf(), userEntity.getEmail(), userEntity.getRegistration(), userEntity.getName(), userEntity.getDateOfBirth(), userEntity.getGender(), roleEntity.getName(), userEntity.getPassword());
     }
 }

@@ -68,14 +68,14 @@ class UserGatewayTests {
         Mockito.when(this.userEntityMapper.toUserEntity(toCreateUserDomainObject)).thenReturn(toSaveUserEntity);
         Mockito.when(this.roleRepository.findByNameAndActive(toCreateUserDomainObject.role(), true)).thenReturn(savedRoleEntity);
         Mockito.when(this.userRepository.save(toSaveUserEntity)).thenReturn(savedUserEntity);
-        Mockito.when(this.userEntityMapper.toUserDomainObject(savedUserEntity, savedRoleEntity)).thenReturn(toCreateUserDomainObject);
+        Mockito.when(this.userEntityMapper.toDomainObject(savedUserEntity, savedRoleEntity)).thenReturn(toCreateUserDomainObject);
 
         userGateway.create(toCreateUserDomainObject);
 
         Mockito.verify(this.userEntityMapper, Mockito.times(1)).toUserEntity(toCreateUserDomainObject);
         Mockito.verify(this.roleRepository, Mockito.times(1)).findByNameAndActive(toCreateUserDomainObject.role(), true);
         Mockito.verify(this.userRepository, Mockito.times(1)).save(toSaveUserEntity);
-        Mockito.verify(this.userEntityMapper, Mockito.times(1)).toUserDomainObject(savedUserEntity, savedRoleEntity);
+        Mockito.verify(this.userEntityMapper, Mockito.times(1)).toDomainObject(savedUserEntity, savedRoleEntity);
     }
 
     @Test
@@ -110,7 +110,7 @@ class UserGatewayTests {
                 .build();
 
         Mockito.when(this.userRepository.findByCpfAndActive(cpf, true)).thenReturn(Optional.of(savedUserEntity));
-        Mockito.when(this.userEntityMapper.toUserDomainObject(savedUserEntity, savedRoleEntity)).thenReturn(toCreateUserDomainObject);
+        Mockito.when(this.userEntityMapper.toDomainObject(savedUserEntity, savedRoleEntity)).thenReturn(toCreateUserDomainObject);
 
         User userDomainObject = this.userGateway.findUserByCpf(cpf);
 
@@ -150,7 +150,7 @@ class UserGatewayTests {
                 .build();
 
         Mockito.when(this.userRepository.findByEmailAndActive(email, true)).thenReturn(Optional.of(savedUserEntity));
-        Mockito.when(this.userEntityMapper.toUserDomainObject(savedUserEntity, savedRoleEntity)).thenReturn(toCreateUserDomainObject);
+        Mockito.when(this.userEntityMapper.toDomainObject(savedUserEntity, savedRoleEntity)).thenReturn(toCreateUserDomainObject);
 
         User userDomainObject = this.userGateway.findUserByEmail(email);
 
@@ -190,7 +190,7 @@ class UserGatewayTests {
                 .build();
 
         Mockito.when(this.userRepository.findByRegistrationAndActive(registration, true)).thenReturn(Optional.of(savedUserEntity));
-        Mockito.when(this.userEntityMapper.toUserDomainObject(savedUserEntity, savedRoleEntity)).thenReturn(toCreateUserDomainObject);
+        Mockito.when(this.userEntityMapper.toDomainObject(savedUserEntity, savedRoleEntity)).thenReturn(toCreateUserDomainObject);
 
         User userDomainObject = this.userGateway.findUserByRegistration(registration);
 
