@@ -1,15 +1,21 @@
 package com.goatspec.infrastructure.api.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.goatspec.application.useCases.contracts.ICreateUserUseCase;
 import com.goatspec.domain.Enums.GenderEnum;
 import com.goatspec.domain.Enums.RoleEnum;
+import com.goatspec.domain.entities.user.User;
+import com.goatspec.domain.exceptions.BusinessException;
 import com.goatspec.infrastructure.api.dto.CreateUserRequest;
+import com.goatspec.infrastructure.gateways.mappers.UserDTOMapper;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -29,6 +35,11 @@ class CreateUserControllerTests {
     @Autowired
     private WebApplicationContext context;
     private MockMvc mvc;
+
+    @MockBean
+    private ICreateUserUseCase createUserUseCase;
+    @MockBean
+    private UserDTOMapper userDTOMapper;
 
     @BeforeEach
     void setup() {
@@ -415,5 +426,31 @@ class CreateUserControllerTests {
                 .perform(requestBuilder)
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("body", Matchers.is("The 'password' must have minimum 6 and maximum 16 characters, at least one uppercase letter, one lowercase letter, one number and one special character!")));
+    }
+
+    @Test
+    @DisplayName("Should return bad request if CPF  is already taken")
+    void shouldReturnBadRequestIfCPFIsAlreadyTaken() throws Exception {
+        CreateUserRequest request = new CreateUserRequest("32635892024", "gervasio@gmail.com", "any_registration",
+                "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(), "Gervasio@0199");
+
+        User userDomainObject = new User("32635892024", "gervasio@gmail.com", "any_registration",
+                "any_name", request.dateOfBirth(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(), "Gervasio@0199");
+
+        String json = new ObjectMapper().writeValueAsString(request);
+
+        BDDMockito.given(this.userDTOMapper.toUserDomainObject(request)).willReturn(userDomainObject);
+        BDDMockito.given(this.createUserUseCase.create(userDomainObject)).willThrow(new BusinessException("The CPF is already in use. Please try to sing in with credentials."));
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post(USER_API)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mvc
+                .perform(requestBuilder)
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("body", Matchers.is("The CPF is already in use. Please try to sing in with credentials.")));
     }
 }
