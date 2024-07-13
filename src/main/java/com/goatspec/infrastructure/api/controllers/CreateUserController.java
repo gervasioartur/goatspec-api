@@ -41,7 +41,7 @@ public class CreateUserController extends AbstractController<CreateUserRequest> 
         List<IValidator> validators = new ArrayList<>();
         validators.addAll(ValidationBuilder.of("CPF", request.cpf()).required().cpf().build());
         validators.addAll(ValidationBuilder.of("E-mail", request.email()).required().email().build());
-
+        validators.addAll(ValidationBuilder.of("registration", request.registration()).required().build());
         return validators;
     }
 }
