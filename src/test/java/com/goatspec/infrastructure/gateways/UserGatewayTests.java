@@ -9,6 +9,7 @@ import com.goatspec.infrastructure.persisntence.entoties.RoleEntity;
 import com.goatspec.infrastructure.persisntence.entoties.UserEntity;
 import com.goatspec.infrastructure.persisntence.repositories.IRoleRepository;
 import com.goatspec.infrastructure.persisntence.repositories.IUserRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,6 +19,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.Optional;
 
 @SpringBootTest
 class UserGatewayTests {
@@ -49,7 +51,7 @@ class UserGatewayTests {
                 .password(toCreateUserDomainObject.password())
                 .build();
 
-        RoleEntity savedRoleEntity = RoleEntity.builder().name("any_name").build();
+        RoleEntity savedRoleEntity = RoleEntity.builder().name("any_name").active(true).build();
         UserEntity saveUserEntity = UserEntity
                 .builder()
                 .cpf(toCreateUserDomainObject.cpf())
@@ -60,18 +62,29 @@ class UserGatewayTests {
                 .gender(toCreateUserDomainObject.gender())
                 .password(toCreateUserDomainObject.password())
                 .roles(Collections.singletonList(savedRoleEntity))
+                .active(true)
                 .build();
 
         Mockito.when(this.userEntityMapper.toUserEntity(toCreateUserDomainObject)).thenReturn(toSaveUserEntity);
-        Mockito.when(this.roleRepository.findByName(toCreateUserDomainObject.role())).thenReturn(savedRoleEntity);
+        Mockito.when(this.roleRepository.findByNameAndActive(toCreateUserDomainObject.role(),true)).thenReturn(savedRoleEntity);
         Mockito.when(this.userRepository.save(toSaveUserEntity)).thenReturn(saveUserEntity);
         Mockito.when(this.userEntityMapper.toUserDomainObject(saveUserEntity, savedRoleEntity)).thenReturn(toCreateUserDomainObject);
 
         userGateway.create(toCreateUserDomainObject);
 
         Mockito.verify(this.userEntityMapper, Mockito.times(1)).toUserEntity(toCreateUserDomainObject);
-        Mockito.verify(this.roleRepository, Mockito.times(1)).findByName(toCreateUserDomainObject.role());
+        Mockito.verify(this.roleRepository, Mockito.times(1)).findByNameAndActive(toCreateUserDomainObject.role(), true);
         Mockito.verify(this.userRepository, Mockito.times(1)).save(toSaveUserEntity);
         Mockito.verify(this.userEntityMapper, Mockito.times(1)).toUserDomainObject(saveUserEntity, savedRoleEntity);
+    }
+
+    @Test
+    @DisplayName("Should return null if user does not exist by CPF")
+    void shouldReturnNullIfUserDoesNotExistByCpf(){
+        String cpf = "any_cpf";
+        Mockito.when(this.userRepository.findByCpfAndActive(cpf, true)).thenReturn(Optional.empty());
+        User userDomainObject = this.userGateway.findUserByCpf(cpf);
+        Assertions.assertThat(userDomainObject).isNull();
+        Mockito.verify(this.userRepository, Mockito.times(1)).findByCpfAndActive(cpf, true);
     }
 }
