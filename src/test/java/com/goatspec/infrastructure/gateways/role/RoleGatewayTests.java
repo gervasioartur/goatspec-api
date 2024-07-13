@@ -1,7 +1,7 @@
-package com.goatspec.infrastructure.gateways;
+package com.goatspec.infrastructure.gateways.role;
 
-import com.goatspec.application.gateways.IRoleGateway;
-import com.goatspec.domain.entities.Role;
+import com.goatspec.application.gateways.role.IRoleGateway;
+import com.goatspec.domain.entities.role.Role;
 import com.goatspec.infrastructure.gateways.mappers.RoleEntityMapper;
 import com.goatspec.infrastructure.persisntence.entities.RoleEntity;
 import com.goatspec.infrastructure.persisntence.repositories.IRoleRepository;

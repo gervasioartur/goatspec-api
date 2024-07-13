@@ -1,6 +1,6 @@
 package com.goatspec.infrastructure.gateways.mappers;
 
-import com.goatspec.domain.entities.Role;
+import com.goatspec.domain.entities.role.Role;
 import com.goatspec.infrastructure.persisntence.entities.RoleEntity;
 
 public class RoleEntityMapper {

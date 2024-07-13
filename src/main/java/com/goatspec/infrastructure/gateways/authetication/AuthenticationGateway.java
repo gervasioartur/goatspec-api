@@ -1,6 +1,6 @@
-package com.goatspec.infrastructure.gateways;
+package com.goatspec.infrastructure.gateways.authetication;
 
-import com.goatspec.application.gateways.IAuthenticationGateway;
+import com.goatspec.application.gateways.authentication.IAuthenticationGateway;
 import com.goatspec.infrastructure.gateways.helpers.token.GenerateToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

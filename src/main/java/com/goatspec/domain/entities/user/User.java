@@ -1,4 +1,4 @@
-package com.goatspec.domain.entities;
+package com.goatspec.domain.entities.user;
 
 import java.util.Date;
 

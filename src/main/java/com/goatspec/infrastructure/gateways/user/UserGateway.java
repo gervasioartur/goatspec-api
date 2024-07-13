@@ -1,7 +1,7 @@
-package com.goatspec.infrastructure.gateways;
+package com.goatspec.infrastructure.gateways.user;
 
-import com.goatspec.application.gateways.IUserGateway;
-import com.goatspec.domain.entities.User;
+import com.goatspec.application.gateways.user.IUserGateway;
+import com.goatspec.domain.entities.user.User;
 import com.goatspec.infrastructure.gateways.mappers.UserEntityMapper;
 import com.goatspec.infrastructure.persisntence.entities.RoleEntity;
 import com.goatspec.infrastructure.persisntence.entities.UserEntity;

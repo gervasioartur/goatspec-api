@@ -1,6 +1,6 @@
-package com.goatspec.infrastructure.gateways;
+package com.goatspec.infrastructure.gateways.encrypt;
 
-import com.goatspec.application.gateways.IPasswordEncoderGateway;
+import com.goatspec.application.gateways.encrypt.IPasswordEncoderGateway;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

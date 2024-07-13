@@ -1,6 +1,6 @@
-package com.goatspec.infrastructure.gateways;
+package com.goatspec.infrastructure.gateways.encrypt;
 
-import com.goatspec.application.gateways.IPasswordEncoderGateway;
+import com.goatspec.application.gateways.encrypt.IPasswordEncoderGateway;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class PasswordEncoderGateway implements IPasswordEncoderGateway {

@@ -1,6 +1,6 @@
-package com.goatspec.application.gateways;
+package com.goatspec.application.gateways.user;
 
-import com.goatspec.domain.entities.User;
+import com.goatspec.domain.entities.user.User;
 
 public interface IUserGateway {
     User create(User user);
