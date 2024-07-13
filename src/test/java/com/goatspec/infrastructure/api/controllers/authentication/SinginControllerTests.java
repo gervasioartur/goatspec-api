@@ -2,6 +2,7 @@ package com.goatspec.infrastructure.api.controllers.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.goatspec.application.useCases.contracts.authentication.ISinginUseCase;
+import com.goatspec.domain.entities.user.UserAccount;
 import com.goatspec.domain.exceptions.UnauthorizedException;
 import com.goatspec.infrastructure.api.dto.SinginRequest;
 import org.hamcrest.Matchers;
@@ -19,6 +20,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.util.UUID;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -151,6 +154,29 @@ public class SinginControllerTests {
         mvc
                 .perform(requestBuilder)
                 .andExpect(status().isInternalServerError());
+    }
+
+    @Test
+    @DisplayName("Should return userAccount on sing in success")
+    void shouldReturnUserAccountOnSinginSuccess() throws Exception {
+        SinginRequest request = new SinginRequest("any_cpf", "any_password");
+        String json = new ObjectMapper().writeValueAsString(request);
+
+        String accessToken = UUID.randomUUID().toString();
+
+        BDDMockito.given(this.singinUseCase.singin(request.cpf(), request.password())).willReturn(new UserAccount(accessToken));
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post(AUTH_API)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mvc
+                .perform(requestBuilder)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("body.accessToken", Matchers.is(accessToken)));
+
     }
 
 }
