@@ -56,4 +56,24 @@ class CreateUserControllerTests {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("body", Matchers.is("The field 'CPF' is required!")));
     }
+
+    @Test
+    @DisplayName("Should return bad request if CPF is null")
+    void shouldReturnBadRequestIfCPFIsNull() throws Exception {
+        CreateUserRequest request = new CreateUserRequest(null, "any_email", "any_registration",
+                "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(), "any_password");
+
+        String json = new ObjectMapper().writeValueAsString(request);
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post(USER_API)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mvc
+                .perform(requestBuilder)
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("body", Matchers.is("The field 'CPF' is required!")));
+    }
 }
