@@ -54,7 +54,6 @@ public class CreateUserController extends AbstractController<CreateUserRequest> 
             response = new Response(ex.getMessage());
             responseEntity = new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
         return responseEntity;
     }
 
