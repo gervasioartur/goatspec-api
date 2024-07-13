@@ -46,7 +46,10 @@ public class UserGateway implements IUserGateway {
     @Override
     public User findUserByEmail(String email) {
         Optional<UserEntity> userEntityResult = this.userRepository.findByEmailAndActive(email,true);
-        if (userEntityResult.isPresent()) {}
+        if (userEntityResult.isPresent()) {
+            List<RoleEntity> roles = userEntityResult.get().getRoles().stream().toList();
+            return this.userEntityMapper.toUserDomainObject(userEntityResult.get(), roles.getLast());
+        }
         return null;
     }
 
