@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Date;
@@ -530,5 +531,30 @@ class CreateUserControllerTests {
                 .perform(requestBuilder)
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("body", Matchers.is("The registration is already in use. Please try another registration.")));
+    }
+
+    @Test
+    @DisplayName("Should return internal server error  if use case throws exception")
+    void shouldReturnInternalServerErrorIfUseCaseThrowsException() throws Exception {
+        CreateUserRequest request = new CreateUserRequest("32635892024", "gervasio@gmail.com", "any_registration",
+                "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(), "Gervasio@0199");
+
+        User userDomainObject = new User("32635892024", "gervasio@gmail.com", "any_registration",
+                "any_name", request.dateOfBirth(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(), "Gervasio@0199");
+
+        String json = new ObjectMapper().writeValueAsString(request);
+
+        BDDMockito.given(this.userDTOMapper.toUserDomainObject(request)).willReturn(userDomainObject);
+        BDDMockito.doThrow(HttpServerErrorException.InternalServerError.class).when(this.createUserUseCase).create(userDomainObject);
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post(USER_API)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mvc
+                .perform(requestBuilder)
+                .andExpect(status().isInternalServerError());
     }
 }
