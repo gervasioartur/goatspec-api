@@ -1,15 +1,15 @@
 package com.goatspec.application.useCases.implementations;
 
+import com.goatspec.application.gateways.IAuthentication;
+import com.goatspec.application.gateways.IPasswordEncoderGateway;
+import com.goatspec.application.gateways.IRoleGateway;
+import com.goatspec.application.gateways.IUserGateway;
 import com.goatspec.application.useCases.contracts.ICreateUserService;
 import com.goatspec.domain.entities.Role;
 import com.goatspec.domain.entities.User;
 import com.goatspec.domain.entities.UserAccount;
 import com.goatspec.domain.exceptions.BusinessException;
 import com.goatspec.domain.exceptions.UnexpectedException;
-import com.goatspec.application.gateways.IAuthentication;
-import com.goatspec.application.gateways.IPasswordEncoderGateway;
-import com.goatspec.application.gateways.IRoleGateway;
-import com.goatspec.application.gateways.IUserGateway;
 
 public class CreateUserUseCase implements ICreateUserService {
     private final IUserGateway userGateway;
