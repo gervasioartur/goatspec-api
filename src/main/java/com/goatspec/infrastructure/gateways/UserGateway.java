@@ -55,6 +55,8 @@ public class UserGateway implements IUserGateway {
 
     @Override
     public User findUserByRegistration(String registration) {
+        Optional<UserEntity> userEntityResult = this.userRepository.findByRegistrationAndActive(registration, true);
+        if (userEntityResult.isEmpty()) return null;
         return null;
     }
 }
