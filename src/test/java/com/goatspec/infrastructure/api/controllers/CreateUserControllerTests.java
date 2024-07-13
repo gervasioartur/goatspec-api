@@ -442,7 +442,7 @@ class CreateUserControllerTests {
 
         String json = new ObjectMapper().writeValueAsString(request);
 
-        BDDMockito.given(this.userDTOMapper.toUserDomainObject(request)).willReturn(userDomainObject);
+        BDDMockito.given(this.userDTOMapper.toDomainObject(request)).willReturn(userDomainObject);
         BDDMockito.given(this.createUserUseCase.create(userDomainObject)).willThrow(new BusinessException("The CPF is already in use. Please try to sing in with credentials."));
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
@@ -468,7 +468,7 @@ class CreateUserControllerTests {
 
         String json = new ObjectMapper().writeValueAsString(request);
 
-        BDDMockito.given(this.userDTOMapper.toUserDomainObject(request)).willReturn(userDomainObject);
+        BDDMockito.given(this.userDTOMapper.toDomainObject(request)).willReturn(userDomainObject);
         BDDMockito.given(this.createUserUseCase.create(userDomainObject)).willThrow(new BusinessException("The email is already in use. Please try another email."));
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
@@ -494,7 +494,7 @@ class CreateUserControllerTests {
 
         String json = new ObjectMapper().writeValueAsString(request);
 
-        BDDMockito.given(this.userDTOMapper.toUserDomainObject(request)).willReturn(userDomainObject);
+        BDDMockito.given(this.userDTOMapper.toDomainObject(request)).willReturn(userDomainObject);
         BDDMockito.given(this.createUserUseCase.create(userDomainObject)).willThrow(new BusinessException("The registration is already in use. Please try another registration."));
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
@@ -520,7 +520,7 @@ class CreateUserControllerTests {
 
         String json = new ObjectMapper().writeValueAsString(request);
 
-        BDDMockito.given(this.userDTOMapper.toUserDomainObject(request)).willReturn(userDomainObject);
+        BDDMockito.given(this.userDTOMapper.toDomainObject(request)).willReturn(userDomainObject);
         BDDMockito.given(this.createUserUseCase.create(userDomainObject)).willThrow(new BusinessException("The registration is already in use. Please try another registration."));
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
@@ -546,7 +546,7 @@ class CreateUserControllerTests {
 
         String json = new ObjectMapper().writeValueAsString(request);
 
-        BDDMockito.given(this.userDTOMapper.toUserDomainObject(request)).willReturn(userDomainObject);
+        BDDMockito.given(this.userDTOMapper.toDomainObject(request)).willReturn(userDomainObject);
         BDDMockito.doThrow(HttpServerErrorException.InternalServerError.class).when(this.createUserUseCase).create(userDomainObject);
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
@@ -573,7 +573,7 @@ class CreateUserControllerTests {
 
         String accessToken = UUID.randomUUID().toString();
 
-        BDDMockito.given(this.userDTOMapper.toUserDomainObject(request)).willReturn(userDomainObject);
+        BDDMockito.given(this.userDTOMapper.toDomainObject(request)).willReturn(userDomainObject);
         BDDMockito.given(this.createUserUseCase.create(userDomainObject)).willReturn(new UserAccount(accessToken));
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders

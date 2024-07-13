@@ -152,6 +152,7 @@
                         <exclude>**/entities/*Entity*</exclude>
                         <exclude>**/ExtractAllClaims*</exclude>
                         <exclude>**/ValidateToken*</exclude>
+                        <exclude>**/Abstract**</exclude>
                     </excludes>
                 </configuration>
             </plugin>

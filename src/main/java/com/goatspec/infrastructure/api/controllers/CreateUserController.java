@@ -42,7 +42,7 @@ public class CreateUserController extends AbstractController<CreateUserRequest> 
         }
 
         try {
-            User userDomainObject = this.userDTOMapper.toUserDomainObject(request);
+            User userDomainObject = this.userDTOMapper.toDomainObject(request);
             UserAccount userAccount = this.createUserUseCase.create(userDomainObject);
             response = new Response(userAccount);
             responseEntity = new ResponseEntity<>(response, HttpStatus.CREATED);
