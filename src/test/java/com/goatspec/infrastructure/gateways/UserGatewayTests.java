@@ -49,7 +49,7 @@ class UserGatewayTests {
                 .password(toCreateUserDomainObject.password())
                 .build();
 
-        RoleEntity savedRoleEntity =  RoleEntity.builder().name("any_name").build();
+        RoleEntity savedRoleEntity = RoleEntity.builder().name("any_name").build();
         UserEntity saveUserEntity = UserEntity
                 .builder()
                 .cpf(toCreateUserDomainObject.cpf())
@@ -69,9 +69,9 @@ class UserGatewayTests {
 
         userGateway.create(toCreateUserDomainObject);
 
-        Mockito.verify(this.userEntityMapper,Mockito.times(1)).toUserEntity(toCreateUserDomainObject);
-        Mockito.verify(this.roleRepository,Mockito.times(1)).findByName(toCreateUserDomainObject.role());
-        Mockito.verify(this.userRepository,Mockito.times(1)).save(toSaveUserEntity);
-        Mockito.verify(this.userEntityMapper,Mockito.times(1)).toUserDomainObject(saveUserEntity, savedRoleEntity);
+        Mockito.verify(this.userEntityMapper, Mockito.times(1)).toUserEntity(toCreateUserDomainObject);
+        Mockito.verify(this.roleRepository, Mockito.times(1)).findByName(toCreateUserDomainObject.role());
+        Mockito.verify(this.userRepository, Mockito.times(1)).save(toSaveUserEntity);
+        Mockito.verify(this.userEntityMapper, Mockito.times(1)).toUserDomainObject(saveUserEntity, savedRoleEntity);
     }
 }
