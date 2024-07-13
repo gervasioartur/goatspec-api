@@ -35,7 +35,7 @@ public class CPFFieldValidator extends AbstractValidator {
             sm = 0;
             peso = 10;
             for (i = 0; i < 9; i++) {
-                num = (int) (cpf.charAt(i) - 48);
+                num = cpf.charAt(i) - 48;
                 sm = sm + (num * peso);
                 peso = peso - 1;
             }
@@ -48,7 +48,7 @@ public class CPFFieldValidator extends AbstractValidator {
             sm = 0;
             peso = 11;
             for (i = 0; i < 10; i++) {
-                num = (int) (cpf.charAt(i) - 48);
+                num = cpf.charAt(i) - 48;
                 sm = sm + (num * peso);
                 peso = peso - 1;
             }
@@ -57,9 +57,7 @@ public class CPFFieldValidator extends AbstractValidator {
             if ((r == 10) || (r == 11))
                 dig11 = '0';
             else dig11 = (char) (r + 48);
-            if ((dig10 == cpf.charAt(9)) && (dig11 == cpf.charAt(10)))
-                return (true);
-            else return (false);
+            return (dig10 == cpf.charAt(9)) && (dig11 == cpf.charAt(10));
 
         } catch (Exception e) {
             return (false);
