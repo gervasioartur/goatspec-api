@@ -19,9 +19,18 @@ public class RoleEntityMapperTests {
 
     @Test
     @DisplayName("Should return a role entity")
-    void shouldReturnUserEntity() {
+    void shouldReturnRoleEntity() {
         Role toCreateRoleDomainObject = new Role("any_name");
         RoleEntity toCreateRoleEntity = mapper.toRoleEntity(toCreateRoleDomainObject);
+        Assertions.assertThat(toCreateRoleEntity.getName()).isEqualTo(toCreateRoleDomainObject.name());
+    }
+
+    @Test
+    @DisplayName("Should return role domain object")
+    void shouldReturnRoleDomainObject() {
+        Role toCreateRoleDomainObject = new Role("any_name");
+        RoleEntity toCreateRoleEntity = mapper.toRoleEntity(toCreateRoleDomainObject);
+        toCreateRoleDomainObject = mapper.toDomainObject(toCreateRoleEntity);
         Assertions.assertThat(toCreateRoleEntity.getName()).isEqualTo(toCreateRoleDomainObject.name());
     }
 }
