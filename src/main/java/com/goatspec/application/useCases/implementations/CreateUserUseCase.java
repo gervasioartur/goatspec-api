@@ -4,14 +4,14 @@ import com.goatspec.application.gateways.authentication.IAuthenticationGateway;
 import com.goatspec.application.gateways.encrypt.IPasswordEncoderGateway;
 import com.goatspec.application.gateways.role.IRoleGateway;
 import com.goatspec.application.gateways.user.IUserGateway;
-import com.goatspec.application.useCases.contracts.ICreateUserService;
+import com.goatspec.application.useCases.contracts.ICreateUserUseCase;
 import com.goatspec.domain.entities.role.Role;
 import com.goatspec.domain.entities.user.User;
 import com.goatspec.domain.entities.user.UserAccount;
 import com.goatspec.domain.exceptions.BusinessException;
 import com.goatspec.domain.exceptions.UnexpectedException;
 
-public class CreateUserUseCase implements ICreateUserService {
+public class CreateUserUseCase implements ICreateUserUseCase {
     private final IUserGateway userGateway;
     private final IRoleGateway roleGateway;
     private final IPasswordEncoderGateway passwordEncoderGateway;

@@ -1,5 +1,6 @@
 package com.goatspec.infrastructure.api.validation;
 
+import com.goatspec.infrastructure.api.validation.validators.RequiredFieldValidator;
 import com.goatspec.infrastructure.api.validation.validators.contract.IValidator;
 
 import java.util.ArrayList;
@@ -17,6 +18,11 @@ public class ValidationBuilder {
 
     public static ValidationBuilder of(String fieldName, Object fieldValue) {
         return new ValidationBuilder(fieldName, fieldValue);
+    }
+
+    public ValidationBuilder required() {
+        this.validators.add(new RequiredFieldValidator(this.fieldName, this.fieldValue));
+        return this;
     }
 
     public List<IValidator> build() {

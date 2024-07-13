@@ -4,7 +4,7 @@ import com.goatspec.application.gateways.authentication.IAuthenticationGateway;
 import com.goatspec.application.gateways.encrypt.IPasswordEncoderGateway;
 import com.goatspec.application.gateways.role.IRoleGateway;
 import com.goatspec.application.gateways.user.IUserGateway;
-import com.goatspec.application.useCases.contracts.ICreateUserService;
+import com.goatspec.application.useCases.contracts.ICreateUserUseCase;
 import com.goatspec.domain.Enums.GenderEnum;
 import com.goatspec.domain.Enums.RoleEnum;
 import com.goatspec.domain.entities.role.Role;
@@ -27,7 +27,7 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class CreateUserUseCaseTests {
-    private ICreateUserService createUserService;
+    private ICreateUserUseCase createUserService;
 
     @MockBean
     private IUserGateway userGateway;
