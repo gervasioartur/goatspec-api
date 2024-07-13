@@ -5,6 +5,8 @@ import com.goatspec.application.useCases.contracts.authentication.ISinginUseCase
 import com.goatspec.domain.entities.user.User;
 import com.goatspec.domain.entities.user.UserAccount;
 import com.goatspec.domain.exceptions.BusinessException;
+import com.goatspec.domain.exceptions.UnauthorizedException;
+import com.goatspec.domain.exceptions.UnexpectedException;
 
 public class SinginUseCase implements ISinginUseCase {
     private final IUserGateway userGateway;
@@ -16,7 +18,7 @@ public class SinginUseCase implements ISinginUseCase {
     @Override
     public UserAccount singin(String cpf, String password) {
         User user = userGateway.findUserByCpf(cpf);
-        if (user == null) throw  new BusinessException("Bad credentials");
+        if (user == null) throw  new UnauthorizedException("Bad credentials.");
         return null;
     }
 }
