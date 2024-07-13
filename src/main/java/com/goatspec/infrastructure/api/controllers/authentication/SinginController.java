@@ -1,5 +1,11 @@
 package com.goatspec.infrastructure.api.controllers.authentication;
 
+import com.goatspec.application.useCases.contracts.authentication.ISinginUseCase;
+import com.goatspec.domain.entities.user.User;
+import com.goatspec.domain.entities.user.UserAccount;
+import com.goatspec.domain.exceptions.BusinessException;
+import com.goatspec.domain.exceptions.UnauthorizedException;
+import com.goatspec.domain.exceptions.UnexpectedException;
 import com.goatspec.infrastructure.api.controllers.AbstractController;
 import com.goatspec.infrastructure.api.dto.Response;
 import com.goatspec.infrastructure.api.dto.SinginRequest;
@@ -20,6 +26,11 @@ import java.util.List;
 @RequestMapping("/auth/singin")
 @Tag(name = "Authentication", description = "Endpoints for authentication features")
 public class SinginController extends AbstractController<SinginRequest> {
+    private final ISinginUseCase singinUseCase;
+
+    public SinginController(ISinginUseCase singinUseCase) {
+        this.singinUseCase = singinUseCase;
+    }
 
     @Override
     @PostMapping
@@ -39,8 +50,19 @@ public class SinginController extends AbstractController<SinginRequest> {
             response = new Response(error);
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
+        try {
+            UserAccount userAccount = this.singinUseCase.singin(request.cpf(),request.password());
+            response = new Response(userAccount);
+            responseEntity = new ResponseEntity<>(response, HttpStatus.CREATED);
+        } catch (UnauthorizedException ex) {
+            response = new Response(ex.getMessage());
+            responseEntity = new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+        } catch (Exception ex) {
+            response = new Response(ex.getMessage());
+            responseEntity = new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
-        return null;
+        return responseEntity;
     }
 
     @Override
