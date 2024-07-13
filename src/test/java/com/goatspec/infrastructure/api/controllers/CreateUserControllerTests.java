@@ -505,4 +505,30 @@ class CreateUserControllerTests {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("body", Matchers.is("The registration is already in use. Please try another registration.")));
     }
+
+    @Test
+    @DisplayName("Should return bad request if use case throws unexpected exception")
+    void shouldReturnBadRequestIfUseCaseThrowsUnexpectedException() throws Exception {
+        CreateUserRequest request = new CreateUserRequest("32635892024", "gervasio@gmail.com", "any_registration",
+                "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(), "Gervasio@0199");
+
+        User userDomainObject = new User("32635892024", "gervasio@gmail.com", "any_registration",
+                "any_name", request.dateOfBirth(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(), "Gervasio@0199");
+
+        String json = new ObjectMapper().writeValueAsString(request);
+
+        BDDMockito.given(this.userDTOMapper.toUserDomainObject(request)).willReturn(userDomainObject);
+        BDDMockito.given(this.createUserUseCase.create(userDomainObject)).willThrow(new BusinessException("The registration is already in use. Please try another registration."));
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post(USER_API)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mvc
+                .perform(requestBuilder)
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("body", Matchers.is("The registration is already in use. Please try another registration.")));
+    }
 }
