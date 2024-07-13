@@ -25,7 +25,6 @@ public class SetupLoader implements ApplicationListener<ContextRefreshedEvent> {
     private IPrivilegeRepository privilegeRepository;
 
     public void onApplicationEvent(ContextRefreshedEvent event) {
-
         if (alreadySetup) return;
 
         PrivilegeEntity readPrivilege = createPrivilegeIfNotFound("READ_PRIVILEGE");
