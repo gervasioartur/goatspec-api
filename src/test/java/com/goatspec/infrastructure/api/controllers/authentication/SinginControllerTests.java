@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Date;
@@ -139,6 +140,25 @@ public class SinginControllerTests {
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("body", Matchers.is("Bad credentials.")));
 
+    }
+
+    @Test
+    @DisplayName("Should return internal server error if useCase throws")
+    void shouldReturnInterServerErrorIfUseCaseThrows() throws Exception {
+        SinginRequest request =  new SinginRequest("any_cpf","any_password");
+        String json = new ObjectMapper().writeValueAsString(request);
+
+        BDDMockito.doThrow(HttpServerErrorException.InternalServerError.class).when(this.singinUseCase).singin(request.cpf(),request.password());
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post(AUTH_API)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mvc
+                .perform(requestBuilder)
+                .andExpect(status().isInternalServerError());
     }
 
 }
