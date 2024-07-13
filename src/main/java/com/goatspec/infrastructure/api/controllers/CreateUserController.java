@@ -2,6 +2,7 @@ package com.goatspec.infrastructure.api.controllers;
 
 import com.goatspec.application.useCases.contracts.ICreateUserUseCase;
 import com.goatspec.domain.entities.user.User;
+import com.goatspec.domain.entities.user.UserAccount;
 import com.goatspec.domain.exceptions.BusinessException;
 import com.goatspec.domain.exceptions.UnexpectedException;
 import com.goatspec.infrastructure.api.dto.CreateUserRequest;
@@ -43,7 +44,9 @@ public class CreateUserController extends AbstractController<CreateUserRequest> 
 
         try {
             User userDomainObject = this.userDTOMapper.toUserDomainObject(request);
-            this.createUserUseCase.create(userDomainObject);
+            UserAccount userAccount =  this.createUserUseCase.create(userDomainObject);
+            response = new Response(userAccount);
+            responseEntity = new ResponseEntity<>(response, HttpStatus.CREATED);
         }catch (BusinessException | UnexpectedException ex ){
             response = new Response(ex.getMessage());
             responseEntity = new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
