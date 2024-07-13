@@ -122,7 +122,7 @@ class CreateUserUseCaseTests {
     @DisplayName("Shlould return user account on success")
     void shouldReturnUserAccountOnSuccess() {
         User toCreateUser = new User("any_cpf", "any_email", "any_registration", "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(), "any_password");
-        Role createdRole = new Role(UUID.randomUUID(), "any_role");
+        Role createdRole = new Role( "any_role");
 
         String encodedPassword = UUID.randomUUID().toString();
         String accessToken = UUID.randomUUID().toString();
