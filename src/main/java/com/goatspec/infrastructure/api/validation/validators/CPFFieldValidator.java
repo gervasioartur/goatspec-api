@@ -1,12 +1,12 @@
 package com.goatspec.infrastructure.api.validation.validators;
 
-public class CPFValidator extends AbstractValidator {
+public class CPFFieldValidator extends AbstractValidator {
     private final String returnMessage;
 
-    public CPFValidator(String fieldName, Object fieldValue) {
+    public CPFFieldValidator(String fieldName, Object fieldValue) {
         this.fieldName = fieldName;
         this.fieldValue = fieldValue;
-        this.returnMessage = "The 'CPF' is invalid, please verify your cpf and try again!";
+        this.returnMessage = "The 'CPF' is invalid, please verify your 'CPF' and try again!";
     }
 
     @Override

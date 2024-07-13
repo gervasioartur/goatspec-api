@@ -1,6 +1,7 @@
 package com.goatspec.infrastructure.api.validation;
 
-import com.goatspec.infrastructure.api.validation.validators.CPFValidator;
+import com.goatspec.infrastructure.api.validation.validators.CPFFieldValidator;
+import com.goatspec.infrastructure.api.validation.validators.EmailFieldValidator;
 import com.goatspec.infrastructure.api.validation.validators.RequiredFieldValidator;
 import com.goatspec.infrastructure.api.validation.validators.contract.IValidator;
 
@@ -27,7 +28,12 @@ public class ValidationBuilder {
     }
 
     public ValidationBuilder cpf() {
-        this.validators.add(new CPFValidator(this.fieldName, this.fieldValue));
+        this.validators.add(new CPFFieldValidator(this.fieldName, this.fieldValue));
+        return this;
+    }
+
+    public ValidationBuilder email() {
+        this.validators.add(new EmailFieldValidator(this.fieldName, this.fieldValue));
         return this;
     }
 

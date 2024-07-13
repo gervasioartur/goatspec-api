@@ -78,7 +78,7 @@ class CreateUserControllerTests {
     }
 
     @Test
-    @DisplayName("Should return bad request if CPF is invalid")
+    @DisplayName("Should return bad request if email is invalid")
     void shouldReturnBadRequestIfCPFIsInvalid() throws Exception {
         CreateUserRequest request = new CreateUserRequest("any_cpf", "any_email", "any_registration",
                 "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(), "any_password");
@@ -94,6 +94,66 @@ class CreateUserControllerTests {
         mvc
                 .perform(requestBuilder)
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("body", Matchers.is("The 'CPF' is invalid, please verify your cpf and try again!")));
+                .andExpect(jsonPath("body", Matchers.is("The 'CPF' is invalid, please verify your 'CPF' and try again!")));
+    }
+
+    @Test
+    @DisplayName("Should return bad request if email is empty")
+    void shouldReturnBadRequestIfEmailIsEmpty() throws Exception {
+        CreateUserRequest request = new CreateUserRequest("32635892024", "", "any_registration",
+                "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(), "any_password");
+
+        String json = new ObjectMapper().writeValueAsString(request);
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post(USER_API)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mvc
+                .perform(requestBuilder)
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("body", Matchers.is("The field 'E-mail' is required!")));
+    }
+
+    @Test
+    @DisplayName("Should return bad request if email is null")
+    void shouldReturnBadRequestIfEmailIsNull() throws Exception {
+        CreateUserRequest request = new CreateUserRequest("32635892024", null, "any_registration",
+                "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(), "any_password");
+
+        String json = new ObjectMapper().writeValueAsString(request);
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post(USER_API)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mvc
+                .perform(requestBuilder)
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("body", Matchers.is("The field 'E-mail' is required!")));
+    }
+
+    @Test
+    @DisplayName("Should return bad request if email is invalid")
+    void shouldReturnBadRequestIfEmailIsInvalid() throws Exception {
+        CreateUserRequest request = new CreateUserRequest("32635892024", "any_email", "any_registration",
+                "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(), "any_password");
+
+        String json = new ObjectMapper().writeValueAsString(request);
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post(USER_API)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mvc
+                .perform(requestBuilder)
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("body", Matchers.is("The 'E-mail' is invalid, please verify your 'E-mail' and try again!")));
     }
 }
