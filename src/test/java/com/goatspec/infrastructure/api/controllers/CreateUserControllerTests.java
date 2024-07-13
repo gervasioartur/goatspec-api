@@ -236,4 +236,24 @@ class CreateUserControllerTests {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("body", Matchers.is("The field 'name' is required!")));
     }
+
+    @Test
+    @DisplayName("Should return bad request if date of birth is null")
+    void shouldReturnBadRequestIfDateOfBirthIsNull() throws Exception {
+        CreateUserRequest request = new CreateUserRequest("32635892024", "gervasio@gmail.com", "any_registration",
+                "any_name", null, GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(), "any_password");
+
+        String json = new ObjectMapper().writeValueAsString(request);
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post(USER_API)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mvc
+                .perform(requestBuilder)
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("body", Matchers.is("The field 'date of birth' is required!")));
+    }
 }
