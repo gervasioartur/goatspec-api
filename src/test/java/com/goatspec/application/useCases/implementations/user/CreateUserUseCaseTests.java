@@ -99,7 +99,7 @@ class CreateUserUseCaseTests {
     }
 
     @Test
-    @DisplayName("Should throw unexpected expcetion if user role does not existis")
+    @DisplayName("Should throw unexpected exception if user role does not existis")
     void shouldThrowUnexpectedExceptionIfUserRoleDoesNotExists() {
         User toCreateUser = new User("any_cpf", "any_email", "any_registration", "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(), "any_password");
 
