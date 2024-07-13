@@ -77,6 +77,11 @@ public class ApplicationConfig {
     }
 
     @Bean
+    public LoadUserByUsernameGateway loadUserByUsernameGateway(IUserRepository userRepository) {
+        return new LoadUserByUsernameGateway(userRepository);
+    }
+
+    @Bean
     public UserDetailsService userDetailsService(IUserRepository userRepository) {
         return new LoadUserByUsernameGateway(userRepository);
     }

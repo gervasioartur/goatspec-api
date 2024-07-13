@@ -10,6 +10,7 @@ import com.goatspec.infrastructure.api.dto.Response;
 import com.goatspec.infrastructure.api.validation.ValidationBuilder;
 import com.goatspec.infrastructure.api.validation.validators.contract.IValidator;
 import com.goatspec.infrastructure.gateways.mappers.UserDTOMapper;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users")
+@Tag(name = "Users", description = "Endpoints for user features")
 public class CreateUserController extends AbstractController<CreateUserRequest> {
     private final ICreateUserUseCase createUserUseCase;
     private final UserDTOMapper userDTOMapper;
