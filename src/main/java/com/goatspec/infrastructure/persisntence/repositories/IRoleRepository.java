@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.UUID;
 
 public interface IRoleRepository extends JpaRepository<RoleEntity, UUID> {
-    RoleEntity findByName(String name);
+    RoleEntity findByNameAndActive(String name, boolean active);
 }

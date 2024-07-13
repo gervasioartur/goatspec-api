@@ -9,6 +9,8 @@ import com.goatspec.infrastructure.persisntence.repositories.IRoleRepository;
 import com.goatspec.infrastructure.persisntence.repositories.IUserRepository;
 
 import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 public class UserGateway implements IUserGateway {
     private final IUserRepository userRepository;
@@ -24,7 +26,8 @@ public class UserGateway implements IUserGateway {
     @Override
     public User create(User user) {
         UserEntity userEntity = this.userEntityMapper.toUserEntity(user);
-        RoleEntity roleEntity = this.roleRepository.findByName(user.role());
+        RoleEntity roleEntity = this.roleRepository.findByNameAndActive(user.role(), true);
+        userEntity.setActive(true);
         userEntity.setRoles(Collections.singletonList(roleEntity));
         userEntity = this.userRepository.save(userEntity);
         return this.userEntityMapper.toUserDomainObject(userEntity, roleEntity);
@@ -32,7 +35,13 @@ public class UserGateway implements IUserGateway {
 
     @Override
     public User findUserByCpf(String cpf) {
-        return null;
+        User userDomainObject = null;
+        Optional<UserEntity> userEntityResult =  this.userRepository.findByCpfAndActive(cpf,true);
+        if(userEntityResult.isPresent()) {
+            List<RoleEntity> roles = userEntityResult.get().getRoles().stream().toList();
+            userDomainObject =  this.userEntityMapper.toUserDomainObject(userEntityResult.get(),roles.getLast());
+        }
+        return userDomainObject;
     }
 
     @Override
