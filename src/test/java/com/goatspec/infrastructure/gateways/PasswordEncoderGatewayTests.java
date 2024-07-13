@@ -29,7 +29,7 @@ class PasswordEncoderGatewayTests {
         String password = "any_password";
         String encodedPassword = UUID.randomUUID().toString();
         Mockito.when(this.passwordEncoder.encode(password)).thenReturn(encodedPassword);
-        String encodedPasswordResult =  this.passwordEncoderGateway.encode(password);
+        String encodedPasswordResult = this.passwordEncoderGateway.encode(password);
         Assertions.assertThat(encodedPasswordResult).isEqualTo(encodedPassword);
         Mockito.verify(this.passwordEncoder).encode(password);
     }
