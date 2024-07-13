@@ -18,7 +18,7 @@ public class CreateSpecializationUseCase implements ICreateSpecializationUseCase
 
     @Override
     public void create(Specialization specialization) {
-        User user =  this.userGateway.findUserByCpf(specialization.cpf());
+        User user = this.userGateway.findUserByCpf(specialization.cpf());
         if (user == null) throw new UnauthorizedException("Something went wrong! please try again later!");
         this.specializationGateway.create(specialization);
     }

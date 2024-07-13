@@ -30,14 +30,14 @@ class CreateSpecializationUseCaseTests {
     @BeforeEach
     void setUp() {
         this.createSpecializationUseCase = new
-                CreateSpecializationUseCase(userGateway,specializationGateway);
+                CreateSpecializationUseCase(userGateway, specializationGateway);
     }
 
     @Test
     @DisplayName("Should throw unauthorized exception if user does not exist")
     void shouldHowBusinessExceptionIfUserDoesNotExist() {
         Specialization specialization = new
-                Specialization("any_cpf","any_area","any_type",2,new BigDecimal("20"));
+                Specialization("any_cpf", "any_area", "any_type", 2, new BigDecimal("20"));
 
         Mockito.when(this.userGateway.findUserByCpf(specialization.cpf())).thenReturn(null);
 
@@ -52,7 +52,7 @@ class CreateSpecializationUseCaseTests {
     @DisplayName("should create ne specialization request")
     void shouldCreateSpecializationRequest() {
         Specialization specialization = new
-                Specialization("any_cpf","any_area","any_type",2,new BigDecimal("20"));
+                Specialization("any_cpf", "any_area", "any_type", 2, new BigDecimal("20"));
 
         User createUserDomainObject = new User("any_cpf", "any_email", "any_registration", "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(), "any_password");
         Mockito.when(this.userGateway.findUserByCpf(specialization.cpf())).thenReturn(createUserDomainObject);
