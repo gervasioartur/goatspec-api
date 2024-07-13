@@ -47,7 +47,7 @@ public class UserEntityMapperTests {
                 .password(toCreateUserDomainObject.password())
                 .build();
 
-        toCreateUserDomainObject = mapper.toUserDomainObject(toCreateUserEntity,savedRoleEntity);
+        toCreateUserDomainObject = mapper.toUserDomainObject(toCreateUserEntity, savedRoleEntity);
 
         Assertions.assertThat(toCreateUserEntity.getCpf()).isEqualTo(toCreateUserDomainObject.cpf());
         Assertions.assertThat(toCreateUserEntity.getEmail()).isEqualTo(toCreateUserDomainObject.email());
