@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.Date;
 
 @SpringBootTest
-public class UserDTOMapperTests {
+class UserDTOMapperTests {
     private final UserDTOMapper mapper = new UserDTOMapper();
 
     @Test

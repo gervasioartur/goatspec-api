@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
-public class RequiredFieldValidatorTests {
+class RequiredFieldValidatorTests {
     @Test
     @DisplayName("Should validate if the string is empty")
     void shouldValidateIfTheStringIEmpty() {

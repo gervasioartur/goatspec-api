@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
-public class EmailFieldValidatorTests {
+class EmailFieldValidatorTests {
     @Test
     @DisplayName("Should return error message if the emailfield is invalid")
     void shouldReturnErrorMessageIfTheEmailFieldIsInvalid() {
