@@ -1,10 +1,10 @@
-package com.goatspec.application.useCases.implementations;
+package com.goatspec.application.useCases.implementations.user;
 
 import com.goatspec.application.gateways.authentication.IAuthenticationGateway;
 import com.goatspec.application.gateways.encrypt.IPasswordEncoderGateway;
 import com.goatspec.application.gateways.role.IRoleGateway;
 import com.goatspec.application.gateways.user.IUserGateway;
-import com.goatspec.application.useCases.contracts.ICreateUserUseCase;
+import com.goatspec.application.useCases.contracts.user.ICreateUserUseCase;
 import com.goatspec.domain.entities.role.Role;
 import com.goatspec.domain.entities.user.User;
 import com.goatspec.domain.entities.user.UserAccount;
