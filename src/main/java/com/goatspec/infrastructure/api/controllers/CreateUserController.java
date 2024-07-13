@@ -1,6 +1,6 @@
 package com.goatspec.infrastructure.api.controllers;
 
-import com.goatspec.application.useCases.contracts.ICreateUserUseCase;
+import com.goatspec.application.useCases.contracts.user.ICreateUserUseCase;
 import com.goatspec.domain.entities.user.User;
 import com.goatspec.domain.entities.user.UserAccount;
 import com.goatspec.domain.exceptions.BusinessException;
