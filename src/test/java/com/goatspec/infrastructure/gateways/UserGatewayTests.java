@@ -66,7 +66,7 @@ class UserGatewayTests {
                 .build();
 
         Mockito.when(this.userEntityMapper.toUserEntity(toCreateUserDomainObject)).thenReturn(toSaveUserEntity);
-        Mockito.when(this.roleRepository.findByNameAndActive(toCreateUserDomainObject.role(),true)).thenReturn(savedRoleEntity);
+        Mockito.when(this.roleRepository.findByNameAndActive(toCreateUserDomainObject.role(), true)).thenReturn(savedRoleEntity);
         Mockito.when(this.userRepository.save(toSaveUserEntity)).thenReturn(savedUserEntity);
         Mockito.when(this.userEntityMapper.toUserDomainObject(savedUserEntity, savedRoleEntity)).thenReturn(toCreateUserDomainObject);
 
@@ -80,7 +80,7 @@ class UserGatewayTests {
 
     @Test
     @DisplayName("Should return null if user does not exist by CPF")
-    void shouldReturnNullIfUserDoesNotExistByCpf(){
+    void shouldReturnNullIfUserDoesNotExistByCpf() {
         String cpf = "any_cpf";
         Mockito.when(this.userRepository.findByCpfAndActive(cpf, true)).thenReturn(Optional.empty());
         User userDomainObject = this.userGateway.findUserByCpf(cpf);
@@ -90,20 +90,10 @@ class UserGatewayTests {
 
     @Test
     @DisplayName("Should return user domain object if exists by CPF")
-    void shouldReturnUserDomainObjectIfExists(){
+    void shouldReturnUserDomainObjectIfExists() {
         String cpf = "any_cpf";
 
         User toCreateUserDomainObject = new User("any_cpf", "any_email", "any_registration", "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(), "any_password");
-        UserEntity toSaveUserEntity = UserEntity
-                .builder()
-                .cpf(toCreateUserDomainObject.cpf())
-                .email(toCreateUserDomainObject.email())
-                .registration(toCreateUserDomainObject.registration())
-                .name(toCreateUserDomainObject.name())
-                .dateOfBirth(toCreateUserDomainObject.dateOfBirth())
-                .gender(toCreateUserDomainObject.gender())
-                .password(toCreateUserDomainObject.password())
-                .build();
 
         RoleEntity savedRoleEntity = RoleEntity.builder().name("any_name").active(true).build();
         UserEntity savedUserEntity = UserEntity
@@ -120,7 +110,7 @@ class UserGatewayTests {
                 .build();
 
         Mockito.when(this.userRepository.findByCpfAndActive(cpf, true)).thenReturn(Optional.of(savedUserEntity));
-        Mockito.when(this.userEntityMapper.toUserDomainObject(savedUserEntity,savedRoleEntity)).thenReturn(toCreateUserDomainObject);
+        Mockito.when(this.userEntityMapper.toUserDomainObject(savedUserEntity, savedRoleEntity)).thenReturn(toCreateUserDomainObject);
 
         User userDomainObject = this.userGateway.findUserByCpf(cpf);
 
@@ -130,7 +120,7 @@ class UserGatewayTests {
 
     @Test
     @DisplayName("Should return null if user does not exist by email")
-    void shouldReturnNullIfUserDoesNotExistByEmail(){
+    void shouldReturnNullIfUserDoesNotExistByEmail() {
         String email = "any_email";
         Mockito.when(this.userRepository.findByEmailAndActive(email, true)).thenReturn(Optional.empty());
         User userDomainObject = this.userGateway.findUserByEmail(email);
@@ -140,20 +130,10 @@ class UserGatewayTests {
 
     @Test
     @DisplayName("Should return user domain object if exists by email")
-    void shouldReturnUserDomainObjectIfExistsByEmail(){
+    void shouldReturnUserDomainObjectIfExistsByEmail() {
         String email = "any_email";
 
         User toCreateUserDomainObject = new User("any_cpf", "any_email", "any_registration", "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(), "any_password");
-        UserEntity toSaveUserEntity = UserEntity
-                .builder()
-                .cpf(toCreateUserDomainObject.cpf())
-                .email(toCreateUserDomainObject.email())
-                .registration(toCreateUserDomainObject.registration())
-                .name(toCreateUserDomainObject.name())
-                .dateOfBirth(toCreateUserDomainObject.dateOfBirth())
-                .gender(toCreateUserDomainObject.gender())
-                .password(toCreateUserDomainObject.password())
-                .build();
 
         RoleEntity savedRoleEntity = RoleEntity.builder().name("any_name").active(true).build();
         UserEntity savedUserEntity = UserEntity
@@ -170,7 +150,7 @@ class UserGatewayTests {
                 .build();
 
         Mockito.when(this.userRepository.findByEmailAndActive(email, true)).thenReturn(Optional.of(savedUserEntity));
-        Mockito.when(this.userEntityMapper.toUserDomainObject(savedUserEntity,savedRoleEntity)).thenReturn(toCreateUserDomainObject);
+        Mockito.when(this.userEntityMapper.toUserDomainObject(savedUserEntity, savedRoleEntity)).thenReturn(toCreateUserDomainObject);
 
         User userDomainObject = this.userGateway.findUserByEmail(email);
 
@@ -180,7 +160,7 @@ class UserGatewayTests {
 
     @Test
     @DisplayName("Should return null if user does not exist by registration")
-    void shouldReturnNullIfUserDoesNotExistByRegistration(){
+    void shouldReturnNullIfUserDoesNotExistByRegistration() {
         String registration = "any_registration";
         Mockito.when(this.userRepository.findByRegistrationAndActive(registration, true)).thenReturn(Optional.empty());
         User userDomainObject = this.userGateway.findUserByRegistration(registration);
@@ -190,20 +170,10 @@ class UserGatewayTests {
 
     @Test
     @DisplayName("Should return user domain object if exists by registration")
-    void shouldReturnUserDomainObjectIfExistsByRegistration(){
+    void shouldReturnUserDomainObjectIfExistsByRegistration() {
         String registration = "any_registration";
 
         User toCreateUserDomainObject = new User("any_cpf", "any_email", "any_registration", "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(), "any_password");
-        UserEntity toSaveUserEntity = UserEntity
-                .builder()
-                .cpf(toCreateUserDomainObject.cpf())
-                .email(toCreateUserDomainObject.email())
-                .registration(toCreateUserDomainObject.registration())
-                .name(toCreateUserDomainObject.name())
-                .dateOfBirth(toCreateUserDomainObject.dateOfBirth())
-                .gender(toCreateUserDomainObject.gender())
-                .password(toCreateUserDomainObject.password())
-                .build();
 
         RoleEntity savedRoleEntity = RoleEntity.builder().name("any_name").active(true).build();
         UserEntity savedUserEntity = UserEntity
@@ -220,7 +190,7 @@ class UserGatewayTests {
                 .build();
 
         Mockito.when(this.userRepository.findByRegistrationAndActive(registration, true)).thenReturn(Optional.of(savedUserEntity));
-        Mockito.when(this.userEntityMapper.toUserDomainObject(savedUserEntity,savedRoleEntity)).thenReturn(toCreateUserDomainObject);
+        Mockito.when(this.userEntityMapper.toUserDomainObject(savedUserEntity, savedRoleEntity)).thenReturn(toCreateUserDomainObject);
 
         User userDomainObject = this.userGateway.findUserByRegistration(registration);
 
