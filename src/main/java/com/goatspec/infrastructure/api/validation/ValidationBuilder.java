@@ -1,5 +1,6 @@
 package com.goatspec.infrastructure.api.validation;
 
+import com.goatspec.infrastructure.api.validation.validators.CPFValidator;
 import com.goatspec.infrastructure.api.validation.validators.RequiredFieldValidator;
 import com.goatspec.infrastructure.api.validation.validators.contract.IValidator;
 
@@ -22,6 +23,11 @@ public class ValidationBuilder {
 
     public ValidationBuilder required() {
         this.validators.add(new RequiredFieldValidator(this.fieldName, this.fieldValue));
+        return this;
+    }
+
+    public ValidationBuilder cpf() {
+        this.validators.add(new CPFValidator(this.fieldName, this.fieldValue));
         return this;
     }
 
