@@ -52,7 +52,7 @@ class UserGatewayTests {
                 .build();
 
         RoleEntity savedRoleEntity = RoleEntity.builder().name("any_name").active(true).build();
-        UserEntity saveUserEntity = UserEntity
+        UserEntity savedUserEntity = UserEntity
                 .builder()
                 .cpf(toCreateUserDomainObject.cpf())
                 .email(toCreateUserDomainObject.email())
@@ -67,15 +67,15 @@ class UserGatewayTests {
 
         Mockito.when(this.userEntityMapper.toUserEntity(toCreateUserDomainObject)).thenReturn(toSaveUserEntity);
         Mockito.when(this.roleRepository.findByNameAndActive(toCreateUserDomainObject.role(),true)).thenReturn(savedRoleEntity);
-        Mockito.when(this.userRepository.save(toSaveUserEntity)).thenReturn(saveUserEntity);
-        Mockito.when(this.userEntityMapper.toUserDomainObject(saveUserEntity, savedRoleEntity)).thenReturn(toCreateUserDomainObject);
+        Mockito.when(this.userRepository.save(toSaveUserEntity)).thenReturn(savedUserEntity);
+        Mockito.when(this.userEntityMapper.toUserDomainObject(savedUserEntity, savedRoleEntity)).thenReturn(toCreateUserDomainObject);
 
         userGateway.create(toCreateUserDomainObject);
 
         Mockito.verify(this.userEntityMapper, Mockito.times(1)).toUserEntity(toCreateUserDomainObject);
         Mockito.verify(this.roleRepository, Mockito.times(1)).findByNameAndActive(toCreateUserDomainObject.role(), true);
         Mockito.verify(this.userRepository, Mockito.times(1)).save(toSaveUserEntity);
-        Mockito.verify(this.userEntityMapper, Mockito.times(1)).toUserDomainObject(saveUserEntity, savedRoleEntity);
+        Mockito.verify(this.userEntityMapper, Mockito.times(1)).toUserDomainObject(savedUserEntity, savedRoleEntity);
     }
 
     @Test
@@ -87,4 +87,45 @@ class UserGatewayTests {
         Assertions.assertThat(userDomainObject).isNull();
         Mockito.verify(this.userRepository, Mockito.times(1)).findByCpfAndActive(cpf, true);
     }
+
+    @Test
+    @DisplayName("Sould return user domain object if exists by CPF")
+    void shouldReturnUserDomainObjectIfExists(){
+        String cpf = "any_cpf";
+
+        User toCreateUserDomainObject = new User("any_cpf", "any_email", "any_registration", "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(), "any_password");
+        UserEntity toSaveUserEntity = UserEntity
+                .builder()
+                .cpf(toCreateUserDomainObject.cpf())
+                .email(toCreateUserDomainObject.email())
+                .registration(toCreateUserDomainObject.registration())
+                .name(toCreateUserDomainObject.name())
+                .dateOfBirth(toCreateUserDomainObject.dateOfBirth())
+                .gender(toCreateUserDomainObject.gender())
+                .password(toCreateUserDomainObject.password())
+                .build();
+
+        RoleEntity savedRoleEntity = RoleEntity.builder().name("any_name").active(true).build();
+        UserEntity savedUserEntity = UserEntity
+                .builder()
+                .cpf(toCreateUserDomainObject.cpf())
+                .email(toCreateUserDomainObject.email())
+                .registration(toCreateUserDomainObject.registration())
+                .name(toCreateUserDomainObject.name())
+                .dateOfBirth(toCreateUserDomainObject.dateOfBirth())
+                .gender(toCreateUserDomainObject.gender())
+                .password(toCreateUserDomainObject.password())
+                .roles(Collections.singletonList(savedRoleEntity))
+                .active(true)
+                .build();
+
+        Mockito.when(this.userRepository.findByCpfAndActive(cpf, true)).thenReturn(Optional.of(savedUserEntity));
+        Mockito.when(this.userEntityMapper.toUserDomainObject(savedUserEntity,savedRoleEntity)).thenReturn(toCreateUserDomainObject);
+
+        User userDomainObject = this.userGateway.findUserByCpf(cpf);
+
+        Assertions.assertThat(userDomainObject).isEqualTo(toCreateUserDomainObject);
+        Mockito.verify(this.userRepository, Mockito.times(1)).findByCpfAndActive(cpf, true);
+    }
+
 }
