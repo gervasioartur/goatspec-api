@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class CPFFieldValidatorTests {
+class CPFFieldValidatorTests {
     @Test
     @DisplayName("should return error message if CPF is invalid")
     void shouldReturnErrorMessageIfCPFIsInvalid() {

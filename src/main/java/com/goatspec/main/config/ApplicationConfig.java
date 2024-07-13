@@ -1,6 +1,10 @@
 package com.goatspec.main.config;
 
+import com.goatspec.application.gateways.authentication.IAuthenticationGateway;
 import com.goatspec.application.gateways.encrypt.IPasswordEncoderGateway;
+import com.goatspec.application.gateways.user.IUserGateway;
+import com.goatspec.application.useCases.contracts.authentication.ISinginUseCase;
+import com.goatspec.application.useCases.implementations.authentication.SinginUseCase;
 import com.goatspec.infrastructure.gateways.authetication.AuthenticationGateway;
 import com.goatspec.infrastructure.gateways.encrypt.PasswordEncoderGateway;
 import com.goatspec.infrastructure.gateways.helpers.security.SingKey;
@@ -102,5 +106,10 @@ public class ApplicationConfig {
         authenticationProvider.setUserDetailsService(this.userDetailsService(userRepository));
         authenticationProvider.setPasswordEncoder(this.passwordEncoder());
         return authenticationProvider;
+    }
+
+    @Bean
+    public ISinginUseCase singinUseCase(IUserGateway userGateway, IAuthenticationGateway authenticationGateway) {
+        return new SinginUseCase(userGateway, authenticationGateway);
     }
 }

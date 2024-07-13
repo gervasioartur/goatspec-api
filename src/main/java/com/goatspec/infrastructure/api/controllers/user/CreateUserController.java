@@ -1,15 +1,19 @@
-package com.goatspec.infrastructure.api.controllers;
+package com.goatspec.infrastructure.api.controllers.user;
 
-import com.goatspec.application.useCases.contracts.ICreateUserUseCase;
+import com.goatspec.application.useCases.contracts.user.ICreateUserUseCase;
 import com.goatspec.domain.entities.user.User;
 import com.goatspec.domain.entities.user.UserAccount;
 import com.goatspec.domain.exceptions.BusinessException;
 import com.goatspec.domain.exceptions.UnexpectedException;
+import com.goatspec.infrastructure.api.controllers.AbstractController;
 import com.goatspec.infrastructure.api.dto.CreateUserRequest;
 import com.goatspec.infrastructure.api.dto.Response;
 import com.goatspec.infrastructure.api.validation.ValidationBuilder;
 import com.goatspec.infrastructure.api.validation.validators.contract.IValidator;
 import com.goatspec.infrastructure.gateways.mappers.UserDTOMapper;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +37,12 @@ public class CreateUserController extends AbstractController<CreateUserRequest> 
     @Override
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "Create user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Returns the user token"),
+            @ApiResponse(responseCode = "400", description = "Bad request happened"),
+            @ApiResponse(responseCode = "500", description = "Internal server error occurred"),
+    })
     public ResponseEntity<Response> perform(@RequestBody CreateUserRequest request) {
         Response response;
         ResponseEntity<Response> responseEntity;

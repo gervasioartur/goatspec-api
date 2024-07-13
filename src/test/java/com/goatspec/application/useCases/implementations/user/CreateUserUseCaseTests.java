@@ -1,10 +1,10 @@
-package com.goatspec.application.useCases.implementations;
+package com.goatspec.application.useCases.implementations.user;
 
 import com.goatspec.application.gateways.authentication.IAuthenticationGateway;
 import com.goatspec.application.gateways.encrypt.IPasswordEncoderGateway;
 import com.goatspec.application.gateways.role.IRoleGateway;
 import com.goatspec.application.gateways.user.IUserGateway;
-import com.goatspec.application.useCases.contracts.ICreateUserUseCase;
+import com.goatspec.application.useCases.contracts.user.ICreateUserUseCase;
 import com.goatspec.domain.Enums.GenderEnum;
 import com.goatspec.domain.Enums.RoleEnum;
 import com.goatspec.domain.entities.role.Role;
@@ -99,7 +99,7 @@ class CreateUserUseCaseTests {
     }
 
     @Test
-    @DisplayName("Should throw unexpected expcetion if user role does not existis")
+    @DisplayName("Should throw unexpected exception if user role does not existis")
     void shouldThrowUnexpectedExceptionIfUserRoleDoesNotExists() {
         User toCreateUser = new User("any_cpf", "any_email", "any_registration", "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(), "any_password");
 

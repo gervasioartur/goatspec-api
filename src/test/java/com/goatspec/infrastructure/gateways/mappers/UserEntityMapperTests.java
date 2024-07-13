@@ -13,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.Date;
 
 @SpringBootTest
-public class UserEntityMapperTests {
+class UserEntityMapperTests {
     private final UserEntityMapper mapper = new UserEntityMapper();
 
     @Test
