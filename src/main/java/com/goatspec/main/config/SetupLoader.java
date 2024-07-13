@@ -1,11 +1,9 @@
 package com.goatspec.main.config;
 
-import com.goatspec.application.gateways.encrypt.IPasswordEncoderGateway;
 import com.goatspec.infrastructure.persisntence.entities.PrivilegeEntity;
 import com.goatspec.infrastructure.persisntence.entities.RoleEntity;
 import com.goatspec.infrastructure.persisntence.repositories.IPrivilegeRepository;
 import com.goatspec.infrastructure.persisntence.repositories.IRoleRepository;
-import com.goatspec.infrastructure.persisntence.repositories.IUserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -22,13 +20,9 @@ import java.util.Optional;
 public class SetupLoader implements ApplicationListener<ContextRefreshedEvent> {
     boolean alreadySetup = false;
     @Autowired
-    private IUserRepository userRepository;
-    @Autowired
     private IRoleRepository roleRepository;
     @Autowired
     private IPrivilegeRepository privilegeRepository;
-    @Autowired
-    private IPasswordEncoderGateway passwordEncoderGateway;
 
     public void onApplicationEvent(ContextRefreshedEvent event) {
 
