@@ -1,9 +1,12 @@
 package com.goatspec.infrastructure.api.controllers.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.goatspec.application.useCases.contracts.authentication.ISinginUseCase;
 import com.goatspec.application.useCases.contracts.user.ICreateUserUseCase;
 import com.goatspec.domain.Enums.GenderEnum;
 import com.goatspec.domain.Enums.RoleEnum;
+import com.goatspec.domain.exceptions.UnauthorizedException;
+import com.goatspec.domain.exceptions.UnexpectedException;
 import com.goatspec.infrastructure.api.dto.CreateUserRequest;
 import com.goatspec.infrastructure.api.dto.SinginRequest;
 import com.goatspec.infrastructure.gateways.mappers.UserDTOMapper;
@@ -11,6 +14,7 @@ import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -35,9 +39,7 @@ public class SinginControllerTests {
     private MockMvc mvc;
 
     @MockBean
-    private ICreateUserUseCase createUserUseCase;
-    @MockBean
-    private UserDTOMapper userDTOMapper;
+    private ISinginUseCase singinUseCase;
 
     @BeforeEach
     void setup() {
@@ -116,6 +118,27 @@ public class SinginControllerTests {
                 .perform(requestBuilder)
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("body", Matchers.is("The field 'password' is required!")));
+    }
+
+    @Test
+    @DisplayName("Should return unauthorized if user case returns unauthorized")
+    void shouldReturnUnauthorizedIfUserCaseReturnsUnauthorized() throws Exception {
+        SinginRequest request =  new SinginRequest("any_cpf","any_password");
+        String json = new ObjectMapper().writeValueAsString(request);
+
+        BDDMockito.given(this.singinUseCase.singin(request.cpf(), request.password())).willThrow(new UnauthorizedException("Bad credentials."));
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post(AUTH_API)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mvc
+                .perform(requestBuilder)
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("body", Matchers.is("Bad credentials.")));
+
     }
 
 }
