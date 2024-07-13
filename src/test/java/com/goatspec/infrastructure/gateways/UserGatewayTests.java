@@ -187,4 +187,45 @@ class UserGatewayTests {
         Assertions.assertThat(userDomainObject).isNull();
         Mockito.verify(this.userRepository, Mockito.times(1)).findByRegistrationAndActive(registration, true);
     }
+
+    @Test
+    @DisplayName("Should return user domain object if exists by registration")
+    void shouldReturnUserDomainObjectIfExistsByRegistration(){
+        String registration = "any_registration";
+
+        User toCreateUserDomainObject = new User("any_cpf", "any_email", "any_registration", "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(), "any_password");
+        UserEntity toSaveUserEntity = UserEntity
+                .builder()
+                .cpf(toCreateUserDomainObject.cpf())
+                .email(toCreateUserDomainObject.email())
+                .registration(toCreateUserDomainObject.registration())
+                .name(toCreateUserDomainObject.name())
+                .dateOfBirth(toCreateUserDomainObject.dateOfBirth())
+                .gender(toCreateUserDomainObject.gender())
+                .password(toCreateUserDomainObject.password())
+                .build();
+
+        RoleEntity savedRoleEntity = RoleEntity.builder().name("any_name").active(true).build();
+        UserEntity savedUserEntity = UserEntity
+                .builder()
+                .cpf(toCreateUserDomainObject.cpf())
+                .email(toCreateUserDomainObject.email())
+                .registration(toCreateUserDomainObject.registration())
+                .name(toCreateUserDomainObject.name())
+                .dateOfBirth(toCreateUserDomainObject.dateOfBirth())
+                .gender(toCreateUserDomainObject.gender())
+                .password(toCreateUserDomainObject.password())
+                .roles(Collections.singletonList(savedRoleEntity))
+                .active(true)
+                .build();
+
+        Mockito.when(this.userRepository.findByRegistrationAndActive(registration, true)).thenReturn(Optional.of(savedUserEntity));
+        Mockito.when(this.userEntityMapper.toUserDomainObject(savedUserEntity,savedRoleEntity)).thenReturn(toCreateUserDomainObject);
+
+        User userDomainObject = this.userGateway.findUserByRegistration(registration);
+
+        Assertions.assertThat(userDomainObject).isEqualTo(toCreateUserDomainObject);
+        Mockito.verify(this.userRepository, Mockito.times(1)).findByRegistrationAndActive(registration, true);
+
+    }
 }
