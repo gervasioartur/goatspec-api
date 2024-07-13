@@ -35,13 +35,12 @@ public class UserGateway implements IUserGateway {
 
     @Override
     public User findUserByCpf(String cpf) {
-        User userDomainObject = null;
         Optional<UserEntity> userEntityResult = this.userRepository.findByCpfAndActive(cpf, true);
         if (userEntityResult.isPresent()) {
             List<RoleEntity> roles = userEntityResult.get().getRoles().stream().toList();
-            userDomainObject = this.userEntityMapper.toUserDomainObject(userEntityResult.get(), roles.getLast());
+            return this.userEntityMapper.toUserDomainObject(userEntityResult.get(), roles.getLast());
         }
-        return userDomainObject;
+        return null;
     }
 
     @Override
