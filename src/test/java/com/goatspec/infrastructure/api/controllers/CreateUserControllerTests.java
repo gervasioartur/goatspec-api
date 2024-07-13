@@ -381,7 +381,7 @@ class CreateUserControllerTests {
     @DisplayName("Should return bad request if password is null")
     void shouldReturnBadRequestIfPasswordIsNull() throws Exception {
         CreateUserRequest request = new CreateUserRequest("32635892024", "gervasio@gmail.com", "any_registration",
-                "any_name", new Date(), GenderEnum.MALE.getValue(),  RoleEnum.TEACHER.getValue(), null);
+                "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(), null);
 
         String json = new ObjectMapper().writeValueAsString(request);
 

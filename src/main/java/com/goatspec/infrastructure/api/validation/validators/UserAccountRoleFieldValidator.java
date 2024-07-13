@@ -15,7 +15,7 @@ public class UserAccountRoleFieldValidator extends AbstractValidator {
     public String validate() {
         String role = (String) fieldValue;
         if (!role.equals("TEACHER") && !role.equals(RoleEnum.TEACHER.getValue())
-                && !role.equals(RoleEnum.TECHNICIAN.getValue())   && !role.equals("TECHNICIAN"))
+                && !role.equals(RoleEnum.TECHNICIAN.getValue()) && !role.equals("TECHNICIAN"))
             return returnMessage;
         return null;
     }

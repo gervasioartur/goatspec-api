@@ -1,8 +1,6 @@
 package com.goatspec.infrastructure.api.controllers;
 
 import com.goatspec.application.useCases.contracts.ICreateUserUseCase;
-import com.goatspec.domain.entities.user.User;
-import com.goatspec.domain.exceptions.BusinessException;
 import com.goatspec.infrastructure.api.dto.CreateUserRequest;
 import com.goatspec.infrastructure.api.dto.Response;
 import com.goatspec.infrastructure.api.validation.ValidationBuilder;
@@ -21,7 +19,7 @@ public class CreateUserController extends AbstractController<CreateUserRequest> 
     private final ICreateUserUseCase createUserUseCase;
     private final UserDTOMapper userDTOMapper;
 
-    public CreateUserController(ICreateUserUseCase createUserUseCase,UserDTOMapper userDTOMapper) {
+    public CreateUserController(ICreateUserUseCase createUserUseCase, UserDTOMapper userDTOMapper) {
         this.createUserUseCase = createUserUseCase;
         this.userDTOMapper = userDTOMapper;
     }
