@@ -6,7 +6,7 @@ import com.goatspec.infrastructure.persisntence.entoties.RoleEntity;
 import com.goatspec.infrastructure.persisntence.repositories.IRoleRepository;
 
 public class RoleGateway implements IRoleGateway {
-    private IRoleRepository roleRepository;
+    private final IRoleRepository roleRepository;
 
     public RoleGateway(IRoleRepository roleRepository) {
         this.roleRepository = roleRepository;
@@ -14,7 +14,7 @@ public class RoleGateway implements IRoleGateway {
 
     @Override
     public Role findRoleByName(String name) {
-       RoleEntity roleEntity = this.roleRepository.findByNameAndActive(name,true);
+        RoleEntity roleEntity = this.roleRepository.findByNameAndActive(name, true);
         if (roleEntity == null) return null;
         return null;
     }

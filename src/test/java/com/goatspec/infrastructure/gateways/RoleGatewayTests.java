@@ -1,16 +1,8 @@
 package com.goatspec.infrastructure.gateways;
 
 import com.goatspec.application.gateways.IRoleGateway;
-import com.goatspec.application.gateways.IUserGateway;
-import com.goatspec.domain.Enums.GenderEnum;
-import com.goatspec.domain.Enums.RoleEnum;
 import com.goatspec.domain.entities.Role;
-import com.goatspec.domain.entities.User;
-import com.goatspec.infrastructure.gateways.mappers.UserEntityMapper;
-import com.goatspec.infrastructure.persisntence.entoties.RoleEntity;
-import com.goatspec.infrastructure.persisntence.entoties.UserEntity;
 import com.goatspec.infrastructure.persisntence.repositories.IRoleRepository;
-import com.goatspec.infrastructure.persisntence.repositories.IUserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,10 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-
-import java.util.Collections;
-import java.util.Date;
-import java.util.Optional;
 
 @SpringBootTest
 class RoleGatewayTests {
