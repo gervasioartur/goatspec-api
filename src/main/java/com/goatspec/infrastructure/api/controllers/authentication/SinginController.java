@@ -11,10 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +30,7 @@ public class SinginController extends AbstractController<SinginRequest> {
             @ApiResponse(responseCode = "400", description = "Bad request happened"),
             @ApiResponse(responseCode = "500", description = "Internal server error occurred"),
     })
-    public ResponseEntity<Response> perform(SinginRequest request) {
+    public ResponseEntity<Response> perform(@RequestBody SinginRequest request) {
         Response response;
         ResponseEntity<Response> responseEntity;
 
@@ -50,6 +47,7 @@ public class SinginController extends AbstractController<SinginRequest> {
     public List<IValidator> buildValidators(SinginRequest request) {
         List<IValidator> validators = new ArrayList<>();
         validators.addAll(ValidationBuilder.of("CPF", request.cpf()).required().build());
+        validators.addAll(ValidationBuilder.of("password", request.password()).required().build());
         return validators;
     }
 }
