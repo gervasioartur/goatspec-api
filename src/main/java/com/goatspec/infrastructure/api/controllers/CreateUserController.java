@@ -1,10 +1,13 @@
 package com.goatspec.infrastructure.api.controllers;
 
 import com.goatspec.application.useCases.contracts.ICreateUserUseCase;
+import com.goatspec.domain.entities.user.User;
+import com.goatspec.domain.exceptions.BusinessException;
 import com.goatspec.infrastructure.api.dto.CreateUserRequest;
 import com.goatspec.infrastructure.api.dto.Response;
 import com.goatspec.infrastructure.api.validation.ValidationBuilder;
 import com.goatspec.infrastructure.api.validation.validators.contract.IValidator;
+import com.goatspec.infrastructure.gateways.mappers.UserDTOMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,9 +19,11 @@ import java.util.List;
 @RequestMapping("/users")
 public class CreateUserController extends AbstractController<CreateUserRequest> {
     private final ICreateUserUseCase createUserUseCase;
+    private final UserDTOMapper userDTOMapper;
 
-    public CreateUserController(ICreateUserUseCase createUserUseCase) {
+    public CreateUserController(ICreateUserUseCase createUserUseCase,UserDTOMapper userDTOMapper) {
         this.createUserUseCase = createUserUseCase;
+        this.userDTOMapper = userDTOMapper;
     }
 
     @Override
@@ -46,7 +51,7 @@ public class CreateUserController extends AbstractController<CreateUserRequest> 
         validators.addAll(ValidationBuilder.of("date of birth", request.dateOfBirth()).required().build());
         validators.addAll(ValidationBuilder.of("gender", request.gender()).required().build());
         validators.addAll(ValidationBuilder.of("role", request.role()).required().role().build());
-
+        validators.addAll(ValidationBuilder.of("password", request.password()).required().password().build());
         return validators;
     }
 }

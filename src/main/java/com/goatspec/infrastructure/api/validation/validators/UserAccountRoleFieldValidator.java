@@ -1,5 +1,7 @@
 package com.goatspec.infrastructure.api.validation.validators;
 
+import com.goatspec.domain.Enums.RoleEnum;
+
 public class UserAccountRoleFieldValidator extends AbstractValidator {
     private final String returnMessage;
 
@@ -12,7 +14,9 @@ public class UserAccountRoleFieldValidator extends AbstractValidator {
     @Override
     public String validate() {
         String role = (String) fieldValue;
-        if (!role.equals("TEACHER") && !role.equals("TECHNICIAN")) return returnMessage;
+        if (!role.equals("TEACHER") && !role.equals(RoleEnum.TEACHER.getValue())
+                && !role.equals(RoleEnum.TECHNICIAN.getValue())   && !role.equals("TECHNICIAN"))
+            return returnMessage;
         return null;
     }
 }
