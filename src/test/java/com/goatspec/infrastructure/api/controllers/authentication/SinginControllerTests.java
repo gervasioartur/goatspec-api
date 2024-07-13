@@ -49,7 +49,7 @@ public class SinginControllerTests {
     @Test
     @DisplayName("Should return bad request if CPF is empty")
     void shouldReturnBadRequestIfCPFIsEmpty() throws Exception {
-        SinginRequest request =  new SinginRequest("any_cpf","any_password");
+        SinginRequest request =  new SinginRequest("","any_password");
         String json = new ObjectMapper().writeValueAsString(request);
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
@@ -80,6 +80,42 @@ public class SinginControllerTests {
                 .perform(requestBuilder)
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("body", Matchers.is("The field 'CPF' is required!")));
+    }
+
+    @Test
+    @DisplayName("Should return bad request if password is empty")
+    void shouldReturnBadRequestIfPasswordIsEmpty() throws Exception {
+        SinginRequest request =  new SinginRequest("any_cpf","");
+        String json = new ObjectMapper().writeValueAsString(request);
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post(AUTH_API)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mvc
+                .perform(requestBuilder)
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("body", Matchers.is("The field 'password' is required!")));
+    }
+
+    @Test
+    @DisplayName("Should return bad request if password is null")
+    void shouldReturnBadRequestIfPasswordIsNull() throws Exception {
+        SinginRequest request =  new SinginRequest("any_cpf",null);
+        String json = new ObjectMapper().writeValueAsString(request);
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post(AUTH_API)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mvc
+                .perform(requestBuilder)
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("body", Matchers.is("The field 'password' is required!")));
     }
 
 }
