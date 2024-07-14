@@ -20,6 +20,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Optional;
+import java.util.UUID;
 
 @SpringBootTest
 class UserGatewayTests {
@@ -76,6 +77,16 @@ class UserGatewayTests {
         Mockito.verify(this.roleRepository, Mockito.times(1)).findByNameAndActive(toCreateUserDomainObject.role(), true);
         Mockito.verify(this.userRepository, Mockito.times(1)).save(toSaveUserEntity);
         Mockito.verify(this.userEntityMapper, Mockito.times(1)).toDomainObject(savedUserEntity, savedRoleEntity);
+    }
+
+    @Test
+    @DisplayName("Should return null if user does not exist by id")
+    void shouldReturnNullIfUserDoesNotExistById() {
+        UUID id = UUID.randomUUID();
+        Mockito.when(this.userRepository.findByIdAndActive(id, true)).thenReturn(Optional.empty());
+        User userDomainObject = this.userGateway.findUserById(id);
+        Assertions.assertThat(userDomainObject).isNull();
+        Mockito.verify(this.userRepository, Mockito.times(1)).findByIdAndActive(id, true);
     }
 
     @Test
