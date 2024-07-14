@@ -31,7 +31,7 @@ public class SpecializationGateway implements ISpecializationGateway {
     public Specialization create(Specialization specialization) {
         SpecializationEntity specializationEntity = this.specializeEntityMapper.toSpecializationEntity(specialization);
 
-        SpecializationStatusEntity specializationStatusEntity =  this.specializationSituationRepository
+        SpecializationStatusEntity specializationStatusEntity = this.specializationSituationRepository
                 .findByDescriptionAndActive(SpeciaiizationSituationEnum.PENDING.getValue(), true);
         Optional<UserEntity> userEntity = this.userRepository.findByIdAndActive(specialization.userId(), true);
 

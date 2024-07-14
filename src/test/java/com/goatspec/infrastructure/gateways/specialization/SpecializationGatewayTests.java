@@ -34,23 +34,23 @@ class SpecializationGatewayTests {
     @MockBean
     private ISpecializationRepository specializationRepository;
     @MockBean
-    private  SpecializeEntityMapper specializeEntityMapper;
+    private SpecializeEntityMapper specializeEntityMapper;
     @MockBean
-    private  IUserRepository userRepository;
+    private IUserRepository userRepository;
 
 
     @BeforeEach
     void setUp() {
-        this.specializationGateway =  new SpecializationGateway
-                (specializationSituationRepository,specializationRepository,specializeEntityMapper,userRepository);
+        this.specializationGateway = new SpecializationGateway
+                (specializationSituationRepository, specializationRepository, specializeEntityMapper, userRepository);
     }
 
     @Test
     @DisplayName("Should return specialization domain object")
     void shouldReturnSpecializationDomainObject() {
         UUID userId = UUID.randomUUID();
-        Specialization specializationDomainObject =  new Specialization
-                (userId,"any_area","any_type",2,new BigDecimal("25"));
+        Specialization specializationDomainObject = new Specialization
+                (userId, "any_area", "any_type", 2, new BigDecimal("25"));
 
         SpecializationEntity toCreateSpecializationEntity = SpecializationEntity
                 .builder()
@@ -61,7 +61,7 @@ class SpecializationGatewayTests {
                 .totalCost(specializationDomainObject.totalCost())
                 .build();
 
-        SpecializationStatusEntity savedSpecializationStatusEntity =  SpecializationStatusEntity
+        SpecializationStatusEntity savedSpecializationStatusEntity = SpecializationStatusEntity
                 .builder()
                 .id(UUID.randomUUID())
                 .description(SpeciaiizationSituationEnum.PENDING.getValue())
@@ -86,14 +86,13 @@ class SpecializationGatewayTests {
 
         Mockito.when(this.specializeEntityMapper.toSpecializationEntity(specializationDomainObject)).thenReturn(toCreateSpecializationEntity);
         Mockito.when(this.specializationSituationRepository
-                .findByDescriptionAndActive(SpeciaiizationSituationEnum.PENDING.getValue(),true)).thenReturn(savedSpecializationStatusEntity);
+                .findByDescriptionAndActive(SpeciaiizationSituationEnum.PENDING.getValue(), true)).thenReturn(savedSpecializationStatusEntity);
 
-        Mockito.when(this.userRepository.findByIdAndActive(userId,true)).thenReturn(Optional.of(savedUserEntity));
+        Mockito.when(this.userRepository.findByIdAndActive(userId, true)).thenReturn(Optional.of(savedUserEntity));
 
         toCreateSpecializationEntity.setActive(true);
         toCreateSpecializationEntity.setUser(savedUserEntity);
         toCreateSpecializationEntity.setSpecializationStatus(savedSpecializationStatusEntity);
-
 
 
         SpecializationEntity savedCreateSpecializationEntity = SpecializationEntity
@@ -112,7 +111,7 @@ class SpecializationGatewayTests {
         Mockito.when(this.specializeEntityMapper.toDomainObject(savedCreateSpecializationEntity)).thenReturn(specializationDomainObject);
 
 
-       Specialization result =  this.specializationGateway.create(specializationDomainObject);
+        Specialization result = this.specializationGateway.create(specializationDomainObject);
 
         Assertions.assertThat(result).isEqualTo(specializationDomainObject);
 
