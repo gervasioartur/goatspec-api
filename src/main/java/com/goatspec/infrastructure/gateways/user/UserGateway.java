@@ -37,8 +37,7 @@ public class UserGateway implements IUserGateway {
     @Override
     public User findUserById(UUID id) {
         Optional<UserEntity> userEntity = this.userRepository.findByIdAndActive(id, true);
-        if (userEntity.isEmpty()) return null;
-        return null;
+        return userEntity.map(entity -> this.userEntityMapper.toDomainObject(entity, entity.getRoles().stream().toList().getLast())).orElse(null);
     }
 
 
