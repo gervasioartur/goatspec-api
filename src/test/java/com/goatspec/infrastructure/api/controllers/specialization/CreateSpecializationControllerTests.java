@@ -6,6 +6,7 @@ import com.goatspec.application.useCases.contracts.specialization.ICreateSpecial
 import com.goatspec.application.useCases.contracts.user.ICreateUserUseCase;
 import com.goatspec.domain.Enums.GenderEnum;
 import com.goatspec.domain.Enums.RoleEnum;
+import com.goatspec.domain.Enums.SpecializationTypeEnum;
 import com.goatspec.domain.entities.specialization.Specialization;
 import com.goatspec.infrastructure.api.dto.CreateSpecializationRequest;
 import com.goatspec.infrastructure.api.dto.CreateUserRequest;
@@ -133,5 +134,23 @@ public class CreateSpecializationControllerTests {
                 .perform(requestBuilder)
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("body", Matchers.is("The option you entered is invalid! you must choose in POS GRADUAÇÃO or MESTRADO or DOUTORADO or POSTGRADUATE or MASTER'S DEGREE or DOCTORATE DEGREE")));
+    }
+
+    @Test
+    @DisplayName("Should return bad request  of CourseLoad  less ou equal zero")
+    void shouldReturnBadRequestIfCourseLoadIsInvalid() throws Exception {
+        CreateSpecializationRequest request = new CreateSpecializationRequest("any_area", SpecializationTypeEnum.DOCTORATE_DEGREE.getValue(), 0, new BigDecimal("25"));
+        String json = new ObjectMapper().writeValueAsString(request);
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post(SPEC_API)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mvc
+                .perform(requestBuilder)
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("body", Matchers.is("The field 'course load' must be greater  than " + 60 + "!")));
     }
 }
