@@ -80,4 +80,58 @@ public class CreateSpecializationControllerTests {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("body", Matchers.is("The field 'area' is required!")));
     }
+
+    @Test
+    @DisplayName("Should return bad request if type is empty")
+    void shouldReturnBadRequestIfTypeIsEmpty() throws Exception {
+        CreateSpecializationRequest request = new CreateSpecializationRequest("any_area", "", 2, new BigDecimal("25"));
+        String json = new ObjectMapper().writeValueAsString(request);
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post(SPEC_API)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mvc
+                .perform(requestBuilder)
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("body", Matchers.is("The field 'type' is required!")));
+    }
+
+    @Test
+    @DisplayName("Should return bad request if type is null")
+    void shouldReturnBadRequestIfTypeIsNull() throws Exception {
+        CreateSpecializationRequest request = new CreateSpecializationRequest("any_area", null, 2, new BigDecimal("25"));
+        String json = new ObjectMapper().writeValueAsString(request);
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post(SPEC_API)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mvc
+                .perform(requestBuilder)
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("body", Matchers.is("The field 'type' is required!")));
+    }
+
+    @Test
+    @DisplayName("Should return bad request if type is invalid")
+    void shouldReturnBadRequestIfTypeIsInvalid() throws Exception {
+        CreateSpecializationRequest request = new CreateSpecializationRequest("any_area", "any_ty", 2, new BigDecimal("25"));
+        String json = new ObjectMapper().writeValueAsString(request);
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post(SPEC_API)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mvc
+                .perform(requestBuilder)
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("body", Matchers.is("The option you entered is invalid! you must choose in POS GRADUAÇÃO or MESTRADO or DOUTORADO or POSTGRADUATE or MASTER'S DEGREE or DOCTORATE DEGREE")));
+    }
 }
