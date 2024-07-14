@@ -4,7 +4,7 @@ import com.goatspec.domain.entities.specialization.Specialization;
 import com.goatspec.infrastructure.persisntence.entities.SpecializationEntity;
 import com.goatspec.infrastructure.persisntence.entities.UserEntity;
 
-public class SpecializeEntityMapper {
+public class SpecializationEntityMapper {
     public SpecializationEntity toSpecializationEntity(Specialization specializationDomainObject) {
         return SpecializationEntity
                 .builder()
