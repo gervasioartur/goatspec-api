@@ -66,7 +66,8 @@ public class Mocks {
                         , specializationEntity.getUser().getName(),
                         specializationEntity.getUser().getEmail()
                         , specializationEntity.getUser().getRegistration()),
-                new Specialization(specializationEntity.getUser().getId(), specializationEntity.getArea(), specializationEntity.getType(), specializationEntity.getCourseLoad(), specializationEntity.getTotalCost())
+                new Specialization(specializationEntity.getUser().getId(), specializationEntity.getArea(), specializationEntity.getType(), specializationEntity.getCourseLoad(), specializationEntity.getTotalCost()),
+                specializationEntity.getSpecializationStatus().getDescription()
         );
     }
 }
