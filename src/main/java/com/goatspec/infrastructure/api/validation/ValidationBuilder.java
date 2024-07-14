@@ -51,10 +51,9 @@ public class ValidationBuilder {
     }
 
     public ValidationBuilder min(int min) {
-        this.validators.add(new MinFieldValidator(this.fieldName, this.fieldValue,min));
+        this.validators.add(new MinFieldValidator(this.fieldName, this.fieldValue, min));
         return this;
     }
-
 
 
     public List<IValidator> build() {
