@@ -37,12 +37,14 @@ class ListAllSpecializationRequestsUseCaseTests {
 
         SpecializationAndUser specializationAndUser = new SpecializationAndUser(
                 new UserInfo(userId, "any_name", "any_email", "any_registration"),
-                new Specialization(userId, "any_area", "any_type", 36, new BigDecimal("200"))
+                new Specialization(userId, "any_area", "any_type", 36, new BigDecimal("200")),
+                "PENDING"
         );
 
         SpecializationAndUser specializationAndUser1 = new SpecializationAndUser(
                 new UserInfo(userId1, "any_name", "any_email", "any_registration"),
-                new Specialization(userId1, "any_area", "any_type", 36, new BigDecimal("200"))
+                new Specialization(userId1, "any_area", "any_type", 36, new BigDecimal("200")),
+                "PENDING"
         );
 
         List<SpecializationAndUser> list = List.of(specializationAndUser, specializationAndUser1);

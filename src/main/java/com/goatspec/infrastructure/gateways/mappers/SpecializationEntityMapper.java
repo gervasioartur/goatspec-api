@@ -36,7 +36,7 @@ public class SpecializationEntityMapper {
                 .map(specializationEntity -> {
                     UserInfo userInfo = this.userEntityMapper.toUserInfo(specializationEntity.getUser());
                     Specialization specialization = this.toDomainObject(specializationEntity);
-                    return new SpecializationAndUser(userInfo, specialization);
+                    return new SpecializationAndUser(userInfo, specialization, specializationEntity.getSpecializationStatus().getDescription());
                 }).collect(Collectors.toList());
     }
 }
