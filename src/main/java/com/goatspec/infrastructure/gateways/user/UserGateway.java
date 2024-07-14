@@ -11,6 +11,7 @@ import com.goatspec.infrastructure.persisntence.repositories.IUserRepository;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public class UserGateway implements IUserGateway {
     private final IUserRepository userRepository;
@@ -32,6 +33,14 @@ public class UserGateway implements IUserGateway {
         userEntity = this.userRepository.save(userEntity);
         return this.userEntityMapper.toDomainObject(userEntity, roleEntity);
     }
+
+    @Override
+    public User findUserById(UUID id) {
+        Optional<UserEntity> userEntity = this.userRepository.findByIdAndActive(id, true);
+        if (userEntity.isEmpty()) return null;
+        return null;
+    }
+
 
     @Override
     public User findUserByCpf(String cpf) {
