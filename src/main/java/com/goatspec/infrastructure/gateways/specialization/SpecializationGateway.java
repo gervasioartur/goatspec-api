@@ -54,9 +54,8 @@ public class SpecializationGateway implements ISpecializationGateway {
 
     @Override
     public Specialization findById(UUID id) {
-       Optional<SpecializationEntity> specializationEntityResult = this.specializationRepository
-               .findByIdAndActive(id,true);
-        return null;
+       Optional<SpecializationEntity> specializationEntityResult = this.specializationRepository.findByIdAndActive(id,true);
+        return specializationEntityResult.map(this.specializationEntityMapper::toDomainObject).orElse(null);
     }
 
     @Override
