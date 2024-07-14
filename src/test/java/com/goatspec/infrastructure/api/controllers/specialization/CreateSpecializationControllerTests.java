@@ -217,4 +217,31 @@ public class CreateSpecializationControllerTests {
                 .perform(requestBuilder)
                 .andExpect(status().isInternalServerError());
     }
+
+    @Test
+    @DisplayName("Should return successfully message on success")
+    void shouldReturnSuccessfulMessageOnSuccess() throws Exception {
+        CreateSpecializationRequest request = new CreateSpecializationRequest("any_area", SpecializationTypeEnum.DOCTORATE_DEGREE.getValue(), 60, new BigDecimal("25"));
+
+        UserInfo userInfoDomainObject = new UserInfo(UUID.randomUUID(), "any_name", "any_email", "any_registration");
+        Specialization specializationDomainObject = new Specialization(userInfoDomainObject.id(), "any_area", SpecializationTypeEnum.DOCTORATE_DEGREE.getValue(), 60, new BigDecimal("25"));
+
+        BDDMockito.when(this.getLoggedUserInfoUseCase.get()).thenReturn(userInfoDomainObject);
+        BDDMockito.when(this.specializationDTOMapper.toDomainObject(request, userInfoDomainObject.id())).thenReturn(specializationDomainObject);
+        BDDMockito.doNothing().when(this.createSpecializationUseCase).create(specializationDomainObject);
+
+        String json = new ObjectMapper().writeValueAsString(request);
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post(SPEC_API)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json);
+
+
+        mvc
+                .perform(requestBuilder)
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("body", Matchers.is("You've successfully requested for specialization.")));
+    }
 }

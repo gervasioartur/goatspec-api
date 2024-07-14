@@ -64,8 +64,8 @@ public class CreateSpecializationController extends AbstractController<CreateSpe
             UserInfo userInfo = this.getLoggedUserInfoUseCase.get();
             Specialization specializationDomainObject = this.specializationDTOMapper.toDomainObject(request, userInfo.id());
             this.specializationUseCase.create(specializationDomainObject);
-            response = new Response("Successfully created specialization");
-            responseEntity = new ResponseEntity<>(response, HttpStatus.OK);
+            response = new Response("You've successfully requested for specialization.");
+            responseEntity = new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (UnauthorizedException ex) {
             response = new Response(ex.getMessage());
             responseEntity = new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
@@ -83,7 +83,6 @@ public class CreateSpecializationController extends AbstractController<CreateSpe
         validators.addAll(ValidationBuilder.of("area", request.area()).required().build());
         validators.addAll(ValidationBuilder.of("type", request.type()).required().specType().build());
         validators.addAll(ValidationBuilder.of("course load", request.courseLoad()).min(60).build());
-
         return validators;
     }
 }
