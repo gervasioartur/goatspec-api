@@ -16,7 +16,7 @@ public class LoadUserByUsernameGateway implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username)  {
         Optional<UserEntity> userEntityResult = this.userRepository.findByCpfAndActive(username, true);
         return userEntityResult.orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
     }
