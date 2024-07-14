@@ -29,5 +29,41 @@ class UserDTOMapperTests {
         Assertions.assertThat(request.dateOfBirth()).isEqualTo(userDomainObject.dateOfBirth());
         Assertions.assertThat(request.role()).isEqualTo(userDomainObject.role());
         Assertions.assertThat(request.password()).isEqualTo(userDomainObject.password());
+
+        request = new CreateUserRequest("any_cpf", "any_email", "any_create_registration", "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TECHNICIAN.getValue(), "any_password");
+
+        userDomainObject = mapper.toDomainObject(request);
+
+        Assertions.assertThat(request.cpf()).isEqualTo(userDomainObject.cpf());
+        Assertions.assertThat(request.email()).isEqualTo(userDomainObject.email());
+        Assertions.assertThat(request.registration()).isEqualTo(userDomainObject.registration());
+        Assertions.assertThat(request.name()).isEqualTo(userDomainObject.name());
+        Assertions.assertThat(request.dateOfBirth()).isEqualTo(userDomainObject.dateOfBirth());
+        Assertions.assertThat(request.role()).isEqualTo(userDomainObject.role());
+        Assertions.assertThat(request.password()).isEqualTo(userDomainObject.password());
+
+        request = new CreateUserRequest("any_cpf", "any_email", "any_create_registration", "any_name", new Date(), GenderEnum.MALE.getValue(), "TEACHER", "any_password");
+
+        userDomainObject = mapper.toDomainObject(request);
+
+        Assertions.assertThat(request.cpf()).isEqualTo(userDomainObject.cpf());
+        Assertions.assertThat(request.email()).isEqualTo(userDomainObject.email());
+        Assertions.assertThat(request.registration()).isEqualTo(userDomainObject.registration());
+        Assertions.assertThat(request.name()).isEqualTo(userDomainObject.name());
+        Assertions.assertThat(request.dateOfBirth()).isEqualTo(userDomainObject.dateOfBirth());
+        Assertions.assertThat(RoleEnum.TEACHER.getValue()).isEqualTo(userDomainObject.role());
+        Assertions.assertThat(request.password()).isEqualTo(userDomainObject.password());
+
+        request = new CreateUserRequest("any_cpf", "any_email", "any_create_registration", "any_name", new Date(), GenderEnum.MALE.getValue(), "TECHNICIAN", "any_password");
+
+        userDomainObject = mapper.toDomainObject(request);
+
+        Assertions.assertThat(request.cpf()).isEqualTo(userDomainObject.cpf());
+        Assertions.assertThat(request.email()).isEqualTo(userDomainObject.email());
+        Assertions.assertThat(request.registration()).isEqualTo(userDomainObject.registration());
+        Assertions.assertThat(request.name()).isEqualTo(userDomainObject.name());
+        Assertions.assertThat(request.dateOfBirth()).isEqualTo(userDomainObject.dateOfBirth());
+        Assertions.assertThat(RoleEnum.TECHNICIAN.getValue()).isEqualTo(userDomainObject.role());
+        Assertions.assertThat(request.password()).isEqualTo(userDomainObject.password());
     }
 }

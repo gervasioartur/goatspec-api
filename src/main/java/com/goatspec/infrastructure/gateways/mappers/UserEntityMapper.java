@@ -1,5 +1,6 @@
 package com.goatspec.infrastructure.gateways.mappers;
 
+import com.goatspec.domain.entities.authentication.UserInfo;
 import com.goatspec.domain.entities.user.User;
 import com.goatspec.infrastructure.persisntence.entities.RoleEntity;
 import com.goatspec.infrastructure.persisntence.entities.UserEntity;
@@ -20,5 +21,9 @@ public class UserEntityMapper {
 
     public User toDomainObject(UserEntity userEntity, RoleEntity roleEntity) {
         return new User(userEntity.getCpf(), userEntity.getEmail(), userEntity.getRegistration(), userEntity.getName(), userEntity.getDateOfBirth(), userEntity.getGender(), roleEntity.getName(), userEntity.getPassword());
+    }
+
+    public UserInfo toUserInfo(UserEntity userEntity) {
+        return new UserInfo(userEntity.getId(), userEntity.getName(), userEntity.getEmail(), userEntity.getRegistration());
     }
 }

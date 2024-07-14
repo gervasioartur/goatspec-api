@@ -18,7 +18,6 @@ public class RoleGateway implements IRoleGateway {
     @Override
     public Role findRoleByName(String name) {
         RoleEntity roleEntity = this.roleRepository.findByNameAndActive(name, true);
-        if (roleEntity != null) return this.roleEntityMapper.toDomainObject(roleEntity);
-        return null;
+        return (roleEntity != null) ? this.roleEntityMapper.toDomainObject(roleEntity) : null;
     }
 }
