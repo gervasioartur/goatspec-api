@@ -3,6 +3,7 @@ package com.goatspec.infrastructure.gateways.specialization;
 import com.goatspec.application.gateways.specialization.ISpecializationGateway;
 import com.goatspec.domain.Enums.SpeciaiizationSituationEnum;
 import com.goatspec.domain.entities.specialization.Specialization;
+import com.goatspec.domain.entities.specialization.SpecializationAndUser;
 import com.goatspec.infrastructure.gateways.mappers.SpecializationEntityMapper;
 import com.goatspec.infrastructure.persisntence.entities.SpecializationEntity;
 import com.goatspec.infrastructure.persisntence.entities.SpecializationStatusEntity;
@@ -12,6 +13,7 @@ import com.goatspec.infrastructure.persisntence.repositories.ISpecializationStat
 import com.goatspec.infrastructure.persisntence.repositories.IUserRepository;
 import jakarta.transaction.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Transactional
@@ -42,5 +44,10 @@ public class SpecializationGateway implements ISpecializationGateway {
         specializationEntity.setSpecializationStatus(specializationStatusEntity);
         specializationEntity = this.specializationRepository.save(specializationEntity);
         return this.specializationEntityMapper.toDomainObject(specializationEntity);
+    }
+
+    @Override
+    public List<SpecializationAndUser> getAll() {
+         return this.specializationEntityMapper.toDomainObjects(this.specializationRepository.findAll());
     }
 }
