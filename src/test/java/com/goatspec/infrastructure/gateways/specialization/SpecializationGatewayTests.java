@@ -4,6 +4,7 @@ import com.goatspec.application.gateways.specialization.ISpecializationGateway;
 import com.goatspec.domain.Enums.SpeciaiizationSituationEnum;
 import com.goatspec.domain.entities.specialization.Specialization;
 import com.goatspec.domain.entities.specialization.SpecializationAndUser;
+import com.goatspec.domain.entities.user.User;
 import com.goatspec.infrastructure.gateways.mappers.SpecializationEntityMapper;
 import com.goatspec.infrastructure.persisntence.entities.RoleEntity;
 import com.goatspec.infrastructure.persisntence.entities.SpecializationEntity;
@@ -138,5 +139,15 @@ class SpecializationGatewayTests {
         Assertions.assertThat(result).isEqualTo(specializationAndUserList);
         Mockito.verify(this.specializationRepository, Mockito.times(1)).findAll();
         Mockito.verify(this.specializationEntityMapper, Mockito.times(1)).toDomainObjects(specializationEntityList);
+    }
+
+    @Test
+    @DisplayName("should return null if the specialization does not exists")
+    void ShouldReturnNullIfTheSpecializationDoesNotExists(){
+        UUID specializationId = UUID.randomUUID();
+        Mockito.when(this.specializationRepository.findByIdAndActive(specializationId,true)).thenReturn(Optional.empty());
+        Specialization result = this.specializationGateway.findById(specializationId);
+        Assertions.assertThat(result).isNull();
+        Mockito.verify(this.specializationRepository, Mockito.times(1)).findByIdAndActive(specializationId, true);
     }
 }

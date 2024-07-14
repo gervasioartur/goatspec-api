@@ -47,11 +47,11 @@ class ApproveSpecializationRequestUseCaseTests {
         Specialization createdSpecialization = Mocks.specializationDomainObjectFactory();
 
         Mockito.when(this.specializationGateway.findById(createdSpecialization.userId())).thenReturn(createdSpecialization);
-        Mockito.doNothing().when(this.specializationGateway).approve(createdSpecialization);
+        Mockito.doNothing().when(this.specializationGateway).approve(createdSpecialization.userId());
 
         this.approveSpecializationRequestUseCase.approve(createdSpecialization.userId());
 
         Mockito.verify(this.specializationGateway, Mockito.times(1)).findById(createdSpecialization.userId());
-        Mockito.verify(this.specializationGateway, Mockito.times(1)).approve(createdSpecialization);
+        Mockito.verify(this.specializationGateway, Mockito.times(1)).approve(createdSpecialization.userId());
     }
 }
