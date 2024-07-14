@@ -18,6 +18,6 @@ public class ApproveSpecializationRequestUseCase implements IApproveSpecializati
     public void approve(UUID specializationId) {
         Specialization specialization = specializationGateway.findById(specializationId);
         if (specialization == null) throw new NotFoundException("Couldn't find Specialization request.");
-        this.specializationGateway.approve(specialization);
+        this.specializationGateway.approve(specialization.userId());
     }
 }

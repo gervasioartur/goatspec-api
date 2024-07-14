@@ -33,16 +33,6 @@ public class SpecializationGateway implements ISpecializationGateway {
     }
 
     @Override
-    public Specialization findById(UUID id) {
-        return null;
-    }
-
-    @Override
-    public void approve(Specialization specialization) {
-
-    }
-
-    @Override
     public Specialization create(Specialization specialization) {
         SpecializationEntity specializationEntity = this.specializationEntityMapper.toSpecializationEntity(specialization);
 
@@ -61,4 +51,17 @@ public class SpecializationGateway implements ISpecializationGateway {
     public List<SpecializationAndUser> getAll() {
         return this.specializationEntityMapper.toDomainObjects(this.specializationRepository.findAll());
     }
+
+    @Override
+    public Specialization findById(UUID id) {
+       Optional<SpecializationEntity> specializationEntityResult = this.specializationRepository
+               .findByIdAndActive(id,true);
+        return null;
+    }
+
+    @Override
+    public void approve(UUID id) {
+
+    }
+
 }
