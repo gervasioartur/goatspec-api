@@ -8,7 +8,7 @@ import com.goatspec.domain.exceptions.NotFoundException;
 import java.util.UUID;
 
 public class ApproveSpecializationRequestUseCase implements IApproveSpecializationRequestUseCase {
-   private final ISpecializationGateway specializationGateway;
+    private final ISpecializationGateway specializationGateway;
 
     public ApproveSpecializationRequestUseCase(ISpecializationGateway specializationGateway) {
         this.specializationGateway = specializationGateway;

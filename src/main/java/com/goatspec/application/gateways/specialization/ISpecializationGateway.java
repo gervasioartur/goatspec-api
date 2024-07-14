@@ -8,7 +8,10 @@ import java.util.UUID;
 
 public interface ISpecializationGateway {
     Specialization findById(UUID id);
+
     void approve(UUID id);
+
     Specialization create(Specialization specialization);
+
     List<SpecializationAndUser> getAll();
 }
