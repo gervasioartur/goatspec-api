@@ -7,6 +7,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface IUserRepository extends JpaRepository<UserEntity, UUID> {
+
+    Optional<UserEntity> findByIdAndActive(UUID id, Boolean active);
+
     Optional<UserEntity> findByCpfAndActive(String cpf, boolean active);
 
     Optional<UserEntity> findByEmailAndActive(String email, boolean active);

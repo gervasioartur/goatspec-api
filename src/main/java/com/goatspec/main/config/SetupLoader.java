@@ -2,10 +2,13 @@ package com.goatspec.main.config;
 
 import com.goatspec.infrastructure.persisntence.entities.PrivilegeEntity;
 import com.goatspec.infrastructure.persisntence.entities.RoleEntity;
+import com.goatspec.infrastructure.persisntence.entities.SpecializationStatusEntity;
 import com.goatspec.infrastructure.persisntence.repositories.IPrivilegeRepository;
 import com.goatspec.infrastructure.persisntence.repositories.IRoleRepository;
+import com.goatspec.infrastructure.persisntence.repositories.ISpecializationStatusRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -19,13 +22,18 @@ import java.util.Optional;
 @Transactional
 public class SetupLoader implements ApplicationListener<ContextRefreshedEvent> {
     boolean alreadySetup = false;
+    @Value("${spring.profiles.active}")
+    private String profile;
     @Autowired
     private IRoleRepository roleRepository;
     @Autowired
     private IPrivilegeRepository privilegeRepository;
+    @Autowired
+    private ISpecializationStatusRepository specializationStatusRepository;
 
     public void onApplicationEvent(ContextRefreshedEvent event) {
         if (alreadySetup) return;
+        if (profile.equalsIgnoreCase("test")) return;
 
         PrivilegeEntity readPrivilege = createPrivilegeIfNotFound("READ_PRIVILEGE");
         PrivilegeEntity writePrivilege = createPrivilegeIfNotFound("WRITE_PRIVILEGE");
@@ -35,6 +43,10 @@ public class SetupLoader implements ApplicationListener<ContextRefreshedEvent> {
         createRoleIfNotFound("ROLE_ADMIN", adminPrivileges);
         createRoleIfNotFound("ROLE_TEACHER", Arrays.asList(readPrivilege, writePrivilege));
         createRoleIfNotFound("ROLE_TECHNICIAN", Arrays.asList(readPrivilege, writePrivilege));
+
+        createSpecializationSituationIfNotFound("PENDING");
+        createSpecializationSituationIfNotFound("APPROVED");
+        createSpecializationSituationIfNotFound("DISAPPROVED");
 
         alreadySetup = true;
     }
@@ -58,5 +70,19 @@ public class SetupLoader implements ApplicationListener<ContextRefreshedEvent> {
             roleRepository.save(role);
         }
         return role;
+    }
+
+    SpecializationStatusEntity createSpecializationSituationIfNotFound(String description) {
+        SpecializationStatusEntity specializationStatusEntityResult = this.specializationStatusRepository
+                .findByDescriptionAndActive(description, true);
+        SpecializationStatusEntity specializationStatusEntity = null;
+        if (specializationStatusEntityResult == null) {
+            specializationStatusEntity = SpecializationStatusEntity.builder()
+                    .description(description)
+                    .active(true)
+                    .build();
+            specializationStatusRepository.save(specializationStatusEntity);
+        }
+        return specializationStatusEntity;
     }
 }

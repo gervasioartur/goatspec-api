@@ -3,12 +3,15 @@ package com.goatspec.main.config;
 import com.goatspec.application.gateways.authentication.IAuthenticationGateway;
 import com.goatspec.application.gateways.encrypt.IPasswordEncoderGateway;
 import com.goatspec.application.gateways.user.IUserGateway;
+import com.goatspec.application.useCases.contracts.authentication.IGetLoggedUserInfoUseCase;
 import com.goatspec.application.useCases.contracts.authentication.ISinginUseCase;
+import com.goatspec.application.useCases.implementations.authentication.GetLoggedUserInfoUseCase;
 import com.goatspec.application.useCases.implementations.authentication.SinginUseCase;
 import com.goatspec.infrastructure.gateways.authetication.AuthenticationGateway;
 import com.goatspec.infrastructure.gateways.encrypt.PasswordEncoderGateway;
 import com.goatspec.infrastructure.gateways.helpers.security.SingKey;
 import com.goatspec.infrastructure.gateways.helpers.token.*;
+import com.goatspec.infrastructure.gateways.mappers.UserEntityMapper;
 import com.goatspec.infrastructure.gateways.user.LoadUserByUsernameGateway;
 import com.goatspec.infrastructure.persisntence.repositories.IUserRepository;
 import lombok.RequiredArgsConstructor;
@@ -91,8 +94,8 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public AuthenticationGateway authenticationGateway(AuthenticationManager authenticationManager, GenerateToken generateToken) {
-        return new AuthenticationGateway(authenticationManager, generateToken);
+    public AuthenticationGateway authenticationGateway(AuthenticationManager authenticationManager, GenerateToken generateToken, IUserRepository userRepository, UserEntityMapper userEntityMapper) {
+        return new AuthenticationGateway(authenticationManager, generateToken, userRepository, userEntityMapper);
     }
 
     @Bean
@@ -111,5 +114,10 @@ public class ApplicationConfig {
     @Bean
     public ISinginUseCase singinUseCase(IUserGateway userGateway, IAuthenticationGateway authenticationGateway) {
         return new SinginUseCase(userGateway, authenticationGateway);
+    }
+
+    @Bean
+    public IGetLoggedUserInfoUseCase getLoggedUserInfoUseCase(IAuthenticationGateway authenticationGateway) {
+        return new GetLoggedUserInfoUseCase(authenticationGateway);
     }
 }

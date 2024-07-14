@@ -20,6 +20,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Optional;
+import java.util.UUID;
 
 @SpringBootTest
 class UserGatewayTests {
@@ -79,6 +80,46 @@ class UserGatewayTests {
     }
 
     @Test
+    @DisplayName("Should return null if user does not exist by id")
+    void shouldReturnNullIfUserDoesNotExistById() {
+        UUID id = UUID.randomUUID();
+        Mockito.when(this.userRepository.findByIdAndActive(id, true)).thenReturn(Optional.empty());
+        User userDomainObject = this.userGateway.findUserById(id);
+        Assertions.assertThat(userDomainObject).isNull();
+        Mockito.verify(this.userRepository, Mockito.times(1)).findByIdAndActive(id, true);
+    }
+
+    @Test
+    @DisplayName("Should return user domain object if exists by id")
+    void shouldReturnUserDomainObjectIfExistsId() {
+        UUID id = UUID.randomUUID();
+
+        User toCreateUserDomainObject = new User("any_cpf", "any_email", "any_registration", "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(), "any_password");
+
+        RoleEntity savedRoleEntity = RoleEntity.builder().name("any_name").active(true).build();
+        UserEntity savedUserEntity = UserEntity
+                .builder()
+                .cpf(toCreateUserDomainObject.cpf())
+                .email(toCreateUserDomainObject.email())
+                .registration(toCreateUserDomainObject.registration())
+                .name(toCreateUserDomainObject.name())
+                .dateOfBirth(toCreateUserDomainObject.dateOfBirth())
+                .gender(toCreateUserDomainObject.gender())
+                .password(toCreateUserDomainObject.password())
+                .roles(Collections.singletonList(savedRoleEntity))
+                .active(true)
+                .build();
+
+        Mockito.when(this.userRepository.findByIdAndActive(id, true)).thenReturn(Optional.of(savedUserEntity));
+        Mockito.when(this.userEntityMapper.toDomainObject(savedUserEntity, savedRoleEntity)).thenReturn(toCreateUserDomainObject);
+
+        User userDomainObject = this.userGateway.findUserById(id);
+
+        Assertions.assertThat(userDomainObject).isEqualTo(toCreateUserDomainObject);
+        Mockito.verify(this.userRepository, Mockito.times(1)).findByIdAndActive(id, true);
+    }
+
+    @Test
     @DisplayName("Should return null if user does not exist by CPF")
     void shouldReturnNullIfUserDoesNotExistByCpf() {
         String cpf = "any_cpf";
@@ -90,7 +131,7 @@ class UserGatewayTests {
 
     @Test
     @DisplayName("Should return user domain object if exists by CPF")
-    void shouldReturnUserDomainObjectIfExists() {
+    void shouldReturnUserDomainObjectIfExistsByCPF() {
         String cpf = "any_cpf";
 
         User toCreateUserDomainObject = new User("any_cpf", "any_email", "any_registration", "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(), "any_password");

@@ -1,8 +1,6 @@
 package com.goatspec.main.config;
 
-import com.goatspec.infrastructure.gateways.mappers.RoleEntityMapper;
-import com.goatspec.infrastructure.gateways.mappers.UserDTOMapper;
-import com.goatspec.infrastructure.gateways.mappers.UserEntityMapper;
+import com.goatspec.infrastructure.gateways.mappers.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -21,5 +19,15 @@ public class MapperConfig {
     @Bean
     public UserDTOMapper userDTOMapper() {
         return new UserDTOMapper();
+    }
+
+    @Bean
+    public SpecializationEntityMapper specializationEntityMapper() {
+        return new SpecializationEntityMapper();
+    }
+
+    @Bean
+    public SpecializationDTOMapper specializationDTOMapper() {
+        return new SpecializationDTOMapper();
     }
 }

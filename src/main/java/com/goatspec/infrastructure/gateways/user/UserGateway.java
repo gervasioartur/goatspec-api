@@ -7,11 +7,13 @@ import com.goatspec.infrastructure.persisntence.entities.RoleEntity;
 import com.goatspec.infrastructure.persisntence.entities.UserEntity;
 import com.goatspec.infrastructure.persisntence.repositories.IRoleRepository;
 import com.goatspec.infrastructure.persisntence.repositories.IUserRepository;
+import jakarta.transaction.Transactional;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
+@Transactional
 public class UserGateway implements IUserGateway {
     private final IUserRepository userRepository;
     private final UserEntityMapper userEntityMapper;
@@ -34,32 +36,26 @@ public class UserGateway implements IUserGateway {
     }
 
     @Override
+    public User findUserById(UUID id) {
+        Optional<UserEntity> userEntityResult = this.userRepository.findByIdAndActive(id, true);
+        return userEntityResult.map(entity -> this.userEntityMapper.toDomainObject(entity, entity.getRoles().stream().toList().getLast())).orElse(null);
+    }
+
+    @Override
     public User findUserByCpf(String cpf) {
         Optional<UserEntity> userEntityResult = this.userRepository.findByCpfAndActive(cpf, true);
-        if (userEntityResult.isPresent()) {
-            List<RoleEntity> roles = userEntityResult.get().getRoles().stream().toList();
-            return this.userEntityMapper.toDomainObject(userEntityResult.get(), roles.getLast());
-        }
-        return null;
+        return userEntityResult.map(entity -> this.userEntityMapper.toDomainObject(entity, entity.getRoles().stream().toList().getLast())).orElse(null);
     }
 
     @Override
     public User findUserByEmail(String email) {
         Optional<UserEntity> userEntityResult = this.userRepository.findByEmailAndActive(email, true);
-        if (userEntityResult.isPresent()) {
-            List<RoleEntity> roles = userEntityResult.get().getRoles().stream().toList();
-            return this.userEntityMapper.toDomainObject(userEntityResult.get(), roles.getLast());
-        }
-        return null;
+        return userEntityResult.map(entity -> this.userEntityMapper.toDomainObject(entity, entity.getRoles().stream().toList().getLast())).orElse(null);
     }
 
     @Override
     public User findUserByRegistration(String registration) {
         Optional<UserEntity> userEntityResult = this.userRepository.findByRegistrationAndActive(registration, true);
-        if (userEntityResult.isPresent()) {
-            List<RoleEntity> roles = userEntityResult.get().getRoles().stream().toList();
-            return this.userEntityMapper.toDomainObject(userEntityResult.get(), roles.getLast());
-        }
-        return null;
+        return userEntityResult.map(entity -> this.userEntityMapper.toDomainObject(entity, entity.getRoles().stream().toList().getLast())).orElse(null);
     }
 }

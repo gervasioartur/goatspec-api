@@ -34,9 +34,10 @@ class LoadUserByUsernameGatewayTests {
     @DisplayName("Should throw UsernameNotFoundException is the user does not exists")
     void shouldThrowUsernameNotFoundException() {
         String username = "any_username";
-        Mockito.when(this.userRepository.findByCpfAndActive(username, true)).thenThrow(UsernameNotFoundException.class);
+        Mockito.when(this.userRepository.findByCpfAndActive(username, true)).thenReturn(Optional.empty());
         Throwable exception = Assertions.catchThrowable(() -> this.loadUserByUsernameGateway.loadUserByUsername(username));
         Assertions.assertThat(exception).isInstanceOf(UsernameNotFoundException.class);
+        Assertions.assertThat(exception.getMessage()).isEqualTo("User not found with username: " + username);
     }
 
     @Test
