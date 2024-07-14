@@ -45,6 +45,11 @@ public class ValidationBuilder {
         return this;
     }
 
+    public ValidationBuilder specType() {
+        this.validators.add(new SpecializationAreaFieldValidator(this.fieldName, this.fieldValue));
+        return this;
+    }
+
     public List<IValidator> build() {
         return this.validators;
     }

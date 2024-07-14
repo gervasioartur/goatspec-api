@@ -49,6 +49,7 @@ public class CreateSpecializationController extends AbstractController<CreateSpe
     public List<IValidator> buildValidators(CreateSpecializationRequest request) {
         List<IValidator> validators = new ArrayList<>();
         validators.addAll(ValidationBuilder.of("area", request.area()).required().build());
+        validators.addAll(ValidationBuilder.of("type", request.type()).required().specType().build());
 
         return validators;
     }
