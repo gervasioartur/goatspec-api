@@ -8,6 +8,7 @@ import com.goatspec.infrastructure.persisntence.repositories.IRoleRepository;
 import com.goatspec.infrastructure.persisntence.repositories.ISpecializationStatusRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,8 @@ import java.util.Optional;
 @Transactional
 public class SetupLoader implements ApplicationListener<ContextRefreshedEvent> {
     boolean alreadySetup = false;
+    @Value("${spring.profiles.active}")
+    private String profile;
     @Autowired
     private IRoleRepository roleRepository;
     @Autowired
@@ -30,6 +33,7 @@ public class SetupLoader implements ApplicationListener<ContextRefreshedEvent> {
 
     public void onApplicationEvent(ContextRefreshedEvent event) {
         if (alreadySetup) return;
+        if(profile.equalsIgnoreCase("test")) return;
 
         PrivilegeEntity readPrivilege = createPrivilegeIfNotFound("READ_PRIVILEGE");
         PrivilegeEntity writePrivilege = createPrivilegeIfNotFound("WRITE_PRIVILEGE");
