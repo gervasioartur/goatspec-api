@@ -150,4 +150,20 @@ class SpecializationGatewayTests {
         Assertions.assertThat(result).isNull();
         Mockito.verify(this.specializationRepository, Mockito.times(1)).findByIdAndActive(specializationId, true);
     }
+
+    @Test
+    @DisplayName("Should return SPecialization domain object")
+    void shouldReturnSpecializationDomainObjectById(){
+        SpecializationEntity savedSpecializationEntity = Mocks.specializationEntityFactory();
+        Specialization specializationObjectDomain = Mocks.specializationDomainObjectFactory(savedSpecializationEntity);
+
+        Mockito.when(this.specializationRepository.findByIdAndActive(savedSpecializationEntity.getId(),true)).thenReturn(Optional.of(savedSpecializationEntity));
+        Mockito.when(this.specializationEntityMapper.toDomainObject(savedSpecializationEntity)).thenReturn(specializationObjectDomain);
+
+        Specialization result = this.specializationGateway.findById(savedSpecializationEntity.getId());
+
+        Assertions.assertThat(result).isEqualTo(specializationObjectDomain);
+        Mockito.verify(this.specializationRepository, Mockito.times(1)).findByIdAndActive(savedSpecializationEntity.getId(), true);
+        Mockito.verify(this.specializationEntityMapper, Mockito.times(1)).toDomainObject(savedSpecializationEntity);
+    }
 }

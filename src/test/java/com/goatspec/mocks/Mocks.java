@@ -74,4 +74,9 @@ public class Mocks {
     public static  Specialization specializationDomainObjectFactory(){
         return new Specialization(UUID.randomUUID(),"any_area","any_type",200,new BigDecimal(20));
     }
+
+    public static  Specialization specializationDomainObjectFactory(SpecializationEntity specializationEntity){
+        return new Specialization
+                (specializationEntity.getUser().getId(),specializationEntity.getArea(),specializationEntity.getType(),specializationEntity.getCourseLoad(),specializationEntity.getTotalCost());
+    }
 }
