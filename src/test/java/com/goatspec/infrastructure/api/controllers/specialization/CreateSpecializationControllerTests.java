@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.math.BigDecimal;
@@ -188,6 +189,32 @@ public class CreateSpecializationControllerTests {
                 .perform(requestBuilder)
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("body", Matchers.is("Something went wrong! please try again later!")));
+    }
 
+    @Test
+    @DisplayName("Should return internal server error if the usecase throws")
+    void shouldReturnInternalServerErrorIfUseCaseThrows() throws Exception {
+        CreateSpecializationRequest request = new CreateSpecializationRequest("any_area", SpecializationTypeEnum.DOCTORATE_DEGREE.getValue(), 60, new BigDecimal("25"));
+
+        UserInfo userInfoDomainObject = new UserInfo(UUID.randomUUID(), "any_name", "any_email", "any_registration");
+        Specialization specializationDomainObject = new Specialization(userInfoDomainObject.id(), "any_area", SpecializationTypeEnum.DOCTORATE_DEGREE.getValue(), 60, new BigDecimal("25"));
+
+        BDDMockito.when(this.getLoggedUserInfoUseCase.get()).thenReturn(userInfoDomainObject);
+        BDDMockito.when(this.specializationDTOMapper.toDomainObject(request, userInfoDomainObject.id())).thenReturn(specializationDomainObject);
+        BDDMockito.doThrow(HttpServerErrorException.InternalServerError.class)
+                .when(this.createSpecializationUseCase).create(specializationDomainObject);
+
+        String json = new ObjectMapper().writeValueAsString(request);
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post(SPEC_API)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json);
+
+
+        mvc
+                .perform(requestBuilder)
+                .andExpect(status().isInternalServerError());
     }
 }
