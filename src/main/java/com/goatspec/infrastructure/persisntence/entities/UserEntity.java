@@ -48,6 +48,9 @@ public class UserEntity implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private Collection<RoleEntity> roles;
 
+    @OneToMany(mappedBy = "user")
+    private List<SpecializationEntity> specializations;
+
     @Column(nullable = false)
     private String password;
 

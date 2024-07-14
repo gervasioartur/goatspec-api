@@ -9,7 +9,6 @@ import com.goatspec.infrastructure.persisntence.repositories.IRoleRepository;
 import com.goatspec.infrastructure.persisntence.repositories.IUserRepository;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -39,7 +38,6 @@ public class UserGateway implements IUserGateway {
         Optional<UserEntity> userEntityResult = this.userRepository.findByIdAndActive(id, true);
         return userEntityResult.map(entity -> this.userEntityMapper.toDomainObject(entity, entity.getRoles().stream().toList().getLast())).orElse(null);
     }
-
 
     @Override
     public User findUserByCpf(String cpf) {

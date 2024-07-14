@@ -18,6 +18,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.UUID;
 
 @SpringBootTest
 class CreateSpecializationUseCaseTests {
@@ -37,29 +38,29 @@ class CreateSpecializationUseCaseTests {
     @DisplayName("Should throw unauthorized exception if user does not exist")
     void shouldHowBusinessExceptionIfUserDoesNotExist() {
         Specialization specialization = new
-                Specialization("any_cpf", "any_area", "any_type", 2, new BigDecimal("20"));
+                Specialization(UUID.randomUUID(), "any_area", "any_type", 2, new BigDecimal("20"));
 
-        Mockito.when(this.userGateway.findUserByCpf(specialization.cpf())).thenReturn(null);
+        Mockito.when(this.userGateway.findUserById(specialization.userId())).thenReturn(null);
 
         Throwable exception = Assertions.catchThrowable(() -> this.createSpecializationUseCase.create(specialization));
 
         Assertions.assertThat(exception).isInstanceOf(UnauthorizedException.class);
         Assertions.assertThat(exception.getMessage()).isEqualTo("Something went wrong! please try again later!");
-        Mockito.verify(this.userGateway, Mockito.times(1)).findUserByCpf(specialization.cpf());
+        Mockito.verify(this.userGateway, Mockito.times(1)).findUserById(specialization.userId());
     }
 
     @Test
     @DisplayName("should create ne specialization request")
     void shouldCreateSpecializationRequest() {
         Specialization specialization = new
-                Specialization("any_cpf", "any_area", "any_type", 2, new BigDecimal("20"));
+                Specialization(UUID.randomUUID(), "any_area", "any_type", 2, new BigDecimal("20"));
 
         User createUserDomainObject = new User("any_cpf", "any_email", "any_registration", "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(), "any_password");
-        Mockito.when(this.userGateway.findUserByCpf(specialization.cpf())).thenReturn(createUserDomainObject);
+        Mockito.when(this.userGateway.findUserById(specialization.userId())).thenReturn(createUserDomainObject);
         Mockito.when(this.specializationGateway.create(specialization)).thenReturn(specialization);
 
         this.createSpecializationUseCase.create(specialization);
-        Mockito.verify(this.userGateway, Mockito.times(1)).findUserByCpf(specialization.cpf());
+        Mockito.verify(this.userGateway, Mockito.times(1)).findUserById(specialization.userId());
         Mockito.verify(this.specializationGateway, Mockito.times(1)).create(specialization);
     }
 }
