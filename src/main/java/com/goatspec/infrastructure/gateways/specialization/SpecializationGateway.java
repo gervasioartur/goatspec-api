@@ -15,6 +15,7 @@ import jakarta.transaction.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Transactional
 public class SpecializationGateway implements ISpecializationGateway {
@@ -29,6 +30,11 @@ public class SpecializationGateway implements ISpecializationGateway {
         this.specializationRepository = specializationRepository;
         this.specializationEntityMapper = specializationEntityMapper;
         this.userRepository = userRepository;
+    }
+
+    @Override
+    public Specialization findById(UUID id) {
+        return null;
     }
 
     @Override
