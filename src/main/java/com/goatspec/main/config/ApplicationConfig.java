@@ -117,7 +117,7 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public IGetLoggedUserInfoUseCase getLoggedUserInfoUseCase(IAuthenticationGateway authenticationGateway){
-        return  new GetLoggedUserInfoUseCase(authenticationGateway);
+    public IGetLoggedUserInfoUseCase getLoggedUserInfoUseCase(IAuthenticationGateway authenticationGateway) {
+        return new GetLoggedUserInfoUseCase(authenticationGateway);
     }
 }

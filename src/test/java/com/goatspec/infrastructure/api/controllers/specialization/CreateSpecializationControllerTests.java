@@ -1,7 +1,6 @@
 package com.goatspec.infrastructure.api.controllers.specialization;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.goatspec.application.useCases.contracts.authentication.IGetLoggedUserInfoUseCase;
 import com.goatspec.application.useCases.contracts.specialization.ICreateSpecializationUseCase;
@@ -16,7 +15,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -168,11 +166,11 @@ public class CreateSpecializationControllerTests {
     void shouldReturnUnauthorizedIfUserDoesNotExist() throws Exception {
         CreateSpecializationRequest request = new CreateSpecializationRequest("any_area", SpecializationTypeEnum.DOCTORATE_DEGREE.getValue(), 60, new BigDecimal("25"));
 
-        UserInfo userInfoDomainObject = new UserInfo(UUID.randomUUID(),"any_name", "any_email", "any_registration");
-        Specialization specializationDomainObject = new Specialization(userInfoDomainObject.id(),"any_area", SpecializationTypeEnum.DOCTORATE_DEGREE.getValue(), 60, new BigDecimal("25"));
+        UserInfo userInfoDomainObject = new UserInfo(UUID.randomUUID(), "any_name", "any_email", "any_registration");
+        Specialization specializationDomainObject = new Specialization(userInfoDomainObject.id(), "any_area", SpecializationTypeEnum.DOCTORATE_DEGREE.getValue(), 60, new BigDecimal("25"));
 
         BDDMockito.when(this.getLoggedUserInfoUseCase.get()).thenReturn(userInfoDomainObject);
-        BDDMockito.when(this.specializationDTOMapper.toDomainObject(request,userInfoDomainObject.id())).thenReturn(specializationDomainObject);
+        BDDMockito.when(this.specializationDTOMapper.toDomainObject(request, userInfoDomainObject.id())).thenReturn(specializationDomainObject);
         BDDMockito.doThrow(new UnauthorizedException("Something went wrong! please try again later!"))
                 .when(this.createSpecializationUseCase).create(specializationDomainObject);
 

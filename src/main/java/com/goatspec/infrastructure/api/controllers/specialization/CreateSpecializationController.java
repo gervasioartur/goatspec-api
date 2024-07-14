@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/specs")
@@ -62,7 +61,7 @@ public class CreateSpecializationController extends AbstractController<CreateSpe
         }
 
         try {
-            UserInfo userInfo =  this.getLoggedUserInfoUseCase.get();
+            UserInfo userInfo = this.getLoggedUserInfoUseCase.get();
             Specialization specializationDomainObject = this.specializationDTOMapper.toDomainObject(request, userInfo.id());
             this.specializationUseCase.create(specializationDomainObject);
             response = new Response("Successfully created specialization");
