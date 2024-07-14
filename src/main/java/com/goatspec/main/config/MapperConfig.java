@@ -22,8 +22,8 @@ public class MapperConfig {
     }
 
     @Bean
-    public SpecializationEntityMapper specializationEntityMapper() {
-        return new SpecializationEntityMapper();
+    public SpecializationEntityMapper specializationEntityMapper(UserEntityMapper userEntityMapper) {
+        return new SpecializationEntityMapper(userEntityMapper);
     }
 
     @Bean

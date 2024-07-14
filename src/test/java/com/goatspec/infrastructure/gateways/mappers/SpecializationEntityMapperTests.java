@@ -4,6 +4,7 @@ import com.goatspec.domain.entities.specialization.Specialization;
 import com.goatspec.infrastructure.persisntence.entities.SpecializationEntity;
 import com.goatspec.infrastructure.persisntence.entities.UserEntity;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,15 +14,21 @@ import java.util.UUID;
 
 @SpringBootTest
 class SpecializationEntityMapperTests {
+    private SpecializationEntityMapper mapper;
+
+    @BeforeEach
+    void setUp() {
+        this.mapper = new SpecializationEntityMapper(new UserEntityMapper());
+    }
+
 
     @Test
     @DisplayName("Should return specialization entity")
     void shouldReturnSpecializationEntity() {
         Specialization specializationDomainObject = new Specialization
                 (UUID.randomUUID(), "any_area", "any_type", 2, new BigDecimal("25"));
-        SpecializationEntityMapper specializationEntityMapper = new SpecializationEntityMapper();
 
-        SpecializationEntity specializationEntity = specializationEntityMapper.toSpecializationEntity(specializationDomainObject);
+        SpecializationEntity specializationEntity = mapper.toSpecializationEntity(specializationDomainObject);
 
         Assertions.assertThat(specializationEntity.getUser().getId()).isEqualTo(specializationDomainObject.userId());
         Assertions.assertThat(specializationEntity.getArea()).isEqualTo(specializationDomainObject.area());
@@ -42,9 +49,8 @@ class SpecializationEntityMapperTests {
                 .totalCost(new BigDecimal(20))
                 .build();
 
-        SpecializationEntityMapper specializationEntityMapper = new SpecializationEntityMapper();
 
-        Specialization specializationDomainObject = specializationEntityMapper.toDomainObject(specializationEntity);
+        Specialization specializationDomainObject = mapper.toDomainObject(specializationEntity);
 
         Assertions.assertThat(specializationEntity.getUser().getId()).isEqualTo(specializationDomainObject.userId());
         Assertions.assertThat(specializationEntity.getArea()).isEqualTo(specializationDomainObject.area());

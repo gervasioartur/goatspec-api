@@ -3,6 +3,7 @@ package com.goatspec.infrastructure.gateways.specialization;
 import com.goatspec.application.gateways.specialization.ISpecializationGateway;
 import com.goatspec.domain.Enums.SpeciaiizationSituationEnum;
 import com.goatspec.domain.entities.specialization.Specialization;
+import com.goatspec.domain.entities.specialization.SpecializationAndUser;
 import com.goatspec.infrastructure.gateways.mappers.SpecializationEntityMapper;
 import com.goatspec.infrastructure.persisntence.entities.RoleEntity;
 import com.goatspec.infrastructure.persisntence.entities.SpecializationEntity;
@@ -11,6 +12,7 @@ import com.goatspec.infrastructure.persisntence.entities.UserEntity;
 import com.goatspec.infrastructure.persisntence.repositories.ISpecializationRepository;
 import com.goatspec.infrastructure.persisntence.repositories.ISpecializationStatusRepository;
 import com.goatspec.infrastructure.persisntence.repositories.IUserRepository;
+import com.goatspec.mocks.Mocks;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,10 +22,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @SpringBootTest
 class SpecializationGatewayTests {
@@ -120,5 +119,24 @@ class SpecializationGatewayTests {
         Mockito.verify(this.userRepository, Mockito.times(1)).findByIdAndActive(userId, true);
         Mockito.verify(this.specializationRepository, Mockito.times(1)).save(toCreateSpecializationEntity);
         Mockito.verify(this.specializationEntityMapper, Mockito.times(1)).toDomainObject(savedCreateSpecializationEntity);
+    }
+
+    @Test
+    @DisplayName("Should list of SpecializationAndUser ")
+    void shouldListOfSpecializationAndUser() {
+        List<SpecializationEntity> specializationEntityList = new ArrayList<>
+                (Arrays.asList(Mocks.specializationEntityFactory(), Mocks.specializationEntityFactory()));
+
+        List<SpecializationAndUser> specializationAndUserList = new ArrayList<>
+                (Arrays.asList(Mocks.specializationAndUserFactory(specializationEntityList.getFirst()), Mocks.specializationAndUserFactory(specializationEntityList.get(1))));
+
+        Mockito.when(this.specializationRepository.findAll()).thenReturn(specializationEntityList);
+        Mockito.when(this.specializationEntityMapper.toDomainObjects(specializationEntityList)).thenReturn(specializationAndUserList);
+
+        List<SpecializationAndUser> result = this.specializationGateway.getAll();
+
+        Assertions.assertThat(result).isEqualTo(specializationAndUserList);
+        Mockito.verify(this.specializationRepository, Mockito.times(1)).findAll();
+        Mockito.verify(this.specializationEntityMapper, Mockito.times(1)).toDomainObjects(specializationEntityList);
     }
 }
