@@ -38,6 +38,11 @@ public class SpecializationGateway implements ISpecializationGateway {
     }
 
     @Override
+    public void approve(Specialization specialization) {
+
+    }
+
+    @Override
     public Specialization create(Specialization specialization) {
         SpecializationEntity specializationEntity = this.specializationEntityMapper.toSpecializationEntity(specialization);
 
