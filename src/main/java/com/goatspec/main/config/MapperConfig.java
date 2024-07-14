@@ -1,6 +1,5 @@
 package com.goatspec.main.config;
 
-import com.goatspec.domain.entities.user.User;
 import com.goatspec.infrastructure.gateways.mappers.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

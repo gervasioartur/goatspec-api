@@ -15,6 +15,6 @@ public class ListAllSpecializationRequestsUseCase implements IListAllSpecializat
 
     @Override
     public List<SpecializationAndUser> getAll() {
-        return  this.specializationGateway.getAll();
+        return this.specializationGateway.getAll();
     }
 }

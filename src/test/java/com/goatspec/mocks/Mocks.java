@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.UUID;
 
 public class Mocks {
-    public static SpecializationEntity specializationEntityFactory(){
+    public static SpecializationEntity specializationEntityFactory() {
         return SpecializationEntity
                 .builder()
                 .id(UUID.randomUUID())
@@ -28,8 +28,8 @@ public class Mocks {
                 .build();
     }
 
-    public static UserEntity userFactory(){
-        return  UserEntity
+    public static UserEntity userFactory() {
+        return UserEntity
                 .builder()
                 .id(UUID.randomUUID())
                 .cpf("any_cpf")
@@ -44,14 +44,14 @@ public class Mocks {
                 .build();
     }
 
-    public static RoleEntity roleFactory(){
-        return  RoleEntity.builder()
+    public static RoleEntity roleFactory() {
+        return RoleEntity.builder()
                 .name("any_name")
                 .active(true)
                 .build();
     }
 
-    public static SpecializationStatusEntity specializationStatusEntityFactory(){
+    public static SpecializationStatusEntity specializationStatusEntityFactory() {
         return SpecializationStatusEntity
                 .builder()
                 .id(UUID.randomUUID())
@@ -60,12 +60,12 @@ public class Mocks {
                 .build();
     }
 
-    public static SpecializationAndUser specializationAndUserFactory(SpecializationEntity specializationEntity){
+    public static SpecializationAndUser specializationAndUserFactory(SpecializationEntity specializationEntity) {
         return new SpecializationAndUser(
                 new UserInfo(specializationEntity.getUser().getId()
-                        ,specializationEntity.getUser().getName(),
+                        , specializationEntity.getUser().getName(),
                         specializationEntity.getUser().getEmail()
-                ,specializationEntity.getUser().getRegistration()),
+                        , specializationEntity.getUser().getRegistration()),
                 new Specialization(specializationEntity.getUser().getId(), specializationEntity.getArea(), specializationEntity.getType(), specializationEntity.getCourseLoad(), specializationEntity.getTotalCost())
         );
     }

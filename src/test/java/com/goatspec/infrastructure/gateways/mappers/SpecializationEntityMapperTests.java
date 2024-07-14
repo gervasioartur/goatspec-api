@@ -18,7 +18,7 @@ class SpecializationEntityMapperTests {
 
     @BeforeEach
     void setUp() {
-        this.mapper =  new SpecializationEntityMapper(new UserEntityMapper());
+        this.mapper = new SpecializationEntityMapper(new UserEntityMapper());
     }
 
 

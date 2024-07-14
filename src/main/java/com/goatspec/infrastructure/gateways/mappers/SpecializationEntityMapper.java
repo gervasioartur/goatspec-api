@@ -6,7 +6,6 @@ import com.goatspec.domain.entities.specialization.SpecializationAndUser;
 import com.goatspec.infrastructure.persisntence.entities.SpecializationEntity;
 import com.goatspec.infrastructure.persisntence.entities.UserEntity;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

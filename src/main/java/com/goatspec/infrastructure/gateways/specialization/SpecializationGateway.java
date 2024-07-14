@@ -48,6 +48,6 @@ public class SpecializationGateway implements ISpecializationGateway {
 
     @Override
     public List<SpecializationAndUser> getAll() {
-         return this.specializationEntityMapper.toDomainObjects(this.specializationRepository.findAll());
+        return this.specializationEntityMapper.toDomainObjects(this.specializationRepository.findAll());
     }
 }

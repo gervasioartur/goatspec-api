@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface ISpecializationGateway {
     Specialization create(Specialization specialization);
+
     List<SpecializationAndUser> getAll();
 }

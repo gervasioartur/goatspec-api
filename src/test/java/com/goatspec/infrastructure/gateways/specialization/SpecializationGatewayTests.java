@@ -125,18 +125,18 @@ class SpecializationGatewayTests {
     @DisplayName("Should list of SpecializationAndUser ")
     void shouldListOfSpecializationAndUser() {
         List<SpecializationEntity> specializationEntityList = new ArrayList<>
-                (Arrays.asList(Mocks.specializationEntityFactory(),Mocks.specializationEntityFactory()));
+                (Arrays.asList(Mocks.specializationEntityFactory(), Mocks.specializationEntityFactory()));
 
         List<SpecializationAndUser> specializationAndUserList = new ArrayList<>
-                (Arrays.asList(Mocks.specializationAndUserFactory(specializationEntityList.getFirst()),Mocks.specializationAndUserFactory(specializationEntityList.get(1))));
+                (Arrays.asList(Mocks.specializationAndUserFactory(specializationEntityList.getFirst()), Mocks.specializationAndUserFactory(specializationEntityList.get(1))));
 
         Mockito.when(this.specializationRepository.findAll()).thenReturn(specializationEntityList);
         Mockito.when(this.specializationEntityMapper.toDomainObjects(specializationEntityList)).thenReturn(specializationAndUserList);
 
-       List<SpecializationAndUser> result =  this.specializationGateway.getAll();
+        List<SpecializationAndUser> result = this.specializationGateway.getAll();
 
-       Assertions.assertThat(result).isEqualTo(specializationAndUserList);
-       Mockito.verify(this.specializationRepository, Mockito.times(1)).findAll();
-       Mockito.verify(this.specializationEntityMapper,Mockito.times(1)).toDomainObjects(specializationEntityList);
+        Assertions.assertThat(result).isEqualTo(specializationAndUserList);
+        Mockito.verify(this.specializationRepository, Mockito.times(1)).findAll();
+        Mockito.verify(this.specializationEntityMapper, Mockito.times(1)).toDomainObjects(specializationEntityList);
     }
 }

@@ -32,23 +32,23 @@ class ListAllSpecializationRequestsUseCaseTests {
     @Test
     @DisplayName("Should return all specialization")
     void shouldReturnAllSpecialization() {
-       UUID userId = UUID.randomUUID();
+        UUID userId = UUID.randomUUID();
         UUID userId1 = UUID.randomUUID();
 
         SpecializationAndUser specializationAndUser = new SpecializationAndUser(
-                new  UserInfo(userId,"any_name","any_email","any_registration"),
-                new Specialization(userId, "any_area","any_type",36,new BigDecimal("200"))
+                new UserInfo(userId, "any_name", "any_email", "any_registration"),
+                new Specialization(userId, "any_area", "any_type", 36, new BigDecimal("200"))
         );
 
         SpecializationAndUser specializationAndUser1 = new SpecializationAndUser(
-                new  UserInfo(userId1,"any_name","any_email","any_registration"),
-                new Specialization(userId1, "any_area","any_type",36,new BigDecimal("200"))
+                new UserInfo(userId1, "any_name", "any_email", "any_registration"),
+                new Specialization(userId1, "any_area", "any_type", 36, new BigDecimal("200"))
         );
 
         List<SpecializationAndUser> list = List.of(specializationAndUser, specializationAndUser1);
         Mockito.when(this.specializationGateway.getAll()).thenReturn(list);
 
-        List<SpecializationAndUser> listResult =  this.listAllSpecializationRequests.getAll();
+        List<SpecializationAndUser> listResult = this.listAllSpecializationRequests.getAll();
 
         Assertions.assertThat(listResult).isEqualTo(list);
         Assertions.assertThat(listResult.size()).isEqualTo(list.size());
