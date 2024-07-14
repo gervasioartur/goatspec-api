@@ -16,12 +16,12 @@ class SpecializationEntityMapperTests {
 
     @Test
     @DisplayName("Should return specialization entity")
-     void shouldReturnSpecializationEntity() {
+    void shouldReturnSpecializationEntity() {
         Specialization specializationDomainObject = new Specialization
                 (UUID.randomUUID(), "any_area", "any_type", 2, new BigDecimal("25"));
         SpecializationEntityMapper specializationEntityMapper = new SpecializationEntityMapper();
 
-        SpecializationEntity specializationEntity =  specializationEntityMapper.toSpecializationEntity(specializationDomainObject);
+        SpecializationEntity specializationEntity = specializationEntityMapper.toSpecializationEntity(specializationDomainObject);
 
         Assertions.assertThat(specializationEntity.getUser().getId()).isEqualTo(specializationDomainObject.userId());
         Assertions.assertThat(specializationEntity.getArea()).isEqualTo(specializationDomainObject.area());
@@ -44,7 +44,7 @@ class SpecializationEntityMapperTests {
 
         SpecializationEntityMapper specializationEntityMapper = new SpecializationEntityMapper();
 
-        Specialization specializationDomainObject =  specializationEntityMapper.toDomainObject(specializationEntity);
+        Specialization specializationDomainObject = specializationEntityMapper.toDomainObject(specializationEntity);
 
         Assertions.assertThat(specializationEntity.getUser().getId()).isEqualTo(specializationDomainObject.userId());
         Assertions.assertThat(specializationEntity.getArea()).isEqualTo(specializationDomainObject.area());
