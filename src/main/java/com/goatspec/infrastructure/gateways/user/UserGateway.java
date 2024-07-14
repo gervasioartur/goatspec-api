@@ -7,11 +7,13 @@ import com.goatspec.infrastructure.persisntence.entities.RoleEntity;
 import com.goatspec.infrastructure.persisntence.entities.UserEntity;
 import com.goatspec.infrastructure.persisntence.repositories.IRoleRepository;
 import com.goatspec.infrastructure.persisntence.repositories.IUserRepository;
+import jakarta.transaction.Transactional;
 
 import java.util.Collections;
 import java.util.Optional;
 import java.util.UUID;
 
+@Transactional
 public class UserGateway implements IUserGateway {
     private final IUserRepository userRepository;
     private final UserEntityMapper userEntityMapper;

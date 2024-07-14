@@ -10,9 +10,11 @@ import com.goatspec.infrastructure.persisntence.entities.UserEntity;
 import com.goatspec.infrastructure.persisntence.repositories.ISpecializationRepository;
 import com.goatspec.infrastructure.persisntence.repositories.ISpecializationStatusRepository;
 import com.goatspec.infrastructure.persisntence.repositories.IUserRepository;
+import jakarta.transaction.Transactional;
 
 import java.util.Optional;
 
+@Transactional
 public class SpecializationGateway implements ISpecializationGateway {
     private final ISpecializationStatusRepository specializationSituationRepository;
     private final ISpecializationRepository specializationRepository;

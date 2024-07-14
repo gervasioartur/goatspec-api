@@ -15,7 +15,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "t_specializationr", schema = "goatspec")
+@Table(name = "t_specialization", schema = "goatspec")
 public class SpecializationEntity {
     @Id
     @Column(length = 32)

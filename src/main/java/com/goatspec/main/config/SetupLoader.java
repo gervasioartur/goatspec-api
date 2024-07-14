@@ -2,8 +2,10 @@ package com.goatspec.main.config;
 
 import com.goatspec.infrastructure.persisntence.entities.PrivilegeEntity;
 import com.goatspec.infrastructure.persisntence.entities.RoleEntity;
+import com.goatspec.infrastructure.persisntence.entities.SpecializationStatusEntity;
 import com.goatspec.infrastructure.persisntence.repositories.IPrivilegeRepository;
 import com.goatspec.infrastructure.persisntence.repositories.IRoleRepository;
+import com.goatspec.infrastructure.persisntence.repositories.ISpecializationStatusRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -23,6 +25,8 @@ public class SetupLoader implements ApplicationListener<ContextRefreshedEvent> {
     private IRoleRepository roleRepository;
     @Autowired
     private IPrivilegeRepository privilegeRepository;
+    @Autowired
+    private ISpecializationStatusRepository specializationStatusRepository;
 
     public void onApplicationEvent(ContextRefreshedEvent event) {
         if (alreadySetup) return;
@@ -35,6 +39,10 @@ public class SetupLoader implements ApplicationListener<ContextRefreshedEvent> {
         createRoleIfNotFound("ROLE_ADMIN", adminPrivileges);
         createRoleIfNotFound("ROLE_TEACHER", Arrays.asList(readPrivilege, writePrivilege));
         createRoleIfNotFound("ROLE_TECHNICIAN", Arrays.asList(readPrivilege, writePrivilege));
+
+        createSpecializationSituationIfNotFound("PENDING");
+        createSpecializationSituationIfNotFound("APPROVED");
+        createSpecializationSituationIfNotFound("DISAPPROVED");
 
         alreadySetup = true;
     }
@@ -58,5 +66,19 @@ public class SetupLoader implements ApplicationListener<ContextRefreshedEvent> {
             roleRepository.save(role);
         }
         return role;
+    }
+
+    SpecializationStatusEntity createSpecializationSituationIfNotFound(String description) {
+        SpecializationStatusEntity  specializationStatusEntityResult = this.specializationStatusRepository
+                .findByDescriptionAndActive(description, true);
+        SpecializationStatusEntity specializationStatusEntity = null;
+        if (specializationStatusEntityResult == null) {
+            specializationStatusEntity = SpecializationStatusEntity.builder()
+                    .description(description)
+                    .active(true)
+                    .build();
+            specializationStatusRepository.save(specializationStatusEntity);
+        }
+        return specializationStatusEntity;
     }
 }
