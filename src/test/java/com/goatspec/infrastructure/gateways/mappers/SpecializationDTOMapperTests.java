@@ -21,7 +21,7 @@ public class SpecializationDTOMapperTests {
         CreateSpecializationRequest request = new CreateSpecializationRequest("any_area", SpecializationTypeEnum.DOCTORATE_DEGREE.getValue(), 60, new BigDecimal("25"));
 
         SpecializationDTOMapper specializationDTOMapper = new SpecializationDTOMapper();
-        Specialization result=  specializationDTOMapper.toDomainObject(request,userid);
+        Specialization result = specializationDTOMapper.toDomainObject(request, userid);
 
         Assertions.assertThat(result.userId()).isEqualTo(userid);
         Assertions.assertThat(result.area()).isEqualTo(request.area());

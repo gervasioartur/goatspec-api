@@ -61,7 +61,7 @@ class UserEntityMapperTests {
 
     @Test
     @DisplayName("Should return user info")
-    void shouldReturnUserInfo(){
+    void shouldReturnUserInfo() {
         User toCreateUserDomainObject = new User("any_cpf", "any_email", "any_create_registration", "any_name", new Date(), GenderEnum.MALE.getValue(), RoleEnum.TEACHER.getValue(), "any_password");
         UserEntity toCreateUserEntity = UserEntity
                 .builder()
@@ -74,7 +74,7 @@ class UserEntityMapperTests {
                 .password(toCreateUserDomainObject.password())
                 .build();
 
-        UserInfo result =  this.mapper.toUserInfo(toCreateUserEntity);
+        UserInfo result = this.mapper.toUserInfo(toCreateUserEntity);
         Assertions.assertThat(result.id()).isEqualTo(toCreateUserEntity.getId());
         Assertions.assertThat(result.name()).isEqualTo(toCreateUserEntity.getName());
         Assertions.assertThat(result.email()).isEqualTo(toCreateUserEntity.getEmail());

@@ -33,7 +33,7 @@ public class SetupLoader implements ApplicationListener<ContextRefreshedEvent> {
 
     public void onApplicationEvent(ContextRefreshedEvent event) {
         if (alreadySetup) return;
-        if(profile.equalsIgnoreCase("test")) return;
+        if (profile.equalsIgnoreCase("test")) return;
 
         PrivilegeEntity readPrivilege = createPrivilegeIfNotFound("READ_PRIVILEGE");
         PrivilegeEntity writePrivilege = createPrivilegeIfNotFound("WRITE_PRIVILEGE");
@@ -73,7 +73,7 @@ public class SetupLoader implements ApplicationListener<ContextRefreshedEvent> {
     }
 
     SpecializationStatusEntity createSpecializationSituationIfNotFound(String description) {
-        SpecializationStatusEntity  specializationStatusEntityResult = this.specializationStatusRepository
+        SpecializationStatusEntity specializationStatusEntityResult = this.specializationStatusRepository
                 .findByDescriptionAndActive(description, true);
         SpecializationStatusEntity specializationStatusEntity = null;
         if (specializationStatusEntityResult == null) {
