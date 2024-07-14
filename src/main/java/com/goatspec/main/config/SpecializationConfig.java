@@ -21,8 +21,14 @@ public class SpecializationConfig {
     }
 
     @Bean
-    public SpecializationGateway specializationGateway(ISpecializationStatusRepository specializationSituationRepository, ISpecializationRepository specializationRepository, SpecializationEntityMapper specializationEntityMapper, IUserRepository userRepository) {
-        return new SpecializationGateway(specializationSituationRepository, specializationRepository, specializationEntityMapper, userRepository);
+    public SpecializationGateway specializationGateway(ISpecializationStatusRepository specializationSituationRepository,
+                                                       ISpecializationRepository specializationRepository,
+                                                       SpecializationEntityMapper specializationEntityMapper,
+                                                       IUserRepository userRepository) {
+        return new SpecializationGateway(specializationSituationRepository,
+                specializationRepository,
+                specializationEntityMapper,
+                userRepository);
     }
 
     @Bean

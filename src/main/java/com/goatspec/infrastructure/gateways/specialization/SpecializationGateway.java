@@ -4,6 +4,7 @@ import com.goatspec.application.gateways.specialization.ISpecializationGateway;
 import com.goatspec.domain.Enums.SpeciaiizationSituationEnum;
 import com.goatspec.domain.entities.specialization.Specialization;
 import com.goatspec.domain.entities.specialization.SpecializationAndUser;
+import com.goatspec.domain.exceptions.NotFoundException;
 import com.goatspec.infrastructure.gateways.mappers.SpecializationEntityMapper;
 import com.goatspec.infrastructure.persisntence.entities.SpecializationEntity;
 import com.goatspec.infrastructure.persisntence.entities.SpecializationStatusEntity;
@@ -19,14 +20,17 @@ import java.util.UUID;
 
 @Transactional
 public class SpecializationGateway implements ISpecializationGateway {
-    private final ISpecializationStatusRepository specializationSituationRepository;
+    private final ISpecializationStatusRepository specializationStatusRepository;
     private final ISpecializationRepository specializationRepository;
     private final SpecializationEntityMapper specializationEntityMapper;
     private final IUserRepository userRepository;
 
 
-    public SpecializationGateway(ISpecializationStatusRepository specializationSituationRepository, ISpecializationRepository specializationRepository, SpecializationEntityMapper specializationEntityMapper, IUserRepository userRepository) {
-        this.specializationSituationRepository = specializationSituationRepository;
+    public SpecializationGateway(ISpecializationStatusRepository specializationSituationRepository,
+                                 ISpecializationRepository specializationRepository,
+                                 SpecializationEntityMapper specializationEntityMapper,
+                                 IUserRepository userRepository) {
+        this.specializationStatusRepository = specializationSituationRepository;
         this.specializationRepository = specializationRepository;
         this.specializationEntityMapper = specializationEntityMapper;
         this.userRepository = userRepository;
@@ -36,7 +40,7 @@ public class SpecializationGateway implements ISpecializationGateway {
     public Specialization create(Specialization specialization) {
         SpecializationEntity specializationEntity = this.specializationEntityMapper.toSpecializationEntity(specialization);
 
-        SpecializationStatusEntity specializationStatusEntity = this.specializationSituationRepository
+        SpecializationStatusEntity specializationStatusEntity = this.specializationStatusRepository
                 .findByDescriptionAndActive(SpeciaiizationSituationEnum.PENDING.getValue(), true);
         Optional<UserEntity> userEntity = this.userRepository.findByIdAndActive(specialization.userId(), true);
 
@@ -60,7 +64,14 @@ public class SpecializationGateway implements ISpecializationGateway {
 
     @Override
     public void approve(UUID id) {
+        SpecializationEntity specializationEntity = this.specializationRepository
+                .findByIdAndActive(id, true)
+                .orElseThrow(() -> new NotFoundException("Specialization not found."));
 
+        SpecializationStatusEntity status = this.specializationStatusRepository
+                .findByDescriptionAndActive(SpeciaiizationSituationEnum.APPROVED.getValue(), true);
+
+        specializationEntity.setSpecializationStatus(status);
+        this.specializationRepository.save(specializationEntity);
     }
-
 }
