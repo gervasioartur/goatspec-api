@@ -70,4 +70,8 @@ public class Mocks {
                 specializationEntity.getSpecializationStatus().getDescription()
         );
     }
+
+    public static  Specialization specializationDomainObjectFactory(){
+        return new Specialization(UUID.randomUUID(),"any_area","any_type",200,new BigDecimal(20));
+    }
 }
