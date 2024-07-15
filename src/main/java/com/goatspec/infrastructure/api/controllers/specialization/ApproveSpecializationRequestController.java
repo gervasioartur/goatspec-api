@@ -1,6 +1,7 @@
 package com.goatspec.infrastructure.api.controllers.specialization;
 
 import com.goatspec.application.useCases.contracts.specialization.IApproveSpecializationRequestUseCase;
+import com.goatspec.domain.exceptions.NotFoundException;
 import com.goatspec.infrastructure.api.controllers.AbstractController;
 import com.goatspec.infrastructure.api.dto.Response;
 import io.swagger.v3.oas.annotations.Operation;
@@ -42,6 +43,9 @@ public class ApproveSpecializationRequestController extends AbstractController<S
             this.approveSpecializationRequestUseCase.approve(UUID.fromString(id));
             response = new Response("Specialization request successfully approved");
             responseEntity = new ResponseEntity<>(response, HttpStatus.OK);
+        }catch (NotFoundException ex) {
+            response = new Response(ex.getMessage());
+            responseEntity = new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
             response = new Response(ex.getMessage());
             responseEntity = new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
