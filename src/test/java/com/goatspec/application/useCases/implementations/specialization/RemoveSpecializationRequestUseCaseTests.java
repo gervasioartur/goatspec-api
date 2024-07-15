@@ -18,14 +18,14 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.util.UUID;
 
 @SpringBootTest
-public class RemoveSpecializationRequestTests {
-    private IRemoveSpecializationRequestUseCase removeSpecializationRequest;
+public class RemoveSpecializationRequestUseCaseTests {
+    private IRemoveSpecializationRequestUseCase removeSpecializationRequestUseCase;
     @MockBean
     private ISpecializationRequestGateway specializationRequestGateway;
 
     @BeforeEach
     void setUp() {
-        this.removeSpecializationRequest = new RemoveSpecializationRequestUseCaseUseCase(specializationRequestGateway);
+        this.removeSpecializationRequestUseCase = new RemoveSpecializationRequestUseCaseUseCase(specializationRequestGateway);
     }
 
     @Test
@@ -35,7 +35,7 @@ public class RemoveSpecializationRequestTests {
 
         Mockito.when(this.specializationRequestGateway.findById(specializationId)).thenReturn(null);
 
-        Throwable exception = Assertions.catchThrowable(() -> this.removeSpecializationRequest.remove(specializationId));
+        Throwable exception = Assertions.catchThrowable(() -> this.removeSpecializationRequestUseCase.remove(specializationId));
 
         Assertions.assertThat(exception).isInstanceOf(NotFoundException.class);
         Assertions.assertThat(exception.getMessage()).isEqualTo("Specialization request not found.");
@@ -49,10 +49,25 @@ public class RemoveSpecializationRequestTests {
         SpecializationRequestInfo result = Mocks.specializationInfoFactory(SpecializationRequestStatusEnum.APPROVED.getValue());
         Mockito.when(this.specializationRequestGateway.findById(specializationId)).thenReturn(result);
 
-        Throwable exception = Assertions.catchThrowable(() -> this.removeSpecializationRequest.remove(specializationId));
+        Throwable exception = Assertions.catchThrowable(() -> this.removeSpecializationRequestUseCase.remove(specializationId));
 
         Assertions.assertThat(exception).isInstanceOf(BusinessException.class);
         Assertions.assertThat(exception.getMessage()).isEqualTo("You only can remove specialization request on pending status.");
         Mockito.verify(this.specializationRequestGateway, Mockito.times(1)).findById(specializationId);
+    }
+
+    @Test
+    @DisplayName("Should remove specialization request")
+    void shouldRemoveSpecializationRequest(){
+        UUID specializationId = UUID.randomUUID();
+        SpecializationRequestInfo result = Mocks.specializationInfoFactory(SpecializationRequestStatusEnum.PENDING.getValue());
+
+        Mockito.when(this.specializationRequestGateway.findById(specializationId)).thenReturn(result);
+        Mockito.doNothing().when(this.specializationRequestGateway).remove(specializationId);
+
+        this.removeSpecializationRequestUseCase.remove(specializationId);
+
+        Mockito.verify(this.specializationRequestGateway, Mockito.times(1)).findById(specializationId);
+        Mockito.verify(this.specializationRequestGateway, Mockito.times(1)).remove(specializationId);
     }
 }
