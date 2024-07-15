@@ -1,6 +1,7 @@
 package com.goatspec.mocks;
 
 import com.goatspec.domain.entities.authentication.UserInfo;
+import com.goatspec.domain.entities.email.SendEmailParams;
 import com.goatspec.domain.entities.specialization.Specialization;
 import com.goatspec.domain.entities.specialization.SpecializationAndUser;
 import com.goatspec.infrastructure.persisntence.entities.RoleEntity;
@@ -71,12 +72,35 @@ public class Mocks {
         );
     }
 
-    public static  Specialization specializationDomainObjectFactory(){
-        return new Specialization(UUID.randomUUID(),"any_area","any_type",200,new BigDecimal(20));
+    public static Specialization specializationDomainObjectFactory() {
+        return new Specialization(UUID.randomUUID(), "any_area", "any_type", 200, new BigDecimal(20));
     }
 
-    public static  Specialization specializationDomainObjectFactory(SpecializationEntity specializationEntity){
+    public static Specialization specializationDomainObjectFactory(UUID userId) {
+        return new Specialization(userId, "any_area", "any_type", 200, new BigDecimal(20));
+    }
+
+    public static Specialization specializationDomainObjectFactory(SpecializationEntity specializationEntity) {
         return new Specialization
-                (specializationEntity.getUser().getId(),specializationEntity.getArea(),specializationEntity.getType(),specializationEntity.getCourseLoad(),specializationEntity.getTotalCost());
+                (specializationEntity.getUser().getId(), specializationEntity.getArea(), specializationEntity.getType(), specializationEntity.getCourseLoad(), specializationEntity.getTotalCost());
+    }
+
+    public static SendEmailParams sendApprovedEmailParamsFactory(SpecializationAndUser result) {
+        return new SendEmailParams(result.userInfo().email(),
+                "Feedback on Specialization Request", "Congratulations!" + result.userInfo().name() + "\n" +
+                "Your specialization request for " + result.specialization().type() + "on area " + result.specialization().area() + " has been successfully approved.");
+    }
+
+    public static UserInfo userInfoFactory() {
+        return new UserInfo(UUID.randomUUID(), "any_name", "any_email", "any_registration");
+    }
+
+    public static SpecializationAndUser specializationAndUserFactory(String specializationStatus) {
+        UserInfo userInfo = Mocks.userInfoFactory();
+        return new SpecializationAndUser(
+                userInfo,
+                Mocks.specializationDomainObjectFactory(userInfo.id()),
+                specializationStatus
+        );
     }
 }

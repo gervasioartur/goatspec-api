@@ -1,10 +1,9 @@
 package com.goatspec.infrastructure.gateways.specialization;
 
 import com.goatspec.application.gateways.specialization.ISpecializationGateway;
-import com.goatspec.domain.Enums.SpeciaiizationSituationEnum;
+import com.goatspec.domain.Enums.SpeciaiizationStatusEnum;
 import com.goatspec.domain.entities.specialization.Specialization;
 import com.goatspec.domain.entities.specialization.SpecializationAndUser;
-import com.goatspec.domain.entities.user.User;
 import com.goatspec.domain.exceptions.NotFoundException;
 import com.goatspec.infrastructure.gateways.mappers.SpecializationEntityMapper;
 import com.goatspec.infrastructure.persisntence.entities.RoleEntity;
@@ -19,6 +18,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -68,7 +68,7 @@ class SpecializationGatewayTests {
         SpecializationStatusEntity savedSpecializationStatusEntity = SpecializationStatusEntity
                 .builder()
                 .id(UUID.randomUUID())
-                .description(SpeciaiizationSituationEnum.PENDING.getValue())
+                .description(SpeciaiizationStatusEnum.PENDING.getValue())
                 .active(true)
                 .build();
 
@@ -90,7 +90,7 @@ class SpecializationGatewayTests {
 
         Mockito.when(this.specializationEntityMapper.toSpecializationEntity(specializationDomainObject)).thenReturn(toCreateSpecializationEntity);
         Mockito.when(this.specializationSituationRepository
-                .findByDescriptionAndActive(SpeciaiizationSituationEnum.PENDING.getValue(), true)).thenReturn(savedSpecializationStatusEntity);
+                .findByDescriptionAndActive(SpeciaiizationStatusEnum.PENDING.getValue(), true)).thenReturn(savedSpecializationStatusEntity);
 
         Mockito.when(this.userRepository.findByIdAndActive(userId, true)).thenReturn(Optional.of(savedUserEntity));
 
@@ -112,7 +112,7 @@ class SpecializationGatewayTests {
                 .build();
 
         Mockito.when(this.specializationRepository.save(toCreateSpecializationEntity)).thenReturn(savedCreateSpecializationEntity);
-        Mockito.when(this.specializationEntityMapper.toDomainObject(savedCreateSpecializationEntity)).thenReturn(specializationDomainObject);
+        Mockito.when(this.specializationEntityMapper.toSpecializationDomainObject(savedCreateSpecializationEntity)).thenReturn(specializationDomainObject);
 
 
         Specialization result = this.specializationGateway.create(specializationDomainObject);
@@ -120,10 +120,10 @@ class SpecializationGatewayTests {
         Assertions.assertThat(result).isEqualTo(specializationDomainObject);
 
         Mockito.verify(this.specializationEntityMapper, Mockito.times(1)).toSpecializationEntity(specializationDomainObject);
-        Mockito.verify(this.specializationSituationRepository, Mockito.times(1)).findByDescriptionAndActive(SpeciaiizationSituationEnum.PENDING.getValue(), true);
+        Mockito.verify(this.specializationSituationRepository, Mockito.times(1)).findByDescriptionAndActive(SpeciaiizationStatusEnum.PENDING.getValue(), true);
         Mockito.verify(this.userRepository, Mockito.times(1)).findByIdAndActive(userId, true);
         Mockito.verify(this.specializationRepository, Mockito.times(1)).save(toCreateSpecializationEntity);
-        Mockito.verify(this.specializationEntityMapper, Mockito.times(1)).toDomainObject(savedCreateSpecializationEntity);
+        Mockito.verify(this.specializationEntityMapper, Mockito.times(1)).toSpecializationDomainObject(savedCreateSpecializationEntity);
     }
 
     @Test
@@ -136,20 +136,20 @@ class SpecializationGatewayTests {
                 (Arrays.asList(Mocks.specializationAndUserFactory(specializationEntityList.getFirst()), Mocks.specializationAndUserFactory(specializationEntityList.get(1))));
 
         Mockito.when(this.specializationRepository.findAll()).thenReturn(specializationEntityList);
-        Mockito.when(this.specializationEntityMapper.toDomainObjects(specializationEntityList)).thenReturn(specializationAndUserList);
+        Mockito.when(this.specializationEntityMapper.toSpecAndUserListDomainObjects(specializationEntityList)).thenReturn(specializationAndUserList);
 
         List<SpecializationAndUser> result = this.specializationGateway.getAll();
 
         Assertions.assertThat(result).isEqualTo(specializationAndUserList);
         Mockito.verify(this.specializationRepository, Mockito.times(1)).findAll();
-        Mockito.verify(this.specializationEntityMapper, Mockito.times(1)).toDomainObjects(specializationEntityList);
+        Mockito.verify(this.specializationEntityMapper, Mockito.times(1)).toSpecAndUserListDomainObjects(specializationEntityList);
     }
 
     @Test
     @DisplayName("should return null if the specialization does not exists")
-    void ShouldReturnNullIfTheSpecializationDoesNotExists(){
+    void ShouldReturnNullIfTheSpecializationDoesNotExists() {
         UUID specializationId = UUID.randomUUID();
-        Mockito.when(this.specializationRepository.findByIdAndActive(specializationId,true)).thenReturn(Optional.empty());
+        Mockito.when(this.specializationRepository.findByIdAndActive(specializationId, true)).thenReturn(Optional.empty());
         Specialization result = this.specializationGateway.findById(specializationId);
         Assertions.assertThat(result).isNull();
         Mockito.verify(this.specializationRepository, Mockito.times(1)).findByIdAndActive(specializationId, true);
@@ -157,25 +157,25 @@ class SpecializationGatewayTests {
 
     @Test
     @DisplayName("Should return specialization domain object")
-    void shouldReturnSpecializationDomainObjectById(){
+    void shouldReturnSpecializationDomainObjectById() {
         SpecializationEntity savedSpecializationEntity = Mocks.specializationEntityFactory();
         Specialization specializationObjectDomain = Mocks.specializationDomainObjectFactory(savedSpecializationEntity);
 
-        Mockito.when(this.specializationRepository.findByIdAndActive(savedSpecializationEntity.getId(),true)).thenReturn(Optional.of(savedSpecializationEntity));
-        Mockito.when(this.specializationEntityMapper.toDomainObject(savedSpecializationEntity)).thenReturn(specializationObjectDomain);
+        Mockito.when(this.specializationRepository.findByIdAndActive(savedSpecializationEntity.getId(), true)).thenReturn(Optional.of(savedSpecializationEntity));
+        Mockito.when(this.specializationEntityMapper.toSpecializationDomainObject(savedSpecializationEntity)).thenReturn(specializationObjectDomain);
 
         Specialization result = this.specializationGateway.findById(savedSpecializationEntity.getId());
 
         Assertions.assertThat(result).isEqualTo(specializationObjectDomain);
         Mockito.verify(this.specializationRepository, Mockito.times(1)).findByIdAndActive(savedSpecializationEntity.getId(), true);
-        Mockito.verify(this.specializationEntityMapper, Mockito.times(1)).toDomainObject(savedSpecializationEntity);
+        Mockito.verify(this.specializationEntityMapper, Mockito.times(1)).toSpecializationDomainObject(savedSpecializationEntity);
     }
 
     @Test
     @DisplayName("Should throw npt fund exception if the specialization does not exists")
-    void shouldThrowNptFundExceptionIfTheSpecializationDoesNotExists(){
+    void shouldThrowNptFundExceptionIfTheSpecializationDoesNotExists() {
         UUID specializationId = UUID.randomUUID();
-        Mockito.when(this.specializationRepository.findByIdAndActive(specializationId,true)).thenReturn(Optional.empty());
+        Mockito.when(this.specializationRepository.findByIdAndActive(specializationId, true)).thenReturn(Optional.empty());
 
         Throwable exception = Assertions.catchThrowable(() -> this.specializationGateway.approve(specializationId));
         Assertions.assertThat(exception).isInstanceOf(NotFoundException.class);
@@ -184,22 +184,27 @@ class SpecializationGatewayTests {
 
     @Test
     @DisplayName("Should approve specialization request")
-    void shouldApproveSpecializationRequest(){
+    void shouldApproveSpecializationRequest() {
         SpecializationEntity specializationEntity = Mocks.specializationEntityFactory();
         SpecializationStatusEntity specializationStatusEntity = Mocks.specializationStatusEntityFactory();
         specializationStatusEntity.setDescription("APPROVED");
 
-        Mockito.when(this.specializationRepository.findByIdAndActive(specializationEntity.getId(),true)).thenReturn(Optional.of(specializationEntity));
-        Mockito.when(this.specializationSituationRepository.findByDescriptionAndActive(SpeciaiizationSituationEnum.APPROVED.getValue(), true)).thenReturn(specializationStatusEntity);
+        Mockito.when(this.specializationRepository.findByIdAndActive(specializationEntity.getId(), true)).thenReturn(Optional.of(specializationEntity));
+        Mockito.when(this.specializationSituationRepository.findByDescriptionAndActive(SpeciaiizationStatusEnum.APPROVED.getValue(), true)).thenReturn(specializationStatusEntity);
 
         specializationEntity.setSpecializationStatus(specializationStatusEntity);
         Mockito.when(this.specializationRepository.save(specializationEntity)).thenReturn(specializationEntity);
 
-        this.specializationGateway.approve(specializationEntity.getId());
+        SpecializationAndUser specializationAndUser =  Mocks.specializationAndUserFactory(specializationEntity);
+        Mockito.when(this.specializationEntityMapper.toSpecAndUserDomainObject(specializationEntity)).thenReturn(specializationAndUser);
 
+        SpecializationAndUser result = this.specializationGateway.approve(specializationEntity.getId());
+
+        Assertions.assertThat(result).isEqualTo(specializationAndUser);
         Mockito.verify(this.specializationRepository, Mockito.times(1)).findByIdAndActive(specializationEntity.getId(), true);
-        Mockito.verify(this.specializationSituationRepository, Mockito.times(1)).findByDescriptionAndActive(SpeciaiizationSituationEnum.APPROVED.getValue(), true);
+        Mockito.verify(this.specializationSituationRepository, Mockito.times(1)).findByDescriptionAndActive(SpeciaiizationStatusEnum.APPROVED.getValue(), true);
         Mockito.verify(this.specializationRepository, Mockito.times(1)).save(specializationEntity);
+        Mockito.verify(this.specializationEntityMapper,Mockito.times(1)).toSpecAndUserDomainObject(specializationEntity);
     }
 
 }

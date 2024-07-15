@@ -1,7 +1,7 @@
 package com.goatspec.infrastructure.gateways.specialization;
 
 import com.goatspec.application.gateways.specialization.ISpecializationGateway;
-import com.goatspec.domain.Enums.SpeciaiizationSituationEnum;
+import com.goatspec.domain.Enums.SpeciaiizationStatusEnum;
 import com.goatspec.domain.entities.specialization.Specialization;
 import com.goatspec.domain.entities.specialization.SpecializationAndUser;
 import com.goatspec.domain.exceptions.NotFoundException;
@@ -41,37 +41,38 @@ public class SpecializationGateway implements ISpecializationGateway {
         SpecializationEntity specializationEntity = this.specializationEntityMapper.toSpecializationEntity(specialization);
 
         SpecializationStatusEntity specializationStatusEntity = this.specializationStatusRepository
-                .findByDescriptionAndActive(SpeciaiizationSituationEnum.PENDING.getValue(), true);
+                .findByDescriptionAndActive(SpeciaiizationStatusEnum.PENDING.getValue(), true);
         Optional<UserEntity> userEntity = this.userRepository.findByIdAndActive(specialization.userId(), true);
 
         specializationEntity.setActive(true);
         specializationEntity.setUser(userEntity.get());
         specializationEntity.setSpecializationStatus(specializationStatusEntity);
         specializationEntity = this.specializationRepository.save(specializationEntity);
-        return this.specializationEntityMapper.toDomainObject(specializationEntity);
+        return this.specializationEntityMapper.toSpecializationDomainObject(specializationEntity);
     }
 
     @Override
     public List<SpecializationAndUser> getAll() {
-        return this.specializationEntityMapper.toDomainObjects(this.specializationRepository.findAll());
+        return this.specializationEntityMapper.toSpecAndUserListDomainObjects(this.specializationRepository.findAll());
     }
 
     @Override
     public Specialization findById(UUID id) {
         Optional<SpecializationEntity> specializationEntityResult = this.specializationRepository.findByIdAndActive(id, true);
-        return specializationEntityResult.map(this.specializationEntityMapper::toDomainObject).orElse(null);
+        return specializationEntityResult.map(this.specializationEntityMapper::toSpecializationDomainObject).orElse(null);
     }
 
     @Override
-    public void approve(UUID id) {
+    public SpecializationAndUser approve(UUID id) {
         SpecializationEntity specializationEntity = this.specializationRepository
                 .findByIdAndActive(id, true)
                 .orElseThrow(() -> new NotFoundException("Specialization not found."));
 
         SpecializationStatusEntity status = this.specializationStatusRepository
-                .findByDescriptionAndActive(SpeciaiizationSituationEnum.APPROVED.getValue(), true);
+                .findByDescriptionAndActive(SpeciaiizationStatusEnum.APPROVED.getValue(), true);
 
         specializationEntity.setSpecializationStatus(status);
-        this.specializationRepository.save(specializationEntity);
+        specializationEntity = this.specializationRepository.save(specializationEntity);
+        return this.specializationEntityMapper.toSpecAndUserDomainObject(specializationEntity);
     }
 }

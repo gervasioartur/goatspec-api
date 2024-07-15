@@ -27,16 +27,27 @@ public class SpecializationEntityMapper {
                 .build();
     }
 
-    public Specialization toDomainObject(SpecializationEntity specializationEntity) {
+    public Specialization toSpecializationDomainObject(SpecializationEntity specializationEntity) {
         return new Specialization(specializationEntity.getUser().getId(), specializationEntity.getArea(), specializationEntity.getType(), specializationEntity.getCourseLoad(), specializationEntity.getTotalCost());
     }
 
-    public List<SpecializationAndUser> toDomainObjects(List<SpecializationEntity> specializationEntities) {
+    public List<SpecializationAndUser> toSpecAndUserListDomainObjects(List<SpecializationEntity> specializationEntities) {
         return specializationEntities.stream()
                 .map(specializationEntity -> {
                     UserInfo userInfo = this.userEntityMapper.toUserInfo(specializationEntity.getUser());
-                    Specialization specialization = this.toDomainObject(specializationEntity);
+                    Specialization specialization = this.toSpecializationDomainObject(specializationEntity);
                     return new SpecializationAndUser(userInfo, specialization, specializationEntity.getSpecializationStatus().getDescription());
                 }).collect(Collectors.toList());
+    }
+
+    public SpecializationAndUser toSpecAndUserDomainObject(SpecializationEntity specializationEntity) {
+        return new SpecializationAndUser(
+                new UserInfo(specializationEntity.getUser().getId(),
+                        specializationEntity.getUser().getName(),
+                        specializationEntity.getUser().getEmail(),
+                        specializationEntity.getUser().getRegistration()),
+                this.toSpecializationDomainObject(specializationEntity),
+                specializationEntity.getSpecializationStatus().getDescription()
+        );
     }
 }

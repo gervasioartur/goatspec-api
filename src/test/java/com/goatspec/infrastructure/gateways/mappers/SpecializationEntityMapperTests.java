@@ -50,7 +50,7 @@ class SpecializationEntityMapperTests {
                 .build();
 
 
-        Specialization specializationDomainObject = mapper.toDomainObject(specializationEntity);
+        Specialization specializationDomainObject = mapper.toSpecializationDomainObject(specializationEntity);
 
         Assertions.assertThat(specializationEntity.getUser().getId()).isEqualTo(specializationDomainObject.userId());
         Assertions.assertThat(specializationEntity.getArea()).isEqualTo(specializationDomainObject.area());
