@@ -153,7 +153,7 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public ISendEmailGateway sendEmailGateway(JavaMailSender mailSender){
+    public ISendEmailGateway sendEmailGateway(JavaMailSender mailSender) {
         return new SendEmailGateway(mailSender);
     }
 
