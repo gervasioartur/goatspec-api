@@ -82,6 +82,12 @@ public class Mocks {
                 "Your specialization request for " + result.type() + " on area " + result.area() + " has been successfully approved.");
     }
 
+    public static SendEmailParams sendDisapprovedEmailParamsFactory(SpecializationRequestInfo result) {
+        return new SendEmailParams(result.userEmail(),
+                "Feedback on Specialization Request", "We sorry! " + result.userName() + "\n" +
+                "Your specialization request for " + result.type() + " on area " + result.area() + " has been  disapproved.");
+    }
+
     public static UserInfo userInfoFactory() {
         return new UserInfo(UUID.randomUUID(), "any_name", "any_email", "any_registration");
     }
