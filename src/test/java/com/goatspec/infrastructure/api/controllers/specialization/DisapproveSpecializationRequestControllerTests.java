@@ -1,6 +1,6 @@
 package com.goatspec.infrastructure.api.controllers.specialization;
 
-import com.goatspec.application.useCases.contracts.specialization.IApproveSpecializationRequestUseCase;
+import com.goatspec.application.useCases.contracts.specialization.IDisapproveSpecializationRequestUseCase;
 import com.goatspec.domain.exceptions.NotFoundException;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-public class ApproveSpecializationRequestControllerTests {
+public class DisapproveSpecializationRequestControllerTests {
     private final String SPEC_API = "/specs";
 
     @Autowired
@@ -32,7 +32,7 @@ public class ApproveSpecializationRequestControllerTests {
     private MockMvc mvc;
 
     @MockBean
-    private IApproveSpecializationRequestUseCase approveSpecializationRequestUseCase;
+    private IDisapproveSpecializationRequestUseCase disapproveSpecializationRequestUseCase;
 
     @BeforeEach
     void setup() {
@@ -47,10 +47,10 @@ public class ApproveSpecializationRequestControllerTests {
         UUID specializationId = UUID.randomUUID();
 
         BDDMockito.doThrow(HttpServerErrorException.InternalServerError.class)
-                .when(this.approveSpecializationRequestUseCase).approve(specializationId);
+                .when(this.disapproveSpecializationRequestUseCase).disapprove(specializationId);
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-                .patch(SPEC_API + "/approve/" + specializationId)
+                .patch(SPEC_API + "/disapprove/" + specializationId)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON);
 
@@ -65,10 +65,10 @@ public class ApproveSpecializationRequestControllerTests {
         UUID specializationId = UUID.randomUUID();
 
         BDDMockito.doThrow(new NotFoundException("Specialization not found."))
-                .when(this.approveSpecializationRequestUseCase).approve(specializationId);
+                .when(this.disapproveSpecializationRequestUseCase).disapprove(specializationId);
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-                .patch(SPEC_API + "/approve/" + specializationId)
+                .patch(SPEC_API + "/disapprove/" + specializationId)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON);
 
@@ -82,9 +82,9 @@ public class ApproveSpecializationRequestControllerTests {
     @DisplayName("Should return a success message")
     void shouldReturnSuccessMessage() throws Exception {
         UUID specializationId = UUID.randomUUID();
-        BDDMockito.doNothing().when(this.approveSpecializationRequestUseCase).approve(specializationId);
+        BDDMockito.doNothing().when(this.disapproveSpecializationRequestUseCase).disapprove(specializationId);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-                .patch(SPEC_API + "/approve/" + specializationId)
+                .patch(SPEC_API + "/disapprove/" + specializationId)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON);
 
