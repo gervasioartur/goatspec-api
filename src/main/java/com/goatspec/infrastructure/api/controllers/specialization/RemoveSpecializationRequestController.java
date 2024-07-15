@@ -50,7 +50,7 @@ public class RemoveSpecializationRequestController extends AbstractController<St
             UserInfo userInfo = this.getLoggedUserInfoUseCase.get();
             this.removeSpecializationRequestUseCase.remove(UUID.fromString(id), userInfo.id());
             response = new Response("Specialization request successfully removed");
-            responseEntity = new ResponseEntity<>(HttpStatus.OK);
+            responseEntity = new ResponseEntity<>(response,HttpStatus.OK);
         } catch (BusinessException ex) {
             response = new Response(ex.getMessage());
             responseEntity = new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
