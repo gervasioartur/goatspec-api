@@ -35,29 +35,29 @@ public class RemoveSpecializationRequestUseCaseTests {
 
 
         SpecializationRequestInfo result = Mocks.specializationInfoFactory(SpecializationRequestStatusEnum.APPROVED.getValue());
-        Mockito.when(this.specializationRequestGateway.findById(specializationId)).thenReturn(result);
+        Mockito.when(this.specializationRequestGateway.findByIdAndUserId(specializationId, userId)).thenReturn(result);
 
-        Throwable exception = Assertions.catchThrowable(() -> this.removeSpecializationRequestUseCase.remove(specializationId,userId));
+        Throwable exception = Assertions.catchThrowable(() -> this.removeSpecializationRequestUseCase.remove(specializationId, userId));
 
         Assertions.assertThat(exception).isInstanceOf(BusinessException.class);
-        Assertions.assertThat(exception.getMessage()).isEqualTo("You only can remove specialization request on pending status.");
-        Mockito.verify(this.specializationRequestGateway, Mockito.times(1)).findById(specializationId);
+        Assertions.assertThat(exception.getMessage()).isEqualTo("You can only remove specialization request on pending status.");
+        Mockito.verify(this.specializationRequestGateway, Mockito.times(1)).findByIdAndUserId(specializationId, userId);
     }
 
     @Test
     @DisplayName("Should remove specialization request")
-    void shouldRemoveSpecializationRequest(){
+    void shouldRemoveSpecializationRequest() {
         UUID specializationId = UUID.randomUUID();
         UUID userId = UUID.randomUUID();
 
         SpecializationRequestInfo result = Mocks.specializationInfoFactory(SpecializationRequestStatusEnum.PENDING.getValue());
 
-        Mockito.when(this.specializationRequestGateway.findById(specializationId)).thenReturn(result);
+        Mockito.when(this.specializationRequestGateway.findByIdAndUserId(specializationId, userId)).thenReturn(result);
         Mockito.doNothing().when(this.specializationRequestGateway).remove(specializationId);
 
-        this.removeSpecializationRequestUseCase.remove(specializationId,userId);
+        this.removeSpecializationRequestUseCase.remove(specializationId, userId);
 
-        Mockito.verify(this.specializationRequestGateway, Mockito.times(1)).findById(specializationId);
+        Mockito.verify(this.specializationRequestGateway, Mockito.times(1)).findByIdAndUserId(specializationId, userId);
         Mockito.verify(this.specializationRequestGateway, Mockito.times(1)).remove(specializationId);
     }
 }

@@ -9,7 +9,7 @@ import java.util.UUID;
 public interface ISpecializationRequestGateway {
     SpecializationRequestInfo findById(UUID id);
 
-    SpecializationRequestInfo findByIdAndUserId(UUID id,UUID userId);
+    SpecializationRequestInfo findByIdAndUserId(UUID id, UUID userId);
 
     SpecializationRequestInfo approve(UUID id);
 

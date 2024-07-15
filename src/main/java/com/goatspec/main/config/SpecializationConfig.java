@@ -38,12 +38,12 @@ public class SpecializationConfig {
     public IDisapproveSpecializationRequestUseCase disapproveSpecializationRequestUseCase(
             ISpecializationRequestGateway specializationGateway, ISendEmailGateway sendEmailGateway) {
 
-        return new DisapproveSpecializationRequestUseCase(specializationGateway,sendEmailGateway);
+        return new DisapproveSpecializationRequestUseCase(specializationGateway, sendEmailGateway);
     }
 
     @Bean
-    public IRemoveSpecializationRequestUseCase removeSpecializationRequestUseCase(ISpecializationRequestGateway specializationRequestGateway){
-       return new RemoveSpecializationRequestUseCase(specializationRequestGateway);
+    public IRemoveSpecializationRequestUseCase removeSpecializationRequestUseCase(ISpecializationRequestGateway specializationRequestGateway) {
+        return new RemoveSpecializationRequestUseCase(specializationRequestGateway);
     }
 
     @Bean
