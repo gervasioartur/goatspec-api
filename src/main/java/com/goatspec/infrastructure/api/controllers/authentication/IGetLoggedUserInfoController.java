@@ -27,7 +27,7 @@ public class IGetLoggedUserInfoController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "List all specialization requests")
+    @Operation(summary = "Get current user information")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returns all specialization requests"),
             @ApiResponse(responseCode = "500", description = "Internal server error occurred"),
