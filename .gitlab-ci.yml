@@ -1,4 +1,4 @@
-image: maven:3.6.3-openjdk-17
+image: maven:3-eclipse-temurin-21-alpine
 
 variables:
   GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
