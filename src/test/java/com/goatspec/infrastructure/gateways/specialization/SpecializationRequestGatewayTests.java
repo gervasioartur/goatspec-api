@@ -18,7 +18,6 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -318,8 +317,8 @@ class SpecializationRequestGatewayTests {
     void shouldReturnAllUserSpecializationRequestInfo() {
         UUID userId = UUID.randomUUID();
 
-        List<SpecializationRequestEntity> list =  List.of(Mocks.specializationEntityFactory(),Mocks.specializationEntityFactory());
-        List<SpecializationRequestInfo> specializationRequestInfoList =  Mocks.specializationInfoListFactory(list);
+        List<SpecializationRequestEntity> list = List.of(Mocks.specializationEntityFactory(), Mocks.specializationEntityFactory());
+        List<SpecializationRequestInfo> specializationRequestInfoList = Mocks.specializationInfoListFactory(list);
 
         Mockito.when(this.specializationRepository.findByUserId(userId)).thenReturn(list);
         Mockito.when(this.specializationEntityMapper.toSpecializationInfoList(list)).thenReturn(specializationRequestInfoList);

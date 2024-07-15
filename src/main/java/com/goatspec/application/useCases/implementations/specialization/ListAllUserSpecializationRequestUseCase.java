@@ -1,8 +1,6 @@
 package com.goatspec.application.useCases.implementations.specialization;
 
 import com.goatspec.application.gateways.specialization.ISpecializationRequestGateway;
-import com.goatspec.application.useCases.contracts.specialization.IApproveSpecializationRequestUseCase;
-import com.goatspec.application.useCases.contracts.specialization.IListAllSpecializationRequestsUseCase;
 import com.goatspec.application.useCases.contracts.specialization.IListAllUserSpecializationRequestUseCase;
 import com.goatspec.domain.entities.specialization.SpecializationRequestInfo;
 

@@ -7,7 +7,6 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -17,7 +16,7 @@ import java.util.UUID;
 
 @SpringBootTest
 public class ListAllUserSpecializationRequestUseCaseTests {
-    private  ListAllUserSpecializationRequestUseCase listAllUserSpecializationRequestUseCase;
+    private ListAllUserSpecializationRequestUseCase listAllUserSpecializationRequestUseCase;
 
     @MockBean
     private ISpecializationRequestGateway specializationRequestGateway;
@@ -33,7 +32,7 @@ public class ListAllUserSpecializationRequestUseCaseTests {
         UUID userId = UUID.randomUUID();
 
         List<SpecializationRequestInfo> list = List
-                .of(Mocks.specializationRequestInfoFactory(),Mocks.specializationRequestInfoFactory());
+                .of(Mocks.specializationRequestInfoFactory(), Mocks.specializationRequestInfoFactory());
 
         Mockito.when(this.specializationRequestGateway.getAllByUserId(userId)).thenReturn(list);
 
