@@ -78,7 +78,12 @@ public class SpecializationRequestGateway implements ISpecializationRequestGatew
 
     @Override
     public void remove(UUID id) {
+        SpecializationRequestEntity specializationRequestEntity = this.specializationRepository
+                .findByIdAndActive(id, true)
+                .orElseThrow(() -> new NotFoundException("Specialization request not found."));
 
+        specializationRequestEntity.setActive(false);
+        this.specializationRepository.save(specializationRequestEntity);
     }
 
     @Override

@@ -20,7 +20,6 @@ public class RemoveSpecializationRequestUseCaseUseCase implements IRemoveSpecial
     @Override
     public void remove(UUID specializationId) {
         SpecializationRequestInfo result =  this.specializationRequestGateway.findById(specializationId);
-        if (result == null) throw new NotFoundException("Specialization request not found.");
         if (!Objects.equals(result.specializationStatus(), SpecializationRequestStatusEnum.PENDING.getValue()))
             throw new BusinessException("You only can remove specialization request on pending status.");
         this.specializationRequestGateway.remove(specializationId);
