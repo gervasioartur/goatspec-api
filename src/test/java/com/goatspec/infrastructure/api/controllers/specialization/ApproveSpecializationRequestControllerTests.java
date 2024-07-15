@@ -50,7 +50,7 @@ public class ApproveSpecializationRequestControllerTests {
                 .when(this.approveSpecializationRequestUseCase).approve(specializationId);
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-                .patch(SPEC_API + "/approve/" + specializationId.toString())
+                .patch(SPEC_API + "/approve/" + specializationId)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON);
 
@@ -68,7 +68,7 @@ public class ApproveSpecializationRequestControllerTests {
                 .when(this.approveSpecializationRequestUseCase).approve(specializationId);
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-                .patch(SPEC_API + "/approve/" + specializationId.toString())
+                .patch(SPEC_API + "/approve/" + specializationId)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON);
 
@@ -84,7 +84,7 @@ public class ApproveSpecializationRequestControllerTests {
         UUID specializationId = UUID.randomUUID();
         BDDMockito.doNothing().when(this.approveSpecializationRequestUseCase).approve(specializationId);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-                .patch(SPEC_API + "/approve/" + specializationId.toString())
+                .patch(SPEC_API + "/approve/" + specializationId)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON);
 

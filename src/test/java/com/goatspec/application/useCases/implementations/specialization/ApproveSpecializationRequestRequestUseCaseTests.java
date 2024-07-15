@@ -5,7 +5,7 @@ import com.goatspec.application.gateways.specialization.ISpecializationRequestGa
 import com.goatspec.application.useCases.contracts.specialization.IApproveSpecializationRequestUseCase;
 import com.goatspec.domain.Enums.SpecializationRequestStatusEnum;
 import com.goatspec.domain.entities.email.SendEmailParams;
-import com.goatspec.domain.entities.specialization.SpecializationRequestAndUser;
+import com.goatspec.domain.entities.specialization.SpecializationRequestInfo;
 import com.goatspec.mocks.Mocks;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -37,7 +37,7 @@ class ApproveSpecializationRequestRequestUseCaseTests {
     void shouldApproveSpecializationRequest() {
         UUID specializationId = UUID.randomUUID();
 
-        SpecializationRequestAndUser result = Mocks.specializationAndUserFactory(SpecializationRequestStatusEnum.APPROVED.getValue());
+        SpecializationRequestInfo result = Mocks.specializationInfoFactory(SpecializationRequestStatusEnum.APPROVED.getValue());
         SendEmailParams sendEmailParams = Mocks.sendApprovedEmailParamsFactory(result);
 
         Mockito.when(this.specializationGateway.approve(specializationId)).thenReturn(result);
