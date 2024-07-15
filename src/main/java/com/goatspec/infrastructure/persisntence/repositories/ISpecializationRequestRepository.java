@@ -2,6 +2,8 @@ package com.goatspec.infrastructure.persisntence.repositories;
 
 import com.goatspec.infrastructure.persisntence.entities.SpecializationRequestEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,4 +13,7 @@ public interface ISpecializationRequestRepository extends JpaRepository<Speciali
     Optional<SpecializationRequestEntity> findByIdAndActive(UUID id, Boolean active);
 
     List<SpecializationRequestEntity> findAllByActive(Boolean active);
+
+    @Query("SELECT spec FROM SpecializationRequestEntity spec WHERE spec.user.id = :userId AND spec.active = true ")
+    List<SpecializationRequestEntity> findByUserId(@Param("userId") UUID userId);
 }

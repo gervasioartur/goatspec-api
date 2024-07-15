@@ -311,4 +311,21 @@ class SpecializationRequestGatewayTests {
 
         Mockito.verify(this.specializationRepository, Mockito.times(1)).save(specializationRequestEntity);
     }
+
+    @Test
+    @DisplayName("Should return all user specialization request info")
+    void shouldReturnAllUserSpecializationRequestInfo() {
+        UUID userId = UUID.randomUUID();
+
+        List<SpecializationRequestEntity> list = List.of(Mocks.specializationEntityFactory(), Mocks.specializationEntityFactory());
+        List<SpecializationRequestInfo> specializationRequestInfoList = Mocks.specializationInfoListFactory(list);
+
+        Mockito.when(this.specializationRepository.findByUserId(userId)).thenReturn(list);
+        Mockito.when(this.specializationEntityMapper.toSpecializationInfoList(list)).thenReturn(specializationRequestInfoList);
+
+        List<SpecializationRequestInfo> result = this.specializationGateway.getAllByUserId(userId);
+
+        Assertions.assertThat(result.getFirst().specializationRequestId()).isEqualTo(list.getFirst().getId().toString());
+        Assertions.assertThat(result.getLast().specializationRequestId()).isEqualTo(list.getLast().getId().toString());
+    }
 }

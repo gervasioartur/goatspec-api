@@ -1,9 +1,11 @@
 package com.goatspec.application.useCases.contracts.specialization;
 
+
 import com.goatspec.domain.entities.specialization.SpecializationRequestInfo;
 
 import java.util.List;
+import java.util.UUID;
 
-public interface IListAllSpecializationRequestsUseCase {
-    List<SpecializationRequestInfo> listAll();
+public interface IListAllUserSpecializationRequestUseCase {
+    List<SpecializationRequestInfo> list(UUID userId);
 }
