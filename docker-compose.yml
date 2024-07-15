@@ -36,7 +36,7 @@ services:
       - APP_EMAIL_SENDER=gervasioarthur@gmail.com
       - APP_EMAIL_PASSWORD=cgty tvbn qath mcoj
       - SPRING_APPLICATION_NAME=goatspec-api
-        ## DATABASE CONFIGURATION
+      ## DATABASE CONFIGURATION
       - SPRING_DATASOURCE_URL=jdbc:postgresql://goatspec-database:5432/goatspec-database
       - SPRING_DATASOURCE_USERNAME=goatspec
       - SPRING_DATASOURCE_PASSWORD=goatspec
