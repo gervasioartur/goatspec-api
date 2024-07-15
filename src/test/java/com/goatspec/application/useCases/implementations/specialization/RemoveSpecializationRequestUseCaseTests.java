@@ -29,20 +29,6 @@ public class RemoveSpecializationRequestUseCaseTests {
     }
 
     @Test
-    @DisplayName("Should throw not found exception if specialization request does not exist")
-    void shouldThrowNotFoundExceptionIfSpecializationRequestDoesNotExist() {
-        UUID specializationId = UUID.randomUUID();
-
-        Mockito.when(this.specializationRequestGateway.findById(specializationId)).thenReturn(null);
-
-        Throwable exception = Assertions.catchThrowable(() -> this.removeSpecializationRequestUseCase.remove(specializationId));
-
-        Assertions.assertThat(exception).isInstanceOf(NotFoundException.class);
-        Assertions.assertThat(exception.getMessage()).isEqualTo("Specialization request not found.");
-        Mockito.verify(this.specializationRequestGateway, Mockito.times(1)).findById(specializationId);
-    }
-
-    @Test
     @DisplayName("Should throw business exception if specialization status is different of PENDING")
     void shouldThrowBusinessExceptionIfSpecializationStatusIsDifferentOfPending() {
         UUID specializationId = UUID.randomUUID();

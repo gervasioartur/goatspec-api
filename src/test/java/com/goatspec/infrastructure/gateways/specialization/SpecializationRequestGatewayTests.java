@@ -239,4 +239,31 @@ class SpecializationRequestGatewayTests {
         Mockito.verify(this.specializationEntityMapper, Mockito.times(1)).toSpecializationInfo(specializationRequestEntity);
     }
 
+    @Test
+    @DisplayName("Should throw npt fund exception if the specialization does not exists on remove")
+    void shouldThrowNptFundExceptionIfTheSpecializationDoesNotExistsOnRemove() {
+        UUID specializationId = UUID.randomUUID();
+        Mockito.when(this.specializationRepository.findByIdAndActive(specializationId, true)).thenReturn(Optional.empty());
+
+        Throwable exception = Assertions.catchThrowable(() -> this.specializationGateway.remove(specializationId));
+        Assertions.assertThat(exception).isInstanceOf(NotFoundException.class);
+        Assertions.assertThat(exception.getMessage()).isEqualTo("Specialization request not found.");
+    }
+
+    @Test
+    @DisplayName("Should remove specialization request")
+    void shouldRemoveSpecializationRequest(){
+        SpecializationRequestEntity specializationRequestEntity = Mocks.specializationEntityFactory();
+
+        Mockito.when(this.specializationRepository.findByIdAndActive(specializationRequestEntity.getId(), true))
+                .thenReturn(Optional.of(specializationRequestEntity));
+
+        specializationRequestEntity.setActive(false);
+
+        Mockito.when(this.specializationRepository.save(specializationRequestEntity)).thenReturn(specializationRequestEntity);
+
+        this.specializationGateway.remove(specializationRequestEntity.getId());
+
+        Mockito.verify(this.specializationRepository, Mockito.times(1)).save(specializationRequestEntity);
+    }
 }
