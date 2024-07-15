@@ -31,7 +31,7 @@ Após rodar o sistema localmente, acesse o Swagger para realizar os testes:
 
 A  API também está hospedada no link do GPC: [https://goatspec-api-m24ry3ujja-rj.a.run.app/swagger-ui/index.html#/](https://goatspec-api-m24ry3ujja-rj.a.run.app/swagger-ui/index.html#/)
 
-Repositório GitLab: [https://gitlab.com/dombo99/goatspec-api/-/jobs/7344886822](https://gitlab.com/dombo99/goatspec-api/-/jobs/7344886822)
+Repositório GitLab: [https://gitlab.com/dombo99/goatspec-api/](https://gitlab.com/dombo99/goatspec-api/)
 
 Repositório Github: [https://github.com/gervasioartur/goatspec-api](https://github.com/gervasioartur/goatspec-api)
 
