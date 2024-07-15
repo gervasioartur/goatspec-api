@@ -2,9 +2,9 @@ package com.goatspec.mocks;
 
 import com.goatspec.domain.entities.authentication.UserInfo;
 import com.goatspec.domain.entities.email.SendEmailParams;
-import com.goatspec.domain.entities.specialization.SpecializationRequestInfo;
 import com.goatspec.domain.entities.specialization.SpecializationRequest;
 import com.goatspec.domain.entities.specialization.SpecializationRequestAndUser;
+import com.goatspec.domain.entities.specialization.SpecializationRequestInfo;
 import com.goatspec.infrastructure.persisntence.entities.RoleEntity;
 import com.goatspec.infrastructure.persisntence.entities.SpecializationRequestEntity;
 import com.goatspec.infrastructure.persisntence.entities.SpecializationRequestStatusEntity;
@@ -122,7 +122,7 @@ public class Mocks {
                 .collect(Collectors.toList());
     }
 
-    public static SpecializationRequestInfo SpecializationRequestInfoFactory(){
+    public static SpecializationRequestInfo SpecializationRequestInfoFactory() {
         return new SpecializationRequestInfo(
                 "any_username",
                 "any_user_email",

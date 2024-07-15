@@ -69,7 +69,7 @@ public class SetupLoader implements ApplicationListener<ContextRefreshedEvent> {
         return privilege;
     }
 
-    void createAdminUserIfNotFound(){
+    void createAdminUserIfNotFound() {
         if (userRepository.findByNameAndActive("admin", true).isEmpty()) {
             RoleEntity adminRole = roleRepository.findByNameAndActive("ROLE_ADMIN", true);
             String password = passwordEncoderGateway.encode("admin");

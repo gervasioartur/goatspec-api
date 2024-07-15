@@ -30,8 +30,8 @@ public class SpecializationConfig {
 
     @Bean
     public IApproveSpecializationRequestUseCase approveSpecializationRequestUseCase(
-            ISpecializationRequestGateway specializationGateway, ISendEmailGateway sendEmailGateway){
-        return new ApproveSpecializationRequestUseCase(specializationGateway,sendEmailGateway);
+            ISpecializationRequestGateway specializationGateway, ISendEmailGateway sendEmailGateway) {
+        return new ApproveSpecializationRequestUseCase(specializationGateway, sendEmailGateway);
     }
 
     @Bean

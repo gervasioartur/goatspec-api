@@ -1,9 +1,9 @@
 package com.goatspec.infrastructure.gateways.mappers;
 
 import com.goatspec.domain.entities.authentication.UserInfo;
-import com.goatspec.domain.entities.specialization.SpecializationRequestInfo;
 import com.goatspec.domain.entities.specialization.SpecializationRequest;
 import com.goatspec.domain.entities.specialization.SpecializationRequestAndUser;
+import com.goatspec.domain.entities.specialization.SpecializationRequestInfo;
 import com.goatspec.infrastructure.persisntence.entities.SpecializationRequestEntity;
 import com.goatspec.infrastructure.persisntence.entities.UserEntity;
 

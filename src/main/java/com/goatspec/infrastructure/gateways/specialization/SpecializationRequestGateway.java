@@ -2,9 +2,9 @@ package com.goatspec.infrastructure.gateways.specialization;
 
 import com.goatspec.application.gateways.specialization.ISpecializationRequestGateway;
 import com.goatspec.domain.Enums.SpecializationRequestStatusEnum;
-import com.goatspec.domain.entities.specialization.SpecializationRequestInfo;
 import com.goatspec.domain.entities.specialization.SpecializationRequest;
 import com.goatspec.domain.entities.specialization.SpecializationRequestAndUser;
+import com.goatspec.domain.entities.specialization.SpecializationRequestInfo;
 import com.goatspec.domain.exceptions.NotFoundException;
 import com.goatspec.infrastructure.gateways.mappers.SpecializationEntityMapper;
 import com.goatspec.infrastructure.persisntence.entities.SpecializationRequestEntity;
