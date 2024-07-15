@@ -1,17 +1,17 @@
-## Proposta de Resolução
+## Proposta de ResoluÃ§Ã£o
 
-Atendendo ao que foi pedido no exercício, apresento a seguinte resolução:
+Atendendo ao que foi pedido no exercÃ­cio, apresento a seguinte resoluÃ§Ã£o:
 
-## Regras de Negócio
-* Para fazer uma solicitação de especialização, você precisa estar logado como professor ou técnico.
-* Para aprovar ou reprovar uma solicitação de especialização, você precisa estar logado como usuário administrador. O sistema já dispõe de um usuário admin padrão com as credenciais:
+## Regras de NegÃ³cio
+* Para fazer uma solicitaÃ§Ã£o de especializaÃ§Ã£o, vocÃª precisa estar logado como professor ou tÃ©cnico.
+* Para aprovar ou reprovar uma solicitaÃ§Ã£o de especializaÃ§Ã£o, vocÃª precisa estar logado como usuÃ¡rio administrador. O sistema jÃ¡ dispÃµe de um usuÃ¡rio admin padrÃ£o com as credenciais:
     * **CPF:** `admin`
     * **Senha:** `admin`
-* Você somente pode remover as requisições de especialização criadas por você e se estas ainda estiverem no status pendente.
+* VocÃª somente pode remover as requisiÃ§Ãµes de especializaÃ§Ã£o criadas por vocÃª e se estas ainda estiverem no status pendente.
 
 ## Como Rodar o Sistema Localmente
 
-Para rodar o sistema localmente, é necessário que você tenha o Docker instalado em sua máquina. Navegue até a raiz do projeto e execute o comando:
+Para rodar o sistema localmente, Ã© necessÃ¡rio que vocÃª tenha o Docker instalado em sua mÃ¡quina. Navegue atÃ© a raiz do projeto e execute o comando:
 
 
 ```bash
@@ -23,19 +23,19 @@ ou
 docker compose up -d
 ```
 
-**Nota:** Aconselha-se a usar o comando `docker compose up -d`, pois, às vezes, o banco de dados leva mais tempo para estar pronto do que a aplicação. Caso a aplicação dê um crash, você pode rodar o comando novamente e testar a aplicação.
+**Nota:** Aconselha-se a usar o comando `docker compose up -d`, pois, Ã s vezes, o banco de dados leva mais tempo para estar pronto do que a aplicaÃ§Ã£o. Caso a aplicaÃ§Ã£o dÃª um crash, vocÃª pode rodar o comando novamente e testar a aplicaÃ§Ã£o.
 
-Após rodar o sistema localmente, acesse o Swagger para realizar os testes:
+ApÃ³s rodar o sistema localmente, acesse o Swagger para realizar os testes:
 
 [http://localhost:8080/swagger-ui/index.html#//](http://localhost:8080/swagger-ui/index.html#/)
 
-A  API também está hospedada no link do GPC: [https://goatspec-api-m24ry3ujja-rj.a.run.app/swagger-ui/index.html#/](https://goatspec-api-m24ry3ujja-rj.a.run.app/swagger-ui/index.html#/)
+A  API tambÃ©m estÃ¡ hospedada no link do GPC: [https://goatspec-api-m24ry3ujja-rj.a.run.app/swagger-ui/index.html#/](https://goatspec-api-m24ry3ujja-rj.a.run.app/swagger-ui/index.html#/)
 
-Repositório GitLab: [https://gitlab.com/dombo99/goatspec-api/](https://gitlab.com/dombo99/goatspec-api/)
+RepositÃ³rio GitLab: [https://gitlab.com/dombo99/goatspec-api/](https://gitlab.com/dombo99/goatspec-api/)
 
-Repositório Github: [https://github.com/gervasioartur/goatspec-api](https://github.com/gervasioartur/goatspec-api)
+RepositÃ³rio Github: [https://github.com/gervasioartur/goatspec-api](https://github.com/gervasioartur/goatspec-api)
 
-Métricas : [https://sonarcloud.io/summary/new_code?id=dombo99_goatspec-api](https://sonarcloud.io/summary/new_code?id=dombo99_goatspec-api)
+MÃ©tricas : [https://sonarcloud.io/summary/new_code?id=dombo99_goatspec-api](https://sonarcloud.io/summary/new_code?id=dombo99_goatspec-api)
 
 
 ## Tecnologias Utilizadas
@@ -54,9 +54,9 @@ Métricas : [https://sonarcloud.io/summary/new_code?id=dombo99_goatspec-api](http
 - **H2** (somente nos testes)
 - **JaCoCo** (para cobertura de testes)
 - **Docker**
-- **GitLab CI** (para entrega contínua no GPC Cloud Runner)
+- **GitLab CI** (para entrega contÃ­nua no GPC Cloud Runner)
 
-## Boas Práticas de Desenvolvimento
+## Boas PrÃ¡ticas de Desenvolvimento
 
 - **Arquitetura Limpa**
 - **Clean Code**
