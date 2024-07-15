@@ -3,10 +3,7 @@ package com.goatspec.main.config;
 import com.goatspec.application.gateways.email.ISendEmailGateway;
 import com.goatspec.application.gateways.specialization.ISpecializationRequestGateway;
 import com.goatspec.application.gateways.user.IUserGateway;
-import com.goatspec.application.useCases.contracts.specialization.IApproveSpecializationRequestUseCase;
-import com.goatspec.application.useCases.contracts.specialization.IDisapproveSpecializationRequestUseCase;
-import com.goatspec.application.useCases.contracts.specialization.IListAllSpecializationRequestsUseCase;
-import com.goatspec.application.useCases.contracts.specialization.IRemoveSpecializationRequestUseCase;
+import com.goatspec.application.useCases.contracts.specialization.*;
 import com.goatspec.application.useCases.implementations.specialization.*;
 import com.goatspec.infrastructure.gateways.mappers.SpecializationEntityMapper;
 import com.goatspec.infrastructure.gateways.specialization.SpecializationRequestGateway;
@@ -24,8 +21,13 @@ public class SpecializationConfig {
     }
 
     @Bean
-    public IListAllSpecializationRequestsUseCase specializationRequestsUseCase(ISpecializationRequestGateway specializationGateway) {
+    public IListAllSpecializationRequestsUseCase listAllSpecializationRequestsUseCase(ISpecializationRequestGateway specializationGateway) {
         return new ListAllSpecializationRequestsUseCase(specializationGateway);
+    }
+
+    @Bean
+    public IListAllUserSpecializationRequestUseCase listAllUserSpecializationRequestUseCase(ISpecializationRequestGateway specializationGateway) {
+        return new ListAllUserSpecializationRequestUseCase(specializationGateway);
     }
 
     @Bean
