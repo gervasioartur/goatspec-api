@@ -11,7 +11,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class RemoveSpecializationRequestUseCaseUseCase implements IRemoveSpecializationRequestUseCase {
-    private ISpecializationRequestGateway specializationRequestGateway;
+    private final ISpecializationRequestGateway specializationRequestGateway;
 
     public RemoveSpecializationRequestUseCaseUseCase(ISpecializationRequestGateway specializationRequestGateway) {
         this.specializationRequestGateway = specializationRequestGateway;
