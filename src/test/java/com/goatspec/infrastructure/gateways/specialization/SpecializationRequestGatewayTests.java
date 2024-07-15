@@ -175,7 +175,7 @@ class SpecializationRequestGatewayTests {
 
         Throwable exception = Assertions.catchThrowable(() -> this.specializationGateway.approve(specializationId));
         Assertions.assertThat(exception).isInstanceOf(NotFoundException.class);
-        Assertions.assertThat(exception.getMessage()).isEqualTo("Specialization not found.");
+        Assertions.assertThat(exception.getMessage()).isEqualTo("Specialization request not found.");
     }
 
     @Test
@@ -211,7 +211,7 @@ class SpecializationRequestGatewayTests {
 
         Throwable exception = Assertions.catchThrowable(() -> this.specializationGateway.disapprove(specializationId));
         Assertions.assertThat(exception).isInstanceOf(NotFoundException.class);
-        Assertions.assertThat(exception.getMessage()).isEqualTo("Specialization not found.");
+        Assertions.assertThat(exception.getMessage()).isEqualTo("Specialization request not found.");
     }
 
     @Test
