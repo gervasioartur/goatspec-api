@@ -1,11 +1,15 @@
 package com.goatspec.main.config;
 
+import com.goatspec.application.gateways.encrypt.IPasswordEncoderGateway;
+import com.goatspec.domain.Enums.GenderEnum;
 import com.goatspec.infrastructure.persisntence.entities.PrivilegeEntity;
 import com.goatspec.infrastructure.persisntence.entities.RoleEntity;
-import com.goatspec.infrastructure.persisntence.entities.SpecializationStatusEntity;
+import com.goatspec.infrastructure.persisntence.entities.SpecializationRequestStatusEntity;
+import com.goatspec.infrastructure.persisntence.entities.UserEntity;
 import com.goatspec.infrastructure.persisntence.repositories.IPrivilegeRepository;
 import com.goatspec.infrastructure.persisntence.repositories.IRoleRepository;
-import com.goatspec.infrastructure.persisntence.repositories.ISpecializationStatusRepository;
+import com.goatspec.infrastructure.persisntence.repositories.ISpecializationRequestStatusRepository;
+import com.goatspec.infrastructure.persisntence.repositories.IUserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,10 +17,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Component
 @Transactional
@@ -29,7 +30,11 @@ public class SetupLoader implements ApplicationListener<ContextRefreshedEvent> {
     @Autowired
     private IPrivilegeRepository privilegeRepository;
     @Autowired
-    private ISpecializationStatusRepository specializationStatusRepository;
+    private ISpecializationRequestStatusRepository specializationStatusRepository;
+    @Autowired
+    private IUserRepository userRepository;
+    @Autowired
+    private IPasswordEncoderGateway passwordEncoderGateway;
 
     public void onApplicationEvent(ContextRefreshedEvent event) {
         if (alreadySetup) return;
@@ -40,13 +45,16 @@ public class SetupLoader implements ApplicationListener<ContextRefreshedEvent> {
         PrivilegeEntity deletePrivilege = createPrivilegeIfNotFound("DELETE_PRIVILEGE");
 
         List<PrivilegeEntity> adminPrivileges = Arrays.asList(readPrivilege, writePrivilege, deletePrivilege);
-        createRoleIfNotFound("ROLE_ADMIN", adminPrivileges);
         createRoleIfNotFound("ROLE_TEACHER", Arrays.asList(readPrivilege, writePrivilege));
         createRoleIfNotFound("ROLE_TECHNICIAN", Arrays.asList(readPrivilege, writePrivilege));
+        createRoleIfNotFound("ROLE_ADMIN", adminPrivileges);
+
+        createAdminUserIfNotFound();
 
         createSpecializationSituationIfNotFound("PENDING");
         createSpecializationSituationIfNotFound("APPROVED");
         createSpecializationSituationIfNotFound("DISAPPROVED");
+
 
         alreadySetup = true;
     }
@@ -61,6 +69,26 @@ public class SetupLoader implements ApplicationListener<ContextRefreshedEvent> {
         return privilege;
     }
 
+    void createAdminUserIfNotFound() {
+        if (userRepository.findByNameAndActive("admin", true).isEmpty()) {
+            RoleEntity adminRole = roleRepository.findByNameAndActive("ROLE_ADMIN", true);
+            String password = passwordEncoderGateway.encode("admin");
+            UserEntity user = UserEntity
+                    .builder()
+                    .cpf("admin")
+                    .email("gervasioarthur@gmailcom")
+                    .registration("admin")
+                    .name("admin")
+                    .dateOfBirth(new Date())
+                    .gender(GenderEnum.MALE.getValue())
+                    .roles(List.of(adminRole))
+                    .password(password)
+                    .active(true)
+                    .build();
+            userRepository.save(user);
+        }
+    }
+
     RoleEntity createRoleIfNotFound(String name, Collection<PrivilegeEntity> privileges) {
         RoleEntity roleResult = roleRepository.findByNameAndActive(name, true);
         RoleEntity role = null;
@@ -72,17 +100,15 @@ public class SetupLoader implements ApplicationListener<ContextRefreshedEvent> {
         return role;
     }
 
-    SpecializationStatusEntity createSpecializationSituationIfNotFound(String description) {
-        SpecializationStatusEntity specializationStatusEntityResult = this.specializationStatusRepository
+    void createSpecializationSituationIfNotFound(String description) {
+        SpecializationRequestStatusEntity specializationRequestStatusEntityResult = this.specializationStatusRepository
                 .findByDescriptionAndActive(description, true);
-        SpecializationStatusEntity specializationStatusEntity = null;
-        if (specializationStatusEntityResult == null) {
-            specializationStatusEntity = SpecializationStatusEntity.builder()
+        if (specializationRequestStatusEntityResult == null) {
+            SpecializationRequestStatusEntity specializationRequestStatusEntity = SpecializationRequestStatusEntity.builder()
                     .description(description)
                     .active(true)
                     .build();
-            specializationStatusRepository.save(specializationStatusEntity);
+            specializationStatusRepository.save(specializationRequestStatusEntity);
         }
-        return specializationStatusEntity;
     }
 }

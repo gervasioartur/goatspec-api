@@ -1,20 +1,20 @@
 package com.goatspec.application.useCases.implementations.specialization;
 
-import com.goatspec.application.gateways.specialization.ISpecializationGateway;
+import com.goatspec.application.gateways.specialization.ISpecializationRequestGateway;
 import com.goatspec.application.useCases.contracts.specialization.IListAllSpecializationRequestsUseCase;
-import com.goatspec.domain.entities.specialization.SpecializationAndUser;
+import com.goatspec.domain.entities.specialization.SpecializationRequestInfo;
 
 import java.util.List;
 
 public class ListAllSpecializationRequestsUseCase implements IListAllSpecializationRequestsUseCase {
-    private final ISpecializationGateway specializationGateway;
+    private final ISpecializationRequestGateway specializationGateway;
 
-    public ListAllSpecializationRequestsUseCase(ISpecializationGateway specializationGateway) {
+    public ListAllSpecializationRequestsUseCase(ISpecializationRequestGateway specializationGateway) {
         this.specializationGateway = specializationGateway;
     }
 
     @Override
-    public List<SpecializationAndUser> getAll() {
+    public List<SpecializationRequestInfo> getAll() {
         return this.specializationGateway.getAll();
     }
 }

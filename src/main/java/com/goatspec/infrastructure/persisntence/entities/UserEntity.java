@@ -49,7 +49,7 @@ public class UserEntity implements UserDetails {
     private Collection<RoleEntity> roles;
 
     @OneToMany(mappedBy = "user")
-    private List<SpecializationEntity> specializations;
+    private List<SpecializationRequestEntity> specializations;
 
     @Column(nullable = false)
     private String password;
