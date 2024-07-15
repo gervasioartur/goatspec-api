@@ -37,7 +37,7 @@ public class ListAllSpecializationRequestsController {
         ResponseEntity<Response> responseEntity;
 
         try {
-            response = new Response(this.listAllSpecializationRequestsUseCase.getAll());
+            response = new Response(this.listAllSpecializationRequestsUseCase.listAll());
             responseEntity = new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception ex) {
             response = new Response(ex.getMessage());

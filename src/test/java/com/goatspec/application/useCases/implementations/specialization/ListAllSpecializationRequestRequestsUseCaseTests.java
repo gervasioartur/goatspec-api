@@ -32,7 +32,7 @@ class ListAllSpecializationRequestRequestsUseCaseTests {
         List<SpecializationRequestInfo> list = List.of(Mocks.specializationRequestInfoFactory(), Mocks.specializationRequestInfoFactory());
         Mockito.when(this.specializationGateway.getAll()).thenReturn(list);
 
-        List<SpecializationRequestInfo> listResult = this.listAllSpecializationRequests.getAll();
+        List<SpecializationRequestInfo> listResult = this.listAllSpecializationRequests.listAll();
 
         Assertions.assertThat(listResult).isEqualTo(list);
         Assertions.assertThat(listResult.size()).isEqualTo(list.size());

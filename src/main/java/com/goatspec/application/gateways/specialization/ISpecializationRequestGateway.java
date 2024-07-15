@@ -20,4 +20,6 @@ public interface ISpecializationRequestGateway {
     SpecializationRequest create(SpecializationRequest specializationRequest);
 
     List<SpecializationRequestInfo> getAll();
+
+    List<SpecializationRequestInfo> getAllByUserId(UUID userId);
 }

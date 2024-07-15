@@ -47,7 +47,7 @@ public class ListAllSpecializationRequestRequestsControllerTests {
     @DisplayName("Should return internal server error if the usecase throws")
     void shouldReturnInternalServerErrorIfUseCaseThrows() throws Exception {
         BDDMockito.doThrow(HttpServerErrorException.InternalServerError.class)
-                .when(this.listAllSpecializationRequestsUseCase).getAll();
+                .when(this.listAllSpecializationRequestsUseCase).listAll();
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                 .get(SPEC_API)
@@ -66,7 +66,7 @@ public class ListAllSpecializationRequestRequestsControllerTests {
                 (Arrays.asList(Mocks.specializationEntityFactory(), Mocks.specializationEntityFactory()));
 
         List<SpecializationRequestInfo> specializationRequestInfoList = Mocks.specializationInfoListFactory(specializationRequestEntityList);
-        BDDMockito.when(this.listAllSpecializationRequestsUseCase.getAll()).thenReturn(specializationRequestInfoList);
+        BDDMockito.when(this.listAllSpecializationRequestsUseCase.listAll()).thenReturn(specializationRequestInfoList);
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                 .get(SPEC_API)
