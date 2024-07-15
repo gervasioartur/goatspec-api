@@ -1,10 +1,12 @@
 package com.goatspec.application.useCases.implementations.specialization;
 
-import com.goatspec.application.gateways.specialization.ISpecializationGateway;
+import com.goatspec.application.gateways.specialization.ISpecializationRequestGateway;
 import com.goatspec.application.useCases.contracts.specialization.IListAllSpecializationRequestsUseCase;
 import com.goatspec.domain.entities.authentication.UserInfo;
-import com.goatspec.domain.entities.specialization.Specialization;
-import com.goatspec.domain.entities.specialization.SpecializationAndUser;
+import com.goatspec.domain.entities.specialization.SpecializationRequest;
+import com.goatspec.domain.entities.specialization.SpecializationRequestAndUser;
+import com.goatspec.domain.entities.specialization.SpecializationRequestInfo;
+import com.goatspec.mocks.Mocks;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,10 +20,10 @@ import java.util.List;
 import java.util.UUID;
 
 @SpringBootTest
-class ListAllSpecializationRequestsUseCaseTests {
+class ListAllSpecializationRequestRequestsUseCaseTests {
     private IListAllSpecializationRequestsUseCase listAllSpecializationRequests;
     @MockBean
-    private ISpecializationGateway specializationGateway;
+    private ISpecializationRequestGateway specializationGateway;
 
     @BeforeEach
     void setUp() {
@@ -32,29 +34,14 @@ class ListAllSpecializationRequestsUseCaseTests {
     @Test
     @DisplayName("Should return all specialization")
     void shouldReturnAllSpecialization() {
-        UUID userId = UUID.randomUUID();
-        UUID userId1 = UUID.randomUUID();
-
-        SpecializationAndUser specializationAndUser = new SpecializationAndUser(
-                new UserInfo(userId, "any_name", "any_email", "any_registration"),
-                new Specialization(userId, "any_area", "any_type", 36, new BigDecimal("200")),
-                "PENDING"
-        );
-
-        SpecializationAndUser specializationAndUser1 = new SpecializationAndUser(
-                new UserInfo(userId1, "any_name", "any_email", "any_registration"),
-                new Specialization(userId1, "any_area", "any_type", 36, new BigDecimal("200")),
-                "PENDING"
-        );
-
-        List<SpecializationAndUser> list = List.of(specializationAndUser, specializationAndUser1);
+        List<SpecializationRequestInfo> list = List.of(Mocks.SpecializationRequestInfoFactory(),Mocks.SpecializationRequestInfoFactory());
         Mockito.when(this.specializationGateway.getAll()).thenReturn(list);
 
-        List<SpecializationAndUser> listResult = this.listAllSpecializationRequests.getAll();
+        List<SpecializationRequestInfo> listResult = this.listAllSpecializationRequests.getAll();
 
         Assertions.assertThat(listResult).isEqualTo(list);
         Assertions.assertThat(listResult.size()).isEqualTo(list.size());
-        Assertions.assertThat(listResult.get(0)).isEqualTo(specializationAndUser);
+        Assertions.assertThat(listResult.getFirst()).isEqualTo(list.getFirst());
         Mockito.verify(this.specializationGateway, Mockito.times(1)).getAll();
     }
 

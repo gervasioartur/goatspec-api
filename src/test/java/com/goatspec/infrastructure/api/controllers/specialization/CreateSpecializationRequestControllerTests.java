@@ -3,10 +3,10 @@ package com.goatspec.infrastructure.api.controllers.specialization;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.goatspec.application.useCases.contracts.authentication.IGetLoggedUserInfoUseCase;
-import com.goatspec.application.useCases.contracts.specialization.ICreateSpecializationUseCase;
-import com.goatspec.domain.Enums.SpecializationTypeEnum;
+import com.goatspec.application.useCases.contracts.specialization.ICreateSpecializationRequestUseCase;
+import com.goatspec.domain.Enums.SpecializationRequestTypeEnum;
 import com.goatspec.domain.entities.authentication.UserInfo;
-import com.goatspec.domain.entities.specialization.Specialization;
+import com.goatspec.domain.entities.specialization.SpecializationRequest;
 import com.goatspec.domain.exceptions.UnauthorizedException;
 import com.goatspec.infrastructure.api.dto.CreateSpecializationRequest;
 import com.goatspec.infrastructure.gateways.mappers.SpecializationDTOMapper;
@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-public class CreateSpecializationControllerTests {
+public class CreateSpecializationRequestControllerTests {
     private final String SPEC_API = "/specs";
 
     @Autowired
@@ -41,7 +41,7 @@ public class CreateSpecializationControllerTests {
     private MockMvc mvc;
 
     @MockBean
-    private ICreateSpecializationUseCase createSpecializationUseCase;
+    private ICreateSpecializationRequestUseCase createSpecializationUseCase;
     @MockBean
     private SpecializationDTOMapper specializationDTOMapper;
     @MockBean
@@ -147,7 +147,7 @@ public class CreateSpecializationControllerTests {
     @Test
     @DisplayName("Should return bad request  of CourseLoad  less ou equal zero")
     void shouldReturnBadRequestIfCourseLoadIsInvalid() throws Exception {
-        CreateSpecializationRequest request = new CreateSpecializationRequest("any_area", SpecializationTypeEnum.DOCTORATE_DEGREE.getValue(), 0, new BigDecimal("25"));
+        CreateSpecializationRequest request = new CreateSpecializationRequest("any_area", SpecializationRequestTypeEnum.DOCTORATE_DEGREE.getValue(), 0, new BigDecimal("25"));
         String json = new ObjectMapper().writeValueAsString(request);
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
@@ -165,15 +165,15 @@ public class CreateSpecializationControllerTests {
     @Test
     @DisplayName("Should return unauthorized if user does not exists")
     void shouldReturnUnauthorizedIfUserDoesNotExist() throws Exception {
-        CreateSpecializationRequest request = new CreateSpecializationRequest("any_area", SpecializationTypeEnum.DOCTORATE_DEGREE.getValue(), 60, new BigDecimal("25"));
+        CreateSpecializationRequest request = new CreateSpecializationRequest("any_area", SpecializationRequestTypeEnum.DOCTORATE_DEGREE.getValue(), 60, new BigDecimal("25"));
 
         UserInfo userInfoDomainObject = new UserInfo(UUID.randomUUID(), "any_name", "any_email", "any_registration");
-        Specialization specializationDomainObject = new Specialization(userInfoDomainObject.id(), "any_area", SpecializationTypeEnum.DOCTORATE_DEGREE.getValue(), 60, new BigDecimal("25"));
+        SpecializationRequest specializationRequestDomainObject = new SpecializationRequest(userInfoDomainObject.id(), "any_area", SpecializationRequestTypeEnum.DOCTORATE_DEGREE.getValue(), 60, new BigDecimal("25"));
 
         BDDMockito.when(this.getLoggedUserInfoUseCase.get()).thenReturn(userInfoDomainObject);
-        BDDMockito.when(this.specializationDTOMapper.toDomainObject(request, userInfoDomainObject.id())).thenReturn(specializationDomainObject);
+        BDDMockito.when(this.specializationDTOMapper.toDomainObject(request, userInfoDomainObject.id())).thenReturn(specializationRequestDomainObject);
         BDDMockito.doThrow(new UnauthorizedException("Something went wrong! please try again later!"))
-                .when(this.createSpecializationUseCase).create(specializationDomainObject);
+                .when(this.createSpecializationUseCase).create(specializationRequestDomainObject);
 
 
         String json = new ObjectMapper().writeValueAsString(request);
@@ -194,15 +194,15 @@ public class CreateSpecializationControllerTests {
     @Test
     @DisplayName("Should return internal server error if the usecase throws")
     void shouldReturnInternalServerErrorIfUseCaseThrows() throws Exception {
-        CreateSpecializationRequest request = new CreateSpecializationRequest("any_area", SpecializationTypeEnum.DOCTORATE_DEGREE.getValue(), 60, new BigDecimal("25"));
+        CreateSpecializationRequest request = new CreateSpecializationRequest("any_area", SpecializationRequestTypeEnum.DOCTORATE_DEGREE.getValue(), 60, new BigDecimal("25"));
 
         UserInfo userInfoDomainObject = new UserInfo(UUID.randomUUID(), "any_name", "any_email", "any_registration");
-        Specialization specializationDomainObject = new Specialization(userInfoDomainObject.id(), "any_area", SpecializationTypeEnum.DOCTORATE_DEGREE.getValue(), 60, new BigDecimal("25"));
+        SpecializationRequest specializationRequestDomainObject = new SpecializationRequest(userInfoDomainObject.id(), "any_area", SpecializationRequestTypeEnum.DOCTORATE_DEGREE.getValue(), 60, new BigDecimal("25"));
 
         BDDMockito.when(this.getLoggedUserInfoUseCase.get()).thenReturn(userInfoDomainObject);
-        BDDMockito.when(this.specializationDTOMapper.toDomainObject(request, userInfoDomainObject.id())).thenReturn(specializationDomainObject);
+        BDDMockito.when(this.specializationDTOMapper.toDomainObject(request, userInfoDomainObject.id())).thenReturn(specializationRequestDomainObject);
         BDDMockito.doThrow(HttpServerErrorException.InternalServerError.class)
-                .when(this.createSpecializationUseCase).create(specializationDomainObject);
+                .when(this.createSpecializationUseCase).create(specializationRequestDomainObject);
 
         String json = new ObjectMapper().writeValueAsString(request);
 
@@ -221,14 +221,14 @@ public class CreateSpecializationControllerTests {
     @Test
     @DisplayName("Should return successfully message on success")
     void shouldReturnSuccessfulMessageOnSuccess() throws Exception {
-        CreateSpecializationRequest request = new CreateSpecializationRequest("any_area", SpecializationTypeEnum.DOCTORATE_DEGREE.getValue(), 60, new BigDecimal("25"));
+        CreateSpecializationRequest request = new CreateSpecializationRequest("any_area", SpecializationRequestTypeEnum.DOCTORATE_DEGREE.getValue(), 60, new BigDecimal("25"));
 
         UserInfo userInfoDomainObject = new UserInfo(UUID.randomUUID(), "any_name", "any_email", "any_registration");
-        Specialization specializationDomainObject = new Specialization(userInfoDomainObject.id(), "any_area", SpecializationTypeEnum.DOCTORATE_DEGREE.getValue(), 60, new BigDecimal("25"));
+        SpecializationRequest specializationRequestDomainObject = new SpecializationRequest(userInfoDomainObject.id(), "any_area", SpecializationRequestTypeEnum.DOCTORATE_DEGREE.getValue(), 60, new BigDecimal("25"));
 
         BDDMockito.when(this.getLoggedUserInfoUseCase.get()).thenReturn(userInfoDomainObject);
-        BDDMockito.when(this.specializationDTOMapper.toDomainObject(request, userInfoDomainObject.id())).thenReturn(specializationDomainObject);
-        BDDMockito.doNothing().when(this.createSpecializationUseCase).create(specializationDomainObject);
+        BDDMockito.when(this.specializationDTOMapper.toDomainObject(request, userInfoDomainObject.id())).thenReturn(specializationRequestDomainObject);
+        BDDMockito.doNothing().when(this.createSpecializationUseCase).create(specializationRequestDomainObject);
 
         String json = new ObjectMapper().writeValueAsString(request);
 

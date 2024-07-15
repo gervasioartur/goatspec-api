@@ -1,23 +1,23 @@
-package com.goatspec.application.useCases.implementations.user;
+package com.goatspec.application.useCases.implementations.authentication;
 
 import com.goatspec.application.gateways.authentication.IAuthenticationGateway;
 import com.goatspec.application.gateways.encrypt.IPasswordEncoderGateway;
 import com.goatspec.application.gateways.role.IRoleGateway;
 import com.goatspec.application.gateways.user.IUserGateway;
-import com.goatspec.application.useCases.contracts.user.ICreateUserUseCase;
+import com.goatspec.application.useCases.contracts.authentication.ISingupUseCase;
 import com.goatspec.domain.entities.role.Role;
 import com.goatspec.domain.entities.user.User;
 import com.goatspec.domain.entities.user.UserAccount;
 import com.goatspec.domain.exceptions.BusinessException;
 import com.goatspec.domain.exceptions.UnexpectedException;
 
-public class CreateUserUseCase implements ICreateUserUseCase {
+public class SingupUseCase implements ISingupUseCase {
     private final IUserGateway userGateway;
     private final IRoleGateway roleGateway;
     private final IPasswordEncoderGateway passwordEncoderGateway;
     private final IAuthenticationGateway authentication;
 
-    public CreateUserUseCase(IUserGateway userGateway, IRoleGateway roleGateway, IPasswordEncoderGateway passwordEncoderGateway, IAuthenticationGateway authentication) {
+    public SingupUseCase(IUserGateway userGateway, IRoleGateway roleGateway, IPasswordEncoderGateway passwordEncoderGateway, IAuthenticationGateway authentication) {
         this.userGateway = userGateway;
         this.roleGateway = roleGateway;
         this.passwordEncoderGateway = passwordEncoderGateway;

@@ -1,10 +1,10 @@
-package com.goatspec.application.useCases.implementations.user;
+package com.goatspec.application.useCases.implementations.authentication;
 
 import com.goatspec.application.gateways.authentication.IAuthenticationGateway;
 import com.goatspec.application.gateways.encrypt.IPasswordEncoderGateway;
 import com.goatspec.application.gateways.role.IRoleGateway;
 import com.goatspec.application.gateways.user.IUserGateway;
-import com.goatspec.application.useCases.contracts.user.ICreateUserUseCase;
+import com.goatspec.application.useCases.contracts.authentication.ISingupUseCase;
 import com.goatspec.domain.Enums.GenderEnum;
 import com.goatspec.domain.Enums.RoleEnum;
 import com.goatspec.domain.entities.role.Role;
@@ -26,8 +26,8 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-class CreateUserUseCaseTests {
-    private ICreateUserUseCase createUserService;
+class SingupUseCaseTests {
+    private ISingupUseCase createUserService;
 
     @MockBean
     private IUserGateway userGateway;
@@ -40,7 +40,7 @@ class CreateUserUseCaseTests {
 
     @BeforeEach
     void setUp() {
-        this.createUserService = new CreateUserUseCase(
+        this.createUserService = new SingupUseCase(
                 userGateway,
                 roleGateway,
                 passwordEncoderGateway,

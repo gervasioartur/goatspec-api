@@ -1,6 +1,6 @@
 package com.goatspec.domain.Enums;
 
-public enum SpecializationTypeEnum {
+public enum SpecializationRequestTypeEnum {
     POS_GRADUCAO("POS GRADUAÇÃO"),
     MESTRADO("MESTRADO"),
     DOUTORADO("DOUTORADO"),
@@ -10,7 +10,7 @@ public enum SpecializationTypeEnum {
 
     private final String value;
 
-    SpecializationTypeEnum(String value) {
+    SpecializationRequestTypeEnum(String value) {
         this.value = value;
     }
 

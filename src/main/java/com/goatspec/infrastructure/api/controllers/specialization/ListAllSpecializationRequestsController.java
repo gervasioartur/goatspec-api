@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/specs")
-@Tag(name = "Specialization", description = "Endpoints for specialization features")
+@Tag(name = "Specialization Request", description = "Endpoints for specialization request features")
 public class ListAllSpecializationRequestsController {
 
     private final IListAllSpecializationRequestsUseCase listAllSpecializationRequestsUseCase;

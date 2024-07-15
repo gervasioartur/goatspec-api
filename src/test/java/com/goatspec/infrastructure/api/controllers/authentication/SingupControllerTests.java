@@ -1,7 +1,7 @@
-package com.goatspec.infrastructure.api.controllers.user;
+package com.goatspec.infrastructure.api.controllers.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.goatspec.application.useCases.contracts.user.ICreateUserUseCase;
+import com.goatspec.application.useCases.contracts.authentication.ISingupUseCase;
 import com.goatspec.domain.Enums.GenderEnum;
 import com.goatspec.domain.Enums.RoleEnum;
 import com.goatspec.domain.entities.user.User;
@@ -32,15 +32,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-class CreateUserControllerTests {
-    private final String USER_API = "/users";
+class SingupControllerTests {
+    private final String USER_API = "/auth/singup";
 
     @Autowired
     private WebApplicationContext context;
     private MockMvc mvc;
 
     @MockBean
-    private ICreateUserUseCase createUserUseCase;
+    private ISingupUseCase createUserUseCase;
     @MockBean
     private UserDTOMapper userDTOMapper;
 

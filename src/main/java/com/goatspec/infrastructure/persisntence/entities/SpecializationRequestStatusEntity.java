@@ -5,8 +5,8 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -15,32 +15,18 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "t_specialization", schema = "goatspec")
-public class SpecializationEntity {
+@Table(name = "t_specialization_request_status", schema = "goatspec")
+public class SpecializationRequestStatusEntity {
     @Id
     @Column(length = 32)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     @Column(nullable = false)
-    private String area;
+    private String description;
 
-    @Column(nullable = false)
-    private String type;
-
-    @Column(nullable = false)
-    private int courseLoad;
-
-    @Column(nullable = false)
-    private BigDecimal totalCost;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity user;
-
-    @ManyToOne
-    @JoinColumn(name = "situation_id", nullable = false)
-    private SpecializationStatusEntity specializationStatus;
+    @OneToMany(mappedBy = "specializationRequestStatus")
+    private List<SpecializationRequestEntity> specializationsRequests;
 
     @Column(nullable = false)
     private boolean active;

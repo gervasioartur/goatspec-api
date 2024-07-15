@@ -1,6 +1,6 @@
-package com.goatspec.infrastructure.api.controllers.user;
+package com.goatspec.infrastructure.api.controllers.authentication;
 
-import com.goatspec.application.useCases.contracts.user.ICreateUserUseCase;
+import com.goatspec.application.useCases.contracts.authentication.ISingupUseCase;
 import com.goatspec.domain.entities.user.User;
 import com.goatspec.domain.entities.user.UserAccount;
 import com.goatspec.domain.exceptions.BusinessException;
@@ -23,13 +23,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
-@Tag(name = "Users", description = "Endpoints for user features")
-public class CreateUserController extends AbstractController<CreateUserRequest> {
-    private final ICreateUserUseCase createUserUseCase;
+@RequestMapping("/auth/singup")
+@Tag(name = "Authentication", description = "Endpoints for authentication features")
+public class SingupController extends AbstractController<CreateUserRequest> {
+    private final ISingupUseCase createUserUseCase;
     private final UserDTOMapper userDTOMapper;
 
-    public CreateUserController(ICreateUserUseCase createUserUseCase, UserDTOMapper userDTOMapper) {
+    public SingupController(ISingupUseCase createUserUseCase, UserDTOMapper userDTOMapper) {
         this.createUserUseCase = createUserUseCase;
         this.userDTOMapper = userDTOMapper;
     }
@@ -37,7 +37,7 @@ public class CreateUserController extends AbstractController<CreateUserRequest> 
     @Override
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "Create user")
+    @Operation(summary = "Sing up")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Returns the user token"),
             @ApiResponse(responseCode = "400", description = "Bad request happened"),

@@ -1,8 +1,8 @@
 package com.goatspec.infrastructure.api.controllers.specialization;
 
 import com.goatspec.application.useCases.contracts.specialization.IListAllSpecializationRequestsUseCase;
-import com.goatspec.domain.entities.specialization.SpecializationAndUser;
-import com.goatspec.infrastructure.persisntence.entities.SpecializationEntity;
+import com.goatspec.domain.entities.specialization.SpecializationRequestInfo;
+import com.goatspec.infrastructure.persisntence.entities.SpecializationRequestEntity;
 import com.goatspec.mocks.Mocks;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -26,7 +26,7 @@ import java.util.List;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-public class ListAllSpecializationRequestsControllerTests {
+public class ListAllSpecializationRequestRequestsControllerTests {
     private final String SPEC_API = "/specs";
 
     @Autowired
@@ -62,12 +62,11 @@ public class ListAllSpecializationRequestsControllerTests {
     @Test
     @DisplayName("Should return list of specialization")
     void shouldReturnListOfSpecialization() throws Exception {
-        List<SpecializationEntity> specializationEntityList = new ArrayList<>
+        List<SpecializationRequestEntity> specializationRequestEntityList = new ArrayList<>
                 (Arrays.asList(Mocks.specializationEntityFactory(), Mocks.specializationEntityFactory()));
 
-        List<SpecializationAndUser> specializationAndUserList = new ArrayList<>
-                (Arrays.asList(Mocks.specializationAndUserFactory(specializationEntityList.getFirst()), Mocks.specializationAndUserFactory(specializationEntityList.get(1))));
-        BDDMockito.when(this.listAllSpecializationRequestsUseCase.getAll()).thenReturn(specializationAndUserList);
+        List<SpecializationRequestInfo> specializationRequestInfoList = Mocks.specializationInfoListFactory(specializationRequestEntityList);
+        BDDMockito.when(this.listAllSpecializationRequestsUseCase.getAll()).thenReturn(specializationRequestInfoList);
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                 .get(SPEC_API)

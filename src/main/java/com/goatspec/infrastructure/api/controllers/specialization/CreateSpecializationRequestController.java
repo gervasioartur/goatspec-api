@@ -1,9 +1,9 @@
 package com.goatspec.infrastructure.api.controllers.specialization;
 
 import com.goatspec.application.useCases.contracts.authentication.IGetLoggedUserInfoUseCase;
-import com.goatspec.application.useCases.contracts.specialization.ICreateSpecializationUseCase;
+import com.goatspec.application.useCases.contracts.specialization.ICreateSpecializationRequestUseCase;
 import com.goatspec.domain.entities.authentication.UserInfo;
-import com.goatspec.domain.entities.specialization.Specialization;
+import com.goatspec.domain.entities.specialization.SpecializationRequest;
 import com.goatspec.domain.exceptions.UnauthorizedException;
 import com.goatspec.infrastructure.api.controllers.AbstractController;
 import com.goatspec.infrastructure.api.dto.CreateSpecializationRequest;
@@ -25,15 +25,15 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/specs")
-@Tag(name = "Specialization", description = "Endpoints for specialization features")
-public class CreateSpecializationController extends AbstractController<CreateSpecializationRequest> {
-    private final ICreateSpecializationUseCase specializationUseCase;
+@Tag(name = "Specialization Request", description = "Endpoints for specialization request features")
+public class CreateSpecializationRequestController extends AbstractController<CreateSpecializationRequest> {
+    private final ICreateSpecializationRequestUseCase specializationUseCase;
     private final SpecializationDTOMapper specializationDTOMapper;
     private final IGetLoggedUserInfoUseCase getLoggedUserInfoUseCase;
 
-    public CreateSpecializationController(ICreateSpecializationUseCase specializationUseCase,
-                                          SpecializationDTOMapper specializationDTOMapper,
-                                          IGetLoggedUserInfoUseCase getLoggedUserInfoUseCase) {
+    public CreateSpecializationRequestController(ICreateSpecializationRequestUseCase specializationUseCase,
+                                                 SpecializationDTOMapper specializationDTOMapper,
+                                                 IGetLoggedUserInfoUseCase getLoggedUserInfoUseCase) {
         this.specializationUseCase = specializationUseCase;
         this.specializationDTOMapper = specializationDTOMapper;
         this.getLoggedUserInfoUseCase = getLoggedUserInfoUseCase;
@@ -62,8 +62,8 @@ public class CreateSpecializationController extends AbstractController<CreateSpe
 
         try {
             UserInfo userInfo = this.getLoggedUserInfoUseCase.get();
-            Specialization specializationDomainObject = this.specializationDTOMapper.toDomainObject(request, userInfo.id());
-            this.specializationUseCase.create(specializationDomainObject);
+            SpecializationRequest specializationRequestDomainObject = this.specializationDTOMapper.toDomainObject(request, userInfo.id());
+            this.specializationUseCase.create(specializationRequestDomainObject);
             response = new Response("You've successfully requested for specialization.");
             responseEntity = new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (UnauthorizedException ex) {

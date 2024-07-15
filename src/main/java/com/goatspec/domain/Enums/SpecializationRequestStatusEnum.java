@@ -1,13 +1,13 @@
 package com.goatspec.domain.Enums;
 
-public enum SpeciaiizationStatusEnum {
+public enum SpecializationRequestStatusEnum {
     PENDING("PENDING"),
     APPROVED("APPROVED"),
     DISAPPROVED("DISAPPROVED");
 
     private final String value;
 
-    SpeciaiizationStatusEnum(String value) {
+    SpecializationRequestStatusEnum(String value) {
         this.value = value;
     }
 
