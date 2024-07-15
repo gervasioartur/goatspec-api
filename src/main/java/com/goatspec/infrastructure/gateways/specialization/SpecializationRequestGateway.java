@@ -78,6 +78,15 @@ public class SpecializationRequestGateway implements ISpecializationRequestGatew
 
     @Override
     public SpecializationRequestInfo disapprove(UUID id) {
-        return null;
+        SpecializationRequestEntity specializationRequestEntity = this.specializationRepository
+                .findByIdAndActive(id, true)
+                .orElseThrow(() -> new NotFoundException("Specialization not found."));
+
+        SpecializationRequestStatusEntity status = this.specializationStatusRepository
+                .findByDescriptionAndActive(SpecializationRequestStatusEnum.APPROVED.getValue(), true);
+
+        specializationRequestEntity.setSpecializationRequestStatus(status);
+        specializationRequestEntity = this.specializationRepository.save(specializationRequestEntity);
+        return this.specializationEntityMapper.toSpecializationInfo(specializationRequestEntity);
     }
 }
