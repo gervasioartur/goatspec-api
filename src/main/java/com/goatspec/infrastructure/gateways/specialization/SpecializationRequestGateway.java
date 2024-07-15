@@ -57,9 +57,9 @@ public class SpecializationRequestGateway implements ISpecializationRequestGatew
     }
 
     @Override
-    public SpecializationRequest findById(UUID id) {
+    public SpecializationRequestInfo findById(UUID id) {
         Optional<SpecializationRequestEntity> specializationEntityResult = this.specializationRepository.findByIdAndActive(id, true);
-        return specializationEntityResult.map(this.specializationEntityMapper::toSpecializationDomainObject).orElse(null);
+        return specializationEntityResult.map(this.specializationEntityMapper::toSpecializationInfo).orElse(null);
     }
 
     @Override

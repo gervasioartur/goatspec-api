@@ -146,7 +146,7 @@ class SpecializationRequestGatewayTests {
     void ShouldReturnNullIfTheSpecializationDoesNotExists() {
         UUID specializationId = UUID.randomUUID();
         Mockito.when(this.specializationRepository.findByIdAndActive(specializationId, true)).thenReturn(Optional.empty());
-        SpecializationRequest result = this.specializationGateway.findById(specializationId);
+        SpecializationRequestInfo result = this.specializationGateway.findById(specializationId);
         Assertions.assertThat(result).isNull();
         Mockito.verify(this.specializationRepository, Mockito.times(1)).findByIdAndActive(specializationId, true);
     }
@@ -155,16 +155,16 @@ class SpecializationRequestGatewayTests {
     @DisplayName("Should return specialization domain object")
     void shouldReturnSpecializationDomainObjectById() {
         SpecializationRequestEntity savedSpecializationRequestEntity = Mocks.specializationEntityFactory();
-        SpecializationRequest specializationRequestObjectDomain = Mocks.specializationDomainObjectFactory(savedSpecializationRequestEntity);
+        SpecializationRequestInfo specializationRequestObjectDomain = Mocks.specializationInfoFactory(savedSpecializationRequestEntity);
 
         Mockito.when(this.specializationRepository.findByIdAndActive(savedSpecializationRequestEntity.getId(), true)).thenReturn(Optional.of(savedSpecializationRequestEntity));
-        Mockito.when(this.specializationEntityMapper.toSpecializationDomainObject(savedSpecializationRequestEntity)).thenReturn(specializationRequestObjectDomain);
+        Mockito.when(this.specializationEntityMapper.toSpecializationInfo(savedSpecializationRequestEntity)).thenReturn(specializationRequestObjectDomain);
 
-        SpecializationRequest result = this.specializationGateway.findById(savedSpecializationRequestEntity.getId());
+        SpecializationRequestInfo result = this.specializationGateway.findById(savedSpecializationRequestEntity.getId());
 
         Assertions.assertThat(result).isEqualTo(specializationRequestObjectDomain);
         Mockito.verify(this.specializationRepository, Mockito.times(1)).findByIdAndActive(savedSpecializationRequestEntity.getId(), true);
-        Mockito.verify(this.specializationEntityMapper, Mockito.times(1)).toSpecializationDomainObject(savedSpecializationRequestEntity);
+        Mockito.verify(this.specializationEntityMapper, Mockito.times(1)).toSpecializationInfo(savedSpecializationRequestEntity);
     }
 
     @Test
