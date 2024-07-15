@@ -18,7 +18,6 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -195,7 +194,7 @@ class SpecializationGatewayTests {
         specializationEntity.setSpecializationStatus(specializationStatusEntity);
         Mockito.when(this.specializationRepository.save(specializationEntity)).thenReturn(specializationEntity);
 
-        SpecializationAndUser specializationAndUser =  Mocks.specializationAndUserFactory(specializationEntity);
+        SpecializationAndUser specializationAndUser = Mocks.specializationAndUserFactory(specializationEntity);
         Mockito.when(this.specializationEntityMapper.toSpecAndUserDomainObject(specializationEntity)).thenReturn(specializationAndUser);
 
         SpecializationAndUser result = this.specializationGateway.approve(specializationEntity.getId());
@@ -204,7 +203,7 @@ class SpecializationGatewayTests {
         Mockito.verify(this.specializationRepository, Mockito.times(1)).findByIdAndActive(specializationEntity.getId(), true);
         Mockito.verify(this.specializationSituationRepository, Mockito.times(1)).findByDescriptionAndActive(SpeciaiizationStatusEnum.APPROVED.getValue(), true);
         Mockito.verify(this.specializationRepository, Mockito.times(1)).save(specializationEntity);
-        Mockito.verify(this.specializationEntityMapper,Mockito.times(1)).toSpecAndUserDomainObject(specializationEntity);
+        Mockito.verify(this.specializationEntityMapper, Mockito.times(1)).toSpecAndUserDomainObject(specializationEntity);
     }
 
 }
