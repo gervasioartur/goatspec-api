@@ -69,7 +69,7 @@ sonarcloud-check:
     paths:
       - .sonar/cache
   script:
-    - mvn verify sonar:sonar -Ptest -Dsonar.projectKey=dombo99_wallet-wise-api
+    - mvn verify sonar:sonar -Dsonar.projectKey=dombo99_goatspec-api
   rules:
     - if: '$CI_PIPELINE_SOURCE != "web" && ($CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "staging")'
 
@@ -83,7 +83,7 @@ publish:
     - docker login -u "$CI_DOCKER_HUB_USER" -p "$CI_DOCKER_HUB_PASSWORD" $CI_DOCKER_HUB_URL
   script:
     - docker build --build-arg SPRING_PROFILES_ACTIVE=$PROFILES_ACTIVE  --build-arg PORT=$PORT  --build-arg APP_VERSION="$IMAGE_TAG" --build-arg APP_SERVER_URL=$APP_SERVER_URL --build-arg APP_SECRET=$APP_SECRET --build-arg APP_ENVIRONMENT="$CI_COMMIT_BRANCH"   --build-arg APP_EMAIL_SENDER=$APP_EMAIL_SENDER --build-arg APP_EMAIL_PASSWORD=$APP_EMAIL_PASSWORD  --build-arg SPRING_APPLICATION_NAME=$APPLICATION_NAME --build-arg SPRING_DATASOURCE_URL="$DATASOURCE_URL" --build-arg SPRING_DATASOURCE_USERNAME=$DATASOURCE_USERNAME --build-arg SPRING_DATASOURCE_PASSWORD="$DATASOURCE_PASSWORD"  --build-arg SPRING_JPA_SHOW_SQL=$SPRING_JPA_SHOW_SQL  -t "$DOCKER_USER_APPLICATION_NAME:$IMAGE_TAG" .
-    - docker push $DOCKER_USER_APLICATION_NAME:$IMAGE_TAG
+    - docker push $DOCKER_USER_APPLICATION_NAME:$IMAGE_TAG
   rules:
     - if: '$CI_PIPELINE_SOURCE != "web" && ($CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "staging")'
 
