@@ -1,7 +1,7 @@
 package com.goatspec.application.useCases.implementations.specialization;
 
 import com.goatspec.application.gateways.specialization.ISpecializationRequestGateway;
-import com.goatspec.application.useCases.contracts.specialization.IRemoveSpecializationRequest;
+import com.goatspec.application.useCases.contracts.specialization.IRemoveSpecializationRequestUseCase;
 import com.goatspec.domain.Enums.SpecializationRequestStatusEnum;
 import com.goatspec.domain.entities.specialization.SpecializationRequestInfo;
 import com.goatspec.domain.exceptions.BusinessException;
@@ -19,13 +19,13 @@ import java.util.UUID;
 
 @SpringBootTest
 public class RemoveSpecializationRequestTests {
-    private IRemoveSpecializationRequest removeSpecializationRequest;
+    private IRemoveSpecializationRequestUseCase removeSpecializationRequest;
     @MockBean
     private ISpecializationRequestGateway specializationRequestGateway;
 
     @BeforeEach
     void setUp() {
-        this.removeSpecializationRequest = new RemoveSpecializationRequest(specializationRequestGateway);
+        this.removeSpecializationRequest = new RemoveSpecializationRequestUseCaseUseCase(specializationRequestGateway);
     }
 
     @Test

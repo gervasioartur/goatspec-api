@@ -2,6 +2,6 @@ package com.goatspec.application.useCases.contracts.specialization;
 
 import java.util.UUID;
 
-public interface IRemoveSpecializationRequest {
+public interface IRemoveSpecializationRequestUseCase {
     void remove(UUID specializationId);
 }
