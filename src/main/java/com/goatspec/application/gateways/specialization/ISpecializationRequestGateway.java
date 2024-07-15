@@ -7,9 +7,13 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ISpecializationRequestGateway {
-    SpecializationRequest findById(UUID id);
+    SpecializationRequestInfo findById(UUID id);
+
+    SpecializationRequestInfo findByIdAndUserId(UUID id, UUID userId);
 
     SpecializationRequestInfo approve(UUID id);
+
+    void remove(UUID id);
 
     SpecializationRequestInfo disapprove(UUID id);
 
