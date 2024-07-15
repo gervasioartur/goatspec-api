@@ -34,7 +34,7 @@ public class RemoveSpecializationRequestController extends AbstractController<St
 
     @DeleteMapping("/{specializationRequestId}")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Create new Specialization request")
+    @Operation(summary = "Remove Specialization request")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Returns successfully message"),
             @ApiResponse(responseCode = "400", description = "Bad request happened"),
