@@ -11,6 +11,8 @@ public interface ISpecializationRequestGateway {
 
     SpecializationRequestInfo approve(UUID id);
 
+    void remove(UUID id);
+
     SpecializationRequestInfo disapprove(UUID id);
 
     SpecializationRequest create(SpecializationRequest specializationRequest);

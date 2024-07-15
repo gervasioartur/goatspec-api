@@ -77,6 +77,11 @@ public class SpecializationRequestGateway implements ISpecializationRequestGatew
     }
 
     @Override
+    public void remove(UUID id) {
+
+    }
+
+    @Override
     public SpecializationRequestInfo disapprove(UUID id) {
         SpecializationRequestEntity specializationRequestEntity = this.specializationRepository
                 .findByIdAndActive(id, true)
