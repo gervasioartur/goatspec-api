@@ -1,11 +1,7 @@
 package com.goatspec.infrastructure.api.controllers.specialization;
 
 import com.goatspec.application.useCases.contracts.specialization.IApproveSpecializationRequestUseCase;
-import com.goatspec.application.useCases.contracts.specialization.IListAllSpecializationRequestsUseCase;
-import com.goatspec.domain.entities.specialization.SpecializationRequestInfo;
 import com.goatspec.domain.exceptions.NotFoundException;
-import com.goatspec.infrastructure.persisntence.entities.SpecializationRequestEntity;
-import com.goatspec.mocks.Mocks;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,9 +18,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -57,7 +50,7 @@ public class ApproveSpecializationRequestControllerTests {
                 .when(this.approveSpecializationRequestUseCase).approve(specializationId);
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-                .patch(SPEC_API+"/approve/"+specializationId.toString())
+                .patch(SPEC_API + "/approve/" + specializationId.toString())
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON);
 
@@ -75,7 +68,7 @@ public class ApproveSpecializationRequestControllerTests {
                 .when(this.approveSpecializationRequestUseCase).approve(specializationId);
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-                .patch(SPEC_API+"/approve/"+specializationId.toString())
+                .patch(SPEC_API + "/approve/" + specializationId.toString())
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON);
 
@@ -91,7 +84,7 @@ public class ApproveSpecializationRequestControllerTests {
         UUID specializationId = UUID.randomUUID();
         BDDMockito.doNothing().when(this.approveSpecializationRequestUseCase).approve(specializationId);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-                .patch(SPEC_API+"/approve/"+specializationId.toString())
+                .patch(SPEC_API + "/approve/" + specializationId.toString())
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON);
 

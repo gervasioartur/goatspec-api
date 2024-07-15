@@ -66,15 +66,15 @@ class SpecializationRequestEntityMapperTests {
     @Test
     @DisplayName("Shoul return a list of SpecializationRequestInfo")
     void shouldReturnSpecializationRequestInfo() {
-        List<SpecializationRequestEntity> specializationRequestEntities = List.of( Mocks.specializationEntityFactory(),  Mocks.specializationEntityFactory());
-        List<SpecializationRequestInfo>  result =  this.mapper.toSpecializationInfoList(specializationRequestEntities);
+        List<SpecializationRequestEntity> specializationRequestEntities = List.of(Mocks.specializationEntityFactory(), Mocks.specializationEntityFactory());
+        List<SpecializationRequestInfo> result = this.mapper.toSpecializationInfoList(specializationRequestEntities);
         Assertions.assertThat(result.getFirst().specializationRequestId()).isEqualTo(specializationRequestEntities.getFirst().getId().toString());
         Assertions.assertThat(result.getLast().specializationRequestId()).isEqualTo(specializationRequestEntities.getLast().getId().toString());
     }
 
     @Test
     @DisplayName("Should return a SpecializationRequestAndUser")
-    void shouldReturnASpecializationRequestAndUser(){
+    void shouldReturnASpecializationRequestAndUser() {
         SpecializationRequestEntity specializationRequestEntity = Mocks.specializationEntityFactory();
         SpecializationRequestAndUser result = this.mapper.toSpecAndUserDomainObject(specializationRequestEntity);
         Assertions.assertThat(result.userInfo().id()).isEqualTo(specializationRequestEntity.getUser().getId());
