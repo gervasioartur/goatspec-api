@@ -29,7 +29,7 @@ class ListAllSpecializationRequestRequestsUseCaseTests {
     @Test
     @DisplayName("Should return all specialization")
     void shouldReturnAllSpecialization() {
-        List<SpecializationRequestInfo> list = List.of(Mocks.SpecializationRequestInfoFactory(), Mocks.SpecializationRequestInfoFactory());
+        List<SpecializationRequestInfo> list = List.of(Mocks.specializationRequestInfoFactory(), Mocks.specializationRequestInfoFactory());
         Mockito.when(this.specializationGateway.getAll()).thenReturn(list);
 
         List<SpecializationRequestInfo> listResult = this.listAllSpecializationRequests.getAll();

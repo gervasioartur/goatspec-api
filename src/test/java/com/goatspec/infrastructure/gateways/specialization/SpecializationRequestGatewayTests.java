@@ -129,7 +129,7 @@ class SpecializationRequestGatewayTests {
     @DisplayName("Should list of SpecializationAndUser ")
     void shouldListOfSpecializationAndUser() {
         List<SpecializationRequestEntity> specializationRequestEntityList = new ArrayList<>(Arrays.asList(Mocks.specializationEntityFactory(), Mocks.specializationEntityFactory()));
-        List<SpecializationRequestInfo> specializationRequestInfoList = new ArrayList<>(Arrays.asList(Mocks.SpecializationRequestInfoFactory(), Mocks.SpecializationRequestInfoFactory()));
+        List<SpecializationRequestInfo> specializationRequestInfoList = new ArrayList<>(Arrays.asList(Mocks.specializationRequestInfoFactory(), Mocks.specializationRequestInfoFactory()));
 
         Mockito.when(this.specializationRepository.findAll()).thenReturn(specializationRequestEntityList);
         Mockito.when(this.specializationEntityMapper.toSpecializationInfoList(specializationRequestEntityList)).thenReturn(specializationRequestInfoList);
