@@ -3,7 +3,6 @@ package com.goatspec.infrastructure.gateways.specialization;
 import com.goatspec.application.gateways.specialization.ISpecializationRequestGateway;
 import com.goatspec.domain.Enums.SpecializationRequestStatusEnum;
 import com.goatspec.domain.entities.specialization.SpecializationRequest;
-import com.goatspec.domain.entities.specialization.SpecializationRequestAndUser;
 import com.goatspec.domain.entities.specialization.SpecializationRequestInfo;
 import com.goatspec.domain.exceptions.NotFoundException;
 import com.goatspec.infrastructure.gateways.mappers.SpecializationEntityMapper;
@@ -169,14 +168,14 @@ class SpecializationRequestGatewayTests {
     }
 
     @Test
-    @DisplayName("Should throw npt fund exception if the specialization does not exists")
-    void shouldThrowNptFundExceptionIfTheSpecializationDoesNotExists() {
+    @DisplayName("Should throw npt fund exception if the specialization does not exists on approve")
+    void shouldThrowNptFundExceptionIfTheSpecializationDoesNotExistsOnApprove() {
         UUID specializationId = UUID.randomUUID();
         Mockito.when(this.specializationRepository.findByIdAndActive(specializationId, true)).thenReturn(Optional.empty());
 
         Throwable exception = Assertions.catchThrowable(() -> this.specializationGateway.approve(specializationId));
         Assertions.assertThat(exception).isInstanceOf(NotFoundException.class);
-        Assertions.assertThat(exception.getMessage()).isEqualTo("Specialization not found.");
+        Assertions.assertThat(exception.getMessage()).isEqualTo("Specialization request not found.");
     }
 
     @Test
@@ -192,16 +191,52 @@ class SpecializationRequestGatewayTests {
         specializationRequestEntity.setSpecializationRequestStatus(specializationRequestStatusEntity);
         Mockito.when(this.specializationRepository.save(specializationRequestEntity)).thenReturn(specializationRequestEntity);
 
-        SpecializationRequestAndUser specializationRequestAndUser = Mocks.specializationAndUserFactory(specializationRequestEntity);
-        Mockito.when(this.specializationEntityMapper.toSpecAndUserDomainObject(specializationRequestEntity)).thenReturn(specializationRequestAndUser);
+        SpecializationRequestInfo specializationRequestInfo = Mocks.specializationInfoFactory(specializationRequestEntity);
+        Mockito.when(this.specializationEntityMapper.toSpecializationInfo(specializationRequestEntity)).thenReturn(specializationRequestInfo);
 
-        SpecializationRequestAndUser result = this.specializationGateway.approve(specializationRequestEntity.getId());
+        SpecializationRequestInfo result = this.specializationGateway.approve(specializationRequestEntity.getId());
 
-        Assertions.assertThat(result).isEqualTo(specializationRequestAndUser);
+        Assertions.assertThat(result).isEqualTo(specializationRequestInfo);
         Mockito.verify(this.specializationRepository, Mockito.times(1)).findByIdAndActive(specializationRequestEntity.getId(), true);
         Mockito.verify(this.specializationSituationRepository, Mockito.times(1)).findByDescriptionAndActive(SpecializationRequestStatusEnum.APPROVED.getValue(), true);
         Mockito.verify(this.specializationRepository, Mockito.times(1)).save(specializationRequestEntity);
-        Mockito.verify(this.specializationEntityMapper, Mockito.times(1)).toSpecAndUserDomainObject(specializationRequestEntity);
+        Mockito.verify(this.specializationEntityMapper, Mockito.times(1)).toSpecializationInfo(specializationRequestEntity);
+    }
+
+    @Test
+    @DisplayName("Should throw npt fund exception if the specialization does not exists on disapprove")
+    void shouldThrowNptFundExceptionIfTheSpecializationDoesNotExistsOnDisapprove() {
+        UUID specializationId = UUID.randomUUID();
+        Mockito.when(this.specializationRepository.findByIdAndActive(specializationId, true)).thenReturn(Optional.empty());
+
+        Throwable exception = Assertions.catchThrowable(() -> this.specializationGateway.disapprove(specializationId));
+        Assertions.assertThat(exception).isInstanceOf(NotFoundException.class);
+        Assertions.assertThat(exception.getMessage()).isEqualTo("Specialization request not found.");
+    }
+
+    @Test
+    @DisplayName("Should disapprove specialization request")
+    void shouldDisapproveSpecializationRequest() {
+        SpecializationRequestEntity specializationRequestEntity = Mocks.specializationEntityFactory();
+        SpecializationRequestStatusEntity specializationRequestStatusEntity = Mocks.specializationStatusEntityFactory();
+        specializationRequestStatusEntity.setDescription("DISAPPROVED");
+
+        Mockito.when(this.specializationRepository.findByIdAndActive(specializationRequestEntity.getId(), true)).thenReturn(Optional.of(specializationRequestEntity));
+        Mockito.when(this.specializationSituationRepository.findByDescriptionAndActive(SpecializationRequestStatusEnum.APPROVED.getValue(), true)).thenReturn(specializationRequestStatusEntity);
+
+        specializationRequestEntity.setSpecializationRequestStatus(specializationRequestStatusEntity);
+        Mockito.when(this.specializationRepository.save(specializationRequestEntity)).thenReturn(specializationRequestEntity);
+
+        SpecializationRequestInfo specializationRequestInfo = Mocks.specializationInfoFactory(specializationRequestEntity);
+        Mockito.when(this.specializationEntityMapper.toSpecializationInfo(specializationRequestEntity)).thenReturn(specializationRequestInfo);
+
+        SpecializationRequestInfo result = this.specializationGateway.disapprove(specializationRequestEntity.getId());
+
+        Assertions.assertThat(result).isEqualTo(specializationRequestInfo);
+        Mockito.verify(this.specializationRepository, Mockito.times(1)).findByIdAndActive(specializationRequestEntity.getId(), true);
+        Mockito.verify(this.specializationSituationRepository, Mockito.times(1)).findByDescriptionAndActive(SpecializationRequestStatusEnum.APPROVED.getValue(), true);
+        Mockito.verify(this.specializationRepository, Mockito.times(1)).save(specializationRequestEntity);
+        Mockito.verify(this.specializationEntityMapper, Mockito.times(1)).toSpecializationInfo(specializationRequestEntity);
     }
 
 }

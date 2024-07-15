@@ -1,7 +1,6 @@
 package com.goatspec.infrastructure.gateways.mappers;
 
 import com.goatspec.domain.entities.specialization.SpecializationRequest;
-import com.goatspec.domain.entities.specialization.SpecializationRequestAndUser;
 import com.goatspec.domain.entities.specialization.SpecializationRequestInfo;
 import com.goatspec.infrastructure.persisntence.entities.SpecializationRequestEntity;
 import com.goatspec.infrastructure.persisntence.entities.UserEntity;
@@ -70,13 +69,5 @@ class SpecializationRequestEntityMapperTests {
         List<SpecializationRequestInfo> result = this.mapper.toSpecializationInfoList(specializationRequestEntities);
         Assertions.assertThat(result.getFirst().specializationRequestId()).isEqualTo(specializationRequestEntities.getFirst().getId().toString());
         Assertions.assertThat(result.getLast().specializationRequestId()).isEqualTo(specializationRequestEntities.getLast().getId().toString());
-    }
-
-    @Test
-    @DisplayName("Should return a SpecializationRequestAndUser")
-    void shouldReturnASpecializationRequestAndUser() {
-        SpecializationRequestEntity specializationRequestEntity = Mocks.specializationEntityFactory();
-        SpecializationRequestAndUser result = this.mapper.toSpecAndUserDomainObject(specializationRequestEntity);
-        Assertions.assertThat(result.userInfo().id()).isEqualTo(specializationRequestEntity.getUser().getId());
     }
 }

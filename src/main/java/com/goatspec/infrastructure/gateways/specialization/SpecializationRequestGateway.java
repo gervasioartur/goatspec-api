@@ -3,7 +3,6 @@ package com.goatspec.infrastructure.gateways.specialization;
 import com.goatspec.application.gateways.specialization.ISpecializationRequestGateway;
 import com.goatspec.domain.Enums.SpecializationRequestStatusEnum;
 import com.goatspec.domain.entities.specialization.SpecializationRequest;
-import com.goatspec.domain.entities.specialization.SpecializationRequestAndUser;
 import com.goatspec.domain.entities.specialization.SpecializationRequestInfo;
 import com.goatspec.domain.exceptions.NotFoundException;
 import com.goatspec.infrastructure.gateways.mappers.SpecializationEntityMapper;
@@ -64,16 +63,30 @@ public class SpecializationRequestGateway implements ISpecializationRequestGatew
     }
 
     @Override
-    public SpecializationRequestAndUser approve(UUID id) {
+    public SpecializationRequestInfo approve(UUID id) {
         SpecializationRequestEntity specializationRequestEntity = this.specializationRepository
                 .findByIdAndActive(id, true)
-                .orElseThrow(() -> new NotFoundException("Specialization not found."));
+                .orElseThrow(() -> new NotFoundException("Specialization request not found."));
 
         SpecializationRequestStatusEntity status = this.specializationStatusRepository
                 .findByDescriptionAndActive(SpecializationRequestStatusEnum.APPROVED.getValue(), true);
 
         specializationRequestEntity.setSpecializationRequestStatus(status);
         specializationRequestEntity = this.specializationRepository.save(specializationRequestEntity);
-        return this.specializationEntityMapper.toSpecAndUserDomainObject(specializationRequestEntity);
+        return this.specializationEntityMapper.toSpecializationInfo(specializationRequestEntity);
+    }
+
+    @Override
+    public SpecializationRequestInfo disapprove(UUID id) {
+        SpecializationRequestEntity specializationRequestEntity = this.specializationRepository
+                .findByIdAndActive(id, true)
+                .orElseThrow(() -> new NotFoundException("Specialization request not found."));
+
+        SpecializationRequestStatusEntity status = this.specializationStatusRepository
+                .findByDescriptionAndActive(SpecializationRequestStatusEnum.APPROVED.getValue(), true);
+
+        specializationRequestEntity.setSpecializationRequestStatus(status);
+        specializationRequestEntity = this.specializationRepository.save(specializationRequestEntity);
+        return this.specializationEntityMapper.toSpecializationInfo(specializationRequestEntity);
     }
 }

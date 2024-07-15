@@ -2,7 +2,7 @@ package com.goatspec.application.useCases.implementations.specialization;
 
 import com.goatspec.application.gateways.email.ISendEmailGateway;
 import com.goatspec.application.gateways.specialization.ISpecializationRequestGateway;
-import com.goatspec.application.useCases.contracts.specialization.IApproveSpecializationRequestUseCase;
+import com.goatspec.application.useCases.contracts.specialization.IDisapproveSpecializationRequestUseCase;
 import com.goatspec.domain.Enums.SpecializationRequestStatusEnum;
 import com.goatspec.domain.entities.email.SendEmailParams;
 import com.goatspec.domain.entities.specialization.SpecializationRequestInfo;
@@ -18,8 +18,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.util.UUID;
 
 @SpringBootTest
-class ApproveSpecializationRequestRequestUseCaseTests {
-    private IApproveSpecializationRequestUseCase approveSpecializationRequestUseCase;
+class DisapproveSpecializationRequestRequestUseCaseTests {
+    private IDisapproveSpecializationRequestUseCase disapproveSpecializationRequestUseCase;
     @MockBean
     private ISpecializationRequestGateway specializationGateway;
     @Mock
@@ -27,7 +27,7 @@ class ApproveSpecializationRequestRequestUseCaseTests {
 
     @BeforeEach
     void setUp() {
-        approveSpecializationRequestUseCase = new ApproveSpecializationRequestUseCase(
+        disapproveSpecializationRequestUseCase = new DisapproveSpecializationRequestUseCase(
                 specializationGateway,
                 sendEmailGateway);
     }
@@ -38,14 +38,14 @@ class ApproveSpecializationRequestRequestUseCaseTests {
         UUID specializationId = UUID.randomUUID();
 
         SpecializationRequestInfo result = Mocks.specializationInfoFactory(SpecializationRequestStatusEnum.APPROVED.getValue());
-        SendEmailParams sendEmailParams = Mocks.sendApprovedEmailParamsFactory(result);
+        SendEmailParams sendEmailParams = Mocks.sendDisapprovedEmailParamsFactory(result);
 
-        Mockito.when(this.specializationGateway.approve(specializationId)).thenReturn(result);
+        Mockito.when(this.specializationGateway.disapprove(specializationId)).thenReturn(result);
         Mockito.doNothing().when(this.sendEmailGateway).send(sendEmailParams);
 
-        this.approveSpecializationRequestUseCase.approve(specializationId);
+        this.disapproveSpecializationRequestUseCase.disapprove(specializationId);
 
-        Mockito.verify(this.specializationGateway, Mockito.times(1)).approve(specializationId);
+        Mockito.verify(this.specializationGateway, Mockito.times(1)).disapprove(specializationId);
         Mockito.verify(this.sendEmailGateway, Mockito.times(1)).send(sendEmailParams);
     }
 }
