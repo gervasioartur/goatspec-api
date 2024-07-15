@@ -1,7 +1,6 @@
-package com.goatspec.infrastructure.api.controllers.specialization;
+package com.goatspec.infrastructure.api.controllers.authentication;
 
 import com.goatspec.application.useCases.contracts.authentication.IGetLoggedUserInfoUseCase;
-import com.goatspec.application.useCases.contracts.specialization.IListAllUserSpecializationRequestUseCase;
 import com.goatspec.domain.entities.authentication.UserInfo;
 import com.goatspec.infrastructure.api.dto.Response;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,20 +16,18 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/specs/user")
-@Tag(name = "Specialization Request", description = "Endpoints for specialization request features")
-public class ListAllUserSpecializationRequestController {
-    private final IListAllUserSpecializationRequestUseCase useCase;
+@RequestMapping("/auth/user-info")
+@Tag(name = "Authentication", description = "Endpoints for authentication features")
+public class IGetLoggedUserInfoController {
     private final IGetLoggedUserInfoUseCase getLoggedUserInfoUseCase;
 
-    public ListAllUserSpecializationRequestController(IListAllUserSpecializationRequestUseCase useCase, IGetLoggedUserInfoUseCase getLoggedUserInfoUseCase) {
-        this.useCase = useCase;
+    public IGetLoggedUserInfoController(IGetLoggedUserInfoUseCase getLoggedUserInfoUseCase) {
         this.getLoggedUserInfoUseCase = getLoggedUserInfoUseCase;
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "List all current user specialization requests")
+    @Operation(summary = "Get current user information")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returns all specialization requests"),
             @ApiResponse(responseCode = "500", description = "Internal server error occurred"),
@@ -42,7 +39,7 @@ public class ListAllUserSpecializationRequestController {
 
         try {
             UserInfo userInfo = this.getLoggedUserInfoUseCase.get();
-            response = new Response(this.useCase.list(userInfo.id()));
+            response = new Response(userInfo);
             responseEntity = new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception ex) {
             response = new Response(ex.getMessage());
