@@ -214,4 +214,29 @@ class SpecializationRequestGatewayTests {
         Assertions.assertThat(exception.getMessage()).isEqualTo("Specialization not found.");
     }
 
+    @Test
+    @DisplayName("Should disapprove specialization request")
+    void shouldDisapproveSpecializationRequest() {
+        SpecializationRequestEntity specializationRequestEntity = Mocks.specializationEntityFactory();
+        SpecializationRequestStatusEntity specializationRequestStatusEntity = Mocks.specializationStatusEntityFactory();
+        specializationRequestStatusEntity.setDescription("DISAPPROVED");
+
+        Mockito.when(this.specializationRepository.findByIdAndActive(specializationRequestEntity.getId(), true)).thenReturn(Optional.of(specializationRequestEntity));
+        Mockito.when(this.specializationSituationRepository.findByDescriptionAndActive(SpecializationRequestStatusEnum.APPROVED.getValue(), true)).thenReturn(specializationRequestStatusEntity);
+
+        specializationRequestEntity.setSpecializationRequestStatus(specializationRequestStatusEntity);
+        Mockito.when(this.specializationRepository.save(specializationRequestEntity)).thenReturn(specializationRequestEntity);
+
+        SpecializationRequestInfo specializationRequestInfo = Mocks.specializationInfoFactory(specializationRequestEntity);
+        Mockito.when(this.specializationEntityMapper.toSpecializationInfo(specializationRequestEntity)).thenReturn(specializationRequestInfo);
+
+        SpecializationRequestInfo result = this.specializationGateway.disapprove(specializationRequestEntity.getId());
+
+        Assertions.assertThat(result).isEqualTo(specializationRequestInfo);
+        Mockito.verify(this.specializationRepository, Mockito.times(1)).findByIdAndActive(specializationRequestEntity.getId(), true);
+        Mockito.verify(this.specializationSituationRepository, Mockito.times(1)).findByDescriptionAndActive(SpecializationRequestStatusEnum.APPROVED.getValue(), true);
+        Mockito.verify(this.specializationRepository, Mockito.times(1)).save(specializationRequestEntity);
+        Mockito.verify(this.specializationEntityMapper, Mockito.times(1)).toSpecializationInfo(specializationRequestEntity);
+    }
+
 }
