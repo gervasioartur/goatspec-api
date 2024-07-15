@@ -5,7 +5,6 @@ import com.goatspec.application.useCases.contracts.specialization.IRemoveSpecial
 import com.goatspec.domain.Enums.SpecializationRequestStatusEnum;
 import com.goatspec.domain.entities.specialization.SpecializationRequestInfo;
 import com.goatspec.domain.exceptions.BusinessException;
-import com.goatspec.domain.exceptions.NotFoundException;
 import com.goatspec.mocks.Mocks;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,17 +24,20 @@ public class RemoveSpecializationRequestUseCaseTests {
 
     @BeforeEach
     void setUp() {
-        this.removeSpecializationRequestUseCase = new RemoveSpecializationRequestUseCaseUseCase(specializationRequestGateway);
+        this.removeSpecializationRequestUseCase = new RemoveSpecializationRequestUseCase(specializationRequestGateway);
     }
 
     @Test
     @DisplayName("Should throw business exception if specialization status is different of PENDING")
     void shouldThrowBusinessExceptionIfSpecializationStatusIsDifferentOfPending() {
         UUID specializationId = UUID.randomUUID();
+        UUID userId = UUID.randomUUID();
+
+
         SpecializationRequestInfo result = Mocks.specializationInfoFactory(SpecializationRequestStatusEnum.APPROVED.getValue());
         Mockito.when(this.specializationRequestGateway.findById(specializationId)).thenReturn(result);
 
-        Throwable exception = Assertions.catchThrowable(() -> this.removeSpecializationRequestUseCase.remove(specializationId));
+        Throwable exception = Assertions.catchThrowable(() -> this.removeSpecializationRequestUseCase.remove(specializationId,userId));
 
         Assertions.assertThat(exception).isInstanceOf(BusinessException.class);
         Assertions.assertThat(exception.getMessage()).isEqualTo("You only can remove specialization request on pending status.");
@@ -46,12 +48,14 @@ public class RemoveSpecializationRequestUseCaseTests {
     @DisplayName("Should remove specialization request")
     void shouldRemoveSpecializationRequest(){
         UUID specializationId = UUID.randomUUID();
+        UUID userId = UUID.randomUUID();
+
         SpecializationRequestInfo result = Mocks.specializationInfoFactory(SpecializationRequestStatusEnum.PENDING.getValue());
 
         Mockito.when(this.specializationRequestGateway.findById(specializationId)).thenReturn(result);
         Mockito.doNothing().when(this.specializationRequestGateway).remove(specializationId);
 
-        this.removeSpecializationRequestUseCase.remove(specializationId);
+        this.removeSpecializationRequestUseCase.remove(specializationId,userId);
 
         Mockito.verify(this.specializationRequestGateway, Mockito.times(1)).findById(specializationId);
         Mockito.verify(this.specializationRequestGateway, Mockito.times(1)).remove(specializationId);

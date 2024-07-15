@@ -18,6 +18,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -168,11 +169,56 @@ class SpecializationRequestGatewayTests {
     }
 
     @Test
+    @DisplayName("should throw NotFoundException if the specialization does not exists on find by id and user")
+    void ShouldThrowNotFoundExceptionIfTheSpecializationDoesNotExistsOnFindByIdAndUser() {
+        UUID specializationId = UUID.randomUUID();
+        UUID userId = UUID.randomUUID();
+
+        Mockito.when(this.specializationRepository.findByIdAndActive(specializationId, true)).thenReturn(Optional.empty());
+
+        Throwable exception = Assertions.catchThrowable(() -> this.specializationGateway.findByIdAndUserId(specializationId,userId));
+
+        Assertions.assertThat(exception).isInstanceOf(NotFoundException.class);
+        Assertions.assertThat(exception.getMessage()).isEqualTo("Specialization request not found.");
+        Mockito.verify(this.specializationRepository, Mockito.times(1)).findByIdAndActive(specializationId, true);
+    }
+
+    @Test
+    @DisplayName("should return NotFoundException if the specialization exists but the user is the current on find by id and user")
+    void ShouldThrowNotFoundExceptionIfTheSpecializationExistsButUserIsNotTheCurrentOnFindByIdAndUser() {
+        UUID userId = UUID.randomUUID();
+
+        SpecializationRequestEntity entity = Mocks.specializationEntityFactory();
+        Mockito.when(this.specializationRepository.findByIdAndActive(entity.getId(), true)).thenReturn(Optional.empty());
+
+        Throwable exception = Assertions.catchThrowable(() -> this.specializationGateway.findByIdAndUserId(entity.getId(),userId));
+
+        Assertions.assertThat(exception).isInstanceOf(NotFoundException.class);
+        Assertions.assertThat(exception.getMessage()).isEqualTo("Specialization request not found.");
+        Mockito.verify(this.specializationRepository, Mockito.times(1)).findByIdAndActive(entity.getId(), true);
+    }
+
+    @Test
+    @DisplayName("Should return specialization domain object inf on find by id and user")
+    void shouldReturnSpecializationDomainObjectInoOnFindByIdAndUser(){
+        SpecializationRequestEntity entity = Mocks.specializationEntityFactory();
+        SpecializationRequestInfo specializationRequestInfo = Mocks.specializationInfoFactory(entity);
+
+        Mockito.when(this.specializationRepository.findByIdAndActive(entity.getId(), true)).thenReturn(Optional.of(entity));
+        Mockito.when(this.specializationEntityMapper.toSpecializationInfo(entity)).thenReturn(specializationRequestInfo);
+
+        SpecializationRequestInfo result = this.specializationGateway.findByIdAndUserId(entity.getId(),entity.getUser().getId());
+
+        Assertions.assertThat(result).isEqualTo(specializationRequestInfo);
+        Mockito.verify(this.specializationRepository, Mockito.times(1)).findByIdAndActive(entity.getId(), true);
+        Mockito.verify(this.specializationEntityMapper, Mockito.times(1)).toSpecializationInfo(entity);
+    }
+
+    @Test
     @DisplayName("Should throw npt fund exception if the specialization does not exists on approve")
     void shouldThrowNptFundExceptionIfTheSpecializationDoesNotExistsOnApprove() {
         UUID specializationId = UUID.randomUUID();
         Mockito.when(this.specializationRepository.findByIdAndActive(specializationId, true)).thenReturn(Optional.empty());
-
         Throwable exception = Assertions.catchThrowable(() -> this.specializationGateway.approve(specializationId));
         Assertions.assertThat(exception).isInstanceOf(NotFoundException.class);
         Assertions.assertThat(exception.getMessage()).isEqualTo("Specialization request not found.");

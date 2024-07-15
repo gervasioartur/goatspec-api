@@ -6,10 +6,8 @@ import com.goatspec.application.gateways.user.IUserGateway;
 import com.goatspec.application.useCases.contracts.specialization.IApproveSpecializationRequestUseCase;
 import com.goatspec.application.useCases.contracts.specialization.IDisapproveSpecializationRequestUseCase;
 import com.goatspec.application.useCases.contracts.specialization.IListAllSpecializationRequestsUseCase;
-import com.goatspec.application.useCases.implementations.specialization.ApproveSpecializationRequestUseCase;
-import com.goatspec.application.useCases.implementations.specialization.CreateSpecializationRequestRequestUseCase;
-import com.goatspec.application.useCases.implementations.specialization.DisapproveSpecializationRequestUseCase;
-import com.goatspec.application.useCases.implementations.specialization.ListAllSpecializationRequestsUseCase;
+import com.goatspec.application.useCases.contracts.specialization.IRemoveSpecializationRequestUseCase;
+import com.goatspec.application.useCases.implementations.specialization.*;
 import com.goatspec.infrastructure.gateways.mappers.SpecializationEntityMapper;
 import com.goatspec.infrastructure.gateways.specialization.SpecializationRequestGateway;
 import com.goatspec.infrastructure.persisntence.repositories.ISpecializationRequestRepository;
@@ -41,6 +39,11 @@ public class SpecializationConfig {
             ISpecializationRequestGateway specializationGateway, ISendEmailGateway sendEmailGateway) {
 
         return new DisapproveSpecializationRequestUseCase(specializationGateway,sendEmailGateway);
+    }
+
+    @Bean
+    public IRemoveSpecializationRequestUseCase removeSpecializationRequestUseCase(ISpecializationRequestGateway specializationRequestGateway){
+       return new RemoveSpecializationRequestUseCase(specializationRequestGateway);
     }
 
     @Bean
