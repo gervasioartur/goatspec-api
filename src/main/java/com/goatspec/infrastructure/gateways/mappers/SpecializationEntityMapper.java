@@ -1,13 +1,15 @@
 package com.goatspec.infrastructure.gateways.mappers;
 
 import com.goatspec.domain.entities.authentication.UserInfo;
-import com.goatspec.domain.entities.specialization.Specialization;
-import com.goatspec.domain.entities.specialization.SpecializationAndUser;
-import com.goatspec.infrastructure.persisntence.entities.SpecializationEntity;
+import com.goatspec.domain.entities.specialization.SpecializationRequest;
+import com.goatspec.domain.entities.specialization.SpecializationRequestAndUser;
+import com.goatspec.domain.entities.specialization.SpecializationRequestInfo;
+import com.goatspec.infrastructure.persisntence.entities.SpecializationRequestEntity;
 import com.goatspec.infrastructure.persisntence.entities.UserEntity;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
 
 public class SpecializationEntityMapper {
     private final UserEntityMapper userEntityMapper;
@@ -16,27 +18,44 @@ public class SpecializationEntityMapper {
         this.userEntityMapper = userEntityMapper;
     }
 
-    public SpecializationEntity toSpecializationEntity(Specialization specializationDomainObject) {
-        return SpecializationEntity
+    public SpecializationRequestEntity toSpecializationEntity(SpecializationRequest specializationRequestDomainObject) {
+        return SpecializationRequestEntity
                 .builder()
-                .user(UserEntity.builder().id(specializationDomainObject.userId()).build())
-                .area(specializationDomainObject.area())
-                .type(specializationDomainObject.type())
-                .courseLoad(specializationDomainObject.courseLoad())
-                .totalCost(specializationDomainObject.totalCost())
+                .user(UserEntity.builder().id(specializationRequestDomainObject.userId()).build())
+                .area(specializationRequestDomainObject.area())
+                .type(specializationRequestDomainObject.type())
+                .courseLoad(specializationRequestDomainObject.courseLoad())
+                .totalCost(specializationRequestDomainObject.totalCost())
                 .build();
     }
 
-    public Specialization toDomainObject(SpecializationEntity specializationEntity) {
-        return new Specialization(specializationEntity.getUser().getId(), specializationEntity.getArea(), specializationEntity.getType(), specializationEntity.getCourseLoad(), specializationEntity.getTotalCost());
+    public SpecializationRequest toSpecializationDomainObject(SpecializationRequestEntity specializationRequestEntity) {
+        return new SpecializationRequest(specializationRequestEntity.getUser().getId(), specializationRequestEntity.getArea(), specializationRequestEntity.getType(), specializationRequestEntity.getCourseLoad(), specializationRequestEntity.getTotalCost());
     }
 
-    public List<SpecializationAndUser> toDomainObjects(List<SpecializationEntity> specializationEntities) {
+    public List<SpecializationRequestInfo> toSpecializationInfoList(List<SpecializationRequestEntity> specializationEntities) {
         return specializationEntities.stream()
-                .map(specializationEntity -> {
-                    UserInfo userInfo = this.userEntityMapper.toUserInfo(specializationEntity.getUser());
-                    Specialization specialization = this.toDomainObject(specializationEntity);
-                    return new SpecializationAndUser(userInfo, specialization, specializationEntity.getSpecializationStatus().getDescription());
-                }).collect(Collectors.toList());
+                .map(specializationEntity -> new SpecializationRequestInfo(
+                        specializationEntity.getUser().getName(),
+                        specializationEntity.getUser().getEmail(),
+                        specializationEntity.getUser().getRegistration(),
+                        specializationEntity.getId().toString(),
+                        specializationEntity.getArea(),
+                        specializationEntity.getType(),
+                        specializationEntity.getCourseLoad(),
+                        specializationEntity.getTotalCost(),
+                        specializationEntity.getSpecializationRequestStatus().getDescription()))
+                .collect(Collectors.toList());
+    }
+
+    public SpecializationRequestAndUser toSpecAndUserDomainObject(SpecializationRequestEntity specializationRequestEntity) {
+        return new SpecializationRequestAndUser(
+                new UserInfo(specializationRequestEntity.getUser().getId(),
+                        specializationRequestEntity.getUser().getName(),
+                        specializationRequestEntity.getUser().getEmail(),
+                        specializationRequestEntity.getUser().getRegistration()),
+                this.toSpecializationDomainObject(specializationRequestEntity),
+                specializationRequestEntity.getSpecializationRequestStatus().getDescription()
+        );
     }
 }
