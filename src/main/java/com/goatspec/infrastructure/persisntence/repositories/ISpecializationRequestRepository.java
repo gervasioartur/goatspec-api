@@ -14,6 +14,6 @@ public interface ISpecializationRequestRepository extends JpaRepository<Speciali
 
     List<SpecializationRequestEntity> findAllByActive(Boolean active);
 
-    @Query("SELECT spec FROM SpecializationRequestEntity spec WHERE spec.user.id = :userId and spec.specializationRequestStatus.active = true ")
+    @Query("SELECT spec FROM SpecializationRequestEntity spec WHERE spec.user.id = :userId AND spec.active = true ")
     List<SpecializationRequestEntity> findByUserId(@Param("userId") UUID userId);
 }
