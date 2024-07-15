@@ -125,7 +125,7 @@ public class Mocks {
     }
 
 
-    public static SpecializationRequestInfo SpecializationRequestInfoFactory() {
+    public static SpecializationRequestInfo specializationRequestInfoFactory() {
         return new SpecializationRequestInfo(
                 "any_username",
                 "any_user_email",

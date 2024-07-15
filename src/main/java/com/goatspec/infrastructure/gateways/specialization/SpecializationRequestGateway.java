@@ -53,13 +53,22 @@ public class SpecializationRequestGateway implements ISpecializationRequestGatew
 
     @Override
     public List<SpecializationRequestInfo> getAll() {
-        return this.specializationEntityMapper.toSpecializationInfoList(this.specializationRepository.findAll());
+        return this.specializationEntityMapper.toSpecializationInfoList(this.specializationRepository.findAllByActive(true));
     }
 
     @Override
-    public SpecializationRequest findById(UUID id) {
+    public SpecializationRequestInfo findById(UUID id) {
         Optional<SpecializationRequestEntity> specializationEntityResult = this.specializationRepository.findByIdAndActive(id, true);
-        return specializationEntityResult.map(this.specializationEntityMapper::toSpecializationDomainObject).orElse(null);
+        return specializationEntityResult.map(this.specializationEntityMapper::toSpecializationInfo).orElse(null);
+    }
+
+    @Override
+    public SpecializationRequestInfo findByIdAndUserId(UUID id, UUID userId) {
+        Optional<SpecializationRequestEntity> specializationEntityResult = this.specializationRepository.findByIdAndActive(id, true);
+        if (specializationEntityResult.isEmpty()) throw new NotFoundException("Specialization request not found.");
+        SpecializationRequestEntity entity = specializationEntityResult.get();
+        if (!entity.getUser().getId().equals(userId)) throw new NotFoundException("Specialization request not found.");
+        return this.specializationEntityMapper.toSpecializationInfo(entity);
     }
 
     @Override
@@ -77,13 +86,23 @@ public class SpecializationRequestGateway implements ISpecializationRequestGatew
     }
 
     @Override
+    public void remove(UUID id) {
+        SpecializationRequestEntity specializationRequestEntity = this.specializationRepository
+                .findByIdAndActive(id, true)
+                .orElseThrow(() -> new NotFoundException("Specialization request not found."));
+
+        specializationRequestEntity.setActive(false);
+        this.specializationRepository.save(specializationRequestEntity);
+    }
+
+    @Override
     public SpecializationRequestInfo disapprove(UUID id) {
         SpecializationRequestEntity specializationRequestEntity = this.specializationRepository
                 .findByIdAndActive(id, true)
                 .orElseThrow(() -> new NotFoundException("Specialization request not found."));
 
         SpecializationRequestStatusEntity status = this.specializationStatusRepository
-                .findByDescriptionAndActive(SpecializationRequestStatusEnum.APPROVED.getValue(), true);
+                .findByDescriptionAndActive(SpecializationRequestStatusEnum.DISAPPROVED.getValue(), true);
 
         specializationRequestEntity.setSpecializationRequestStatus(status);
         specializationRequestEntity = this.specializationRepository.save(specializationRequestEntity);

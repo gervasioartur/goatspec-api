@@ -1,6 +1,5 @@
 package com.goatspec.infrastructure.api.controllers.specialization;
 
-import com.goatspec.application.useCases.contracts.specialization.IApproveSpecializationRequestUseCase;
 import com.goatspec.application.useCases.contracts.specialization.IDisapproveSpecializationRequestUseCase;
 import com.goatspec.domain.exceptions.NotFoundException;
 import com.goatspec.infrastructure.api.controllers.AbstractController;
@@ -31,7 +30,7 @@ public class DisapproveSpecializationRequestController extends AbstractControlle
     @PatchMapping("/{specializationRequestId}")
     @Operation(summary = "Disapprove specialization request")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Specialization request successfully disapproved"),
+            @ApiResponse(responseCode = "200", description = "Specialization request disapproved"),
             @ApiResponse(responseCode = "404", description = "Specialization request not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error occurred"),
     })
@@ -42,7 +41,7 @@ public class DisapproveSpecializationRequestController extends AbstractControlle
 
         try {
             this.disapproveSpecializationRequestUseCase.disapprove(UUID.fromString(id));
-            response = new Response("Specialization request successfully approved");
+            response = new Response("Specialization request disapproved");
             responseEntity = new ResponseEntity<>(response, HttpStatus.OK);
         } catch (NotFoundException ex) {
             response = new Response(ex.getMessage());
