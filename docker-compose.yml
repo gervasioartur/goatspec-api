@@ -1,0 +1,49 @@
+version: '3.9'
+
+services:
+  goatspec-database:
+    container_name: goatspec-database
+    image: postgres:14-alpine
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./apps/goatspec:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=goatspec
+      - POSTGRES_PASSWORD=goatspec
+      - POSTGRES_DB=goatspec-database
+    networks:
+      - goatspec-network
+
+
+  goatspec-api:
+    build:
+      dockerfile: Dockerfile
+    container_name: goatspec-api
+    ports:
+      - "8080:8080"
+    expose:
+      - "8080"
+    depends_on:
+      - goatspec-database
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - PORT:8080
+      - APP_VERSION=dev
+      - APP_SERVER_URL=http://localhost:8080
+      - APP_SECRET=5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437
+      - APP_ENVIRONMENT=dev
+      - APP_EMAIL_SENDER=gervasioarthur@gmail.com
+      - APP_EMAIL_PASSWORD=cgty tvbn qath mcoj
+      - SPRING_APPLICATION_NAME=goatspec-api
+      ## DATABASE CONFIGURATION
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://goatspec-database:5432/goatspec-database
+      - SPRING_DATASOURCE_USERNAME=goatspec
+      - SPRING_DATASOURCE_PASSWORD=goatspec
+      - SPRING_JPA_SHOW_SQL=true
+    networks:
+      - goatspec-network
+
+networks:
+  goatspec-network:
+    driver: bridge
