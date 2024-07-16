@@ -25,9 +25,7 @@ docker compose up -d
 
 **Nota:** Aconselha-se a usar o comando `docker compose up -d`, pois, às vezes, o banco de dados leva mais tempo para estar pronto do que a aplicação. Caso a aplicação dê um crash, você pode rodar o comando novamente e testar a aplicação.
 
-Após rodar o sistema localmente, acesse o Swagger para realizar os testes:
-
-[http://localhost:8080/swagger-ui/index.html#//](http://localhost:8080/swagger-ui/index.html#/)
+Após rodar o sistema localmente, acesse o Swagger para realizar os testes: [http://localhost:8080/swagger-ui/index.html#//](http://localhost:8080/swagger-ui/index.html#/)
 
 A  API também está hospedada no link do GPC: [https://goatspec-api-m24ry3ujja-rj.a.run.app/swagger-ui/index.html#/](https://goatspec-api-m24ry3ujja-rj.a.run.app/swagger-ui/index.html#/)
 
